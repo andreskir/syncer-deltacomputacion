@@ -3,6 +3,8 @@ Main application file
 ###
 "use strict"
 
+require 'coffee-script/register'
+
 # Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV or "development"
 express = require("express")
