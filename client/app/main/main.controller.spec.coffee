@@ -3,7 +3,7 @@
 describe 'Controller: MainCtrl', ->
 
   # load the controller's module
-  beforeEach module 'parsimotionSyncerApp' 
+  beforeEach module 'parsimotionSyncerApp'
 
   MainCtrl = undefined
   scope = undefined
@@ -12,16 +12,13 @@ describe 'Controller: MainCtrl', ->
   # Initialize the controller and a mock scope
   beforeEach inject (_$httpBackend_, $controller, $rootScope) ->
     $httpBackend = _$httpBackend_
-    $httpBackend.expectGET('/api/things').respond [
-      'HTML5 Boilerplate'
-      'AngularJS'
-      'Karma'
-      'Express'
+    $httpBackend.expectGET('/api/files').respond [
+      'mercado.xls'
     ]
     scope = $rootScope.$new()
     MainCtrl = $controller 'MainCtrl',
       $scope: scope
 
-  it 'should attach a list of things to the scope', ->
+  it 'should attach a list of files to the scope', ->
     $httpBackend.flush()
-    expect(scope.awesomeThings.length).toBe 4
+    expect(scope.files.length).toBe 1
