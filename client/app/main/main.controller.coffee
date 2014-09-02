@@ -2,18 +2,7 @@
 
 angular.module 'parsimotionSyncerApp'
 .controller 'MainCtrl', ($scope, $http) ->
-  $scope.awesomeThings = []
+  $scope.files = []
 
-  $http.get('/api/things').success (awesomeThings) ->
-    $scope.awesomeThings = awesomeThings
-    
-
-  $scope.addThing = ->
-    return if $scope.newThing is ''
-    $http.post '/api/things',
-      name: $scope.newThing
-
-    $scope.newThing = ''
-
-  $scope.deleteThing = (thing) ->
-    $http.delete '/api/things/' + thing._id
+  $http.get('/api/files').success (files) ->
+    $scope.files = files

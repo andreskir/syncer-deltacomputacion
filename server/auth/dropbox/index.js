@@ -7,13 +7,9 @@ var auth = require('../auth.service');
 var router = express.Router();
 
 router
-  .get('/', passport.authenticate('facebook', {
-    scope: ['email', 'user_about_me'],
-    failureRedirect: '/signup',
-    session: false
-  }))
+  .get('/', passport.authenticate('dropbox-oauth2'))
 
-  .get('/callback', passport.authenticate('facebook', {
+  .get('/callback', passport.authenticate('dropbox-oauth2', {
     failureRedirect: '/signup',
     session: false
   }), auth.setTokenCookie);

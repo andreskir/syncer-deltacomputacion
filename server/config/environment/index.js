@@ -41,12 +41,11 @@ var all = {
     }
   },
 
-  facebook: {
-    clientID:     process.env.FACEBOOK_ID || 'id',
-    clientSecret: process.env.FACEBOOK_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
-  },
-
+  dropbox: {
+    clientID:     process.env.DROPBOX_ID || 'id',
+    clientSecret: process.env.DROPBOX_SECRET || 'secret',
+    callbackURL:  (process.env.DOMAIN || '') + '/auth/dropbox/callback'
+  }
 };
 
 // Export the config object based on the NODE_ENV
