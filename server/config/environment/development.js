@@ -11,7 +11,5 @@ module.exports = {
   dropbox: {
     clientID: 'aptkfvli7ztnm94',
     clientSecret: 'g8uwx67dmgxg3vv'
-  },
-
-  seedDB: true
+  }
 };
