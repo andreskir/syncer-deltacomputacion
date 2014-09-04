@@ -1,11 +1,15 @@
 should = require("should")
 sinon = require("sinon")
+Q = require("q")
 Syncer = require("./syncer")
 
 describe "Syncer", ->
-  it "al ejecutar dispara una request a Parsimotion, matcheando el id segun sku", ->
+  client = null
+  syncer = null
+
+  beforeEach ->
     client =
-      updateStocks: sinon.spy()
+      updateStocks: sinon.stub().returns Q()
 
     syncer = new Syncer client, [
       id: 1
@@ -18,6 +22,7 @@ describe "Syncer", ->
       ]
     ]
 
+  it "al ejecutar dispara una request a Parsimotion, matcheando el id segun sku", ->
     syncer.execute [
       sku: 123456
       stock: 28
@@ -30,3 +35,11 @@ describe "Syncer", ->
         quantity: 28
       ]
     ]).should.be.ok
+
+  it "ejecutar devuelve un array con los productos que pudo sincronizar", ->
+    syncer.execute([
+      sku: 123456, stock: 28
+    ,
+      sku: 55555, stock: 70
+    ]).then (actualizados) -> actualizados.should.eql [ sku: 123456 ]
+
