@@ -1,6 +1,6 @@
 Q = require("q")
 Dropbox = require("dropbox").Client
-XlsParser = require("../../domain/parsers/XlsParser")
+XlsParser = require("../../domain/parsers/xlsParser")
 
 getStocks = (token) ->
   Q.ninvoke(new Dropbox(token: token), "readFile", "mercado.xls", binary: true).then (data) ->

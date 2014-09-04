@@ -1,6 +1,6 @@
 _ = require "lodash"
 XLS = require "xlsjs"
-AjusteStock = require "../AjusteStock"
+AjusteStock = require "../ajusteStock"
 
 module.exports = class XlsParser
   constructor: (@data) ->
