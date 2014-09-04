@@ -1,7 +1,10 @@
 div(ng-include='"components/navbar/navbar.html"')
 
 .container
-  h3 Articulos para sincronizar
+  h3
+    | Articulos para sincronizar&nbsp
+    small {{ ajustes.fecha | date:'medium' }}
+
   table(class="table table-striped")
     thead
       tr
@@ -9,7 +12,7 @@ div(ng-include='"components/navbar/navbar.html"')
         th Nombre
         th Stock
     tbody
-      tr(ng-repeat="item in productos")
+      tr(ng-repeat="item in ajustes.stocks")
         td {{item.sku}}
         td {{item.nombre}}
         td {{item.stock}}

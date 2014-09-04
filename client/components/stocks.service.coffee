@@ -1,2 +1,4 @@
 app.factory "Stock", ($resource) ->
-  $resource "/api/stocks"
+  $resource "/api/stocks", {},
+    query:
+      isArray: false
