@@ -10,14 +10,24 @@ user = new User(
 
 describe "User Model", ->
   before (done) ->
-
-    # Clear users before testing
     User.remove().exec().then ->
       done()
 
   afterEach (done) ->
     User.remove().exec().then ->
       done()
+
+  it "should store the provider and its id", (done) ->
+    new User(
+      provider: 'dropbox'
+      providerId: 12345678
+    ).save ->
+      User.find {}, (err, users) ->
+        users[0].should.have.properties
+          provider: 'dropbox'
+          providerId: 12345678
+
+        done()
 
   it "should begin with no users", (done) ->
     User.find {}, (err, users) ->
