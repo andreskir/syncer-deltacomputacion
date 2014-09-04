@@ -15,6 +15,7 @@ UserSchema = new Schema(
 
   hashedPassword: String
   provider: String
+  providerId: Number
   salt: String
   tokens:
     dropbox: String
@@ -96,10 +97,10 @@ UserSchema.pre "save", (next) ->
 Methods
 ###
 UserSchema.methods =
-  
+
   ###*
   Authenticate - check if the passwords are the same
-  
+
   @param {String} plainText
   @return {Boolean}
   @api public
@@ -107,20 +108,20 @@ UserSchema.methods =
   authenticate: (plainText) ->
     @encryptPassword(plainText) is @hashedPassword
 
-  
+
   ###*
   Make salt
-  
+
   @return {String}
   @api public
   ###
   makeSalt: ->
     crypto.randomBytes(16).toString "base64"
 
-  
+
   ###*
   Encrypt password
-  
+
   @param {String} password
   @return {String}
   @api public
