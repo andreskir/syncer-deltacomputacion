@@ -25,7 +25,8 @@
     "passport-dropbox-oauth2": "^0.1.6",
     "passport-facebook": "latest",
     "passport-local": "~0.1.6",
-    "serve-favicon": "~2.0.1"
+    "serve-favicon": "~2.0.1",
+    "xlsjs": "^0.7.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
