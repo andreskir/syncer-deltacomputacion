@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module 'parsimotionSyncerApp', [
+window.app = angular.module 'parsimotionSyncerApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',

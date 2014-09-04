@@ -1,8 +1,15 @@
 div(ng-include='"components/navbar/navbar.html"')
 
 .container
-  h3 Archivos disponibles en Dropbox
-
-  ul(ng-repeat='file in files')
-    li
-      a(href='#') {{file}}
+  h3 Articulos para sincronizar
+  table(class="table table-striped")
+    thead
+      tr
+        th SKU
+        th Nombre
+        th Stock
+    tbody
+      tr(ng-repeat="item in productos")
+        td {{item.sku}}
+        td {{item.nombre}}
+        td {{item.stock}}
