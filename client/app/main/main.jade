@@ -5,14 +5,18 @@ div(ng-include='"components/navbar/navbar.html"')
     | Articulos para sincronizar&nbsp
     small {{ ajustes.fecha | date:'medium' }}
 
+  button(class="btn btn-primary", ng-click="sincronizar()", ng-disabled="isSincronizando") Sincronizar
+
   table(class="table table-striped")
     thead
       tr
         th SKU
         th Nombre
         th Stock
+        th Sincronizado?
     tbody
-      tr(ng-repeat="item in ajustes.stocks")
+      tr(ng-repeat="item in ajustes.stocks", ng-class="{success: item.fueSincronizado}")
         td {{item.sku}}
         td {{item.nombre}}
         td {{item.stock}}
+        td {{item.fueSincronizado | checkmark}}
