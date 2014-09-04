@@ -1,12 +1,16 @@
+Q = require("q")
 Dropbox = require("dropbox").Client
 XlsParser = require("../../domain/parsers/XlsParser")
 
-exports.index = (req, res) ->
-  dropbox = new Dropbox(token: req.user.tokens.dropbox)
+getStocks = (token) ->
+  Q.ninvoke(new Dropbox(token: token), "readFile", "mercado.xls", binary: true).then (data) ->
+    fecha: Date.parse data[1]._json.modified
+    stocks: new XlsParser(data[0]).getValue()
 
-  dropbox.readFile "mercado.xls", binary: true, (error, data) ->
-    return handleError(res, error) if error
-    res.json 200, new XlsParser(data).getValue()
+exports.stocks = (req, res) ->
+  getStocks(req.user.tokens.dropbox).then (
+    (data) -> res.json 200, data
+  ), (error) -> res.send 500, error
 
 handleError = (res, err) ->
   res.send 500, err

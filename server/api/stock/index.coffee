@@ -5,6 +5,6 @@ auth = require("../../auth/auth.service")
 
 router = express.Router()
 
-router.get "/", auth.isAuthenticated(), controller.index
+router.get "/", auth.isAuthenticated(), controller.stocks
 
 module.exports = router
