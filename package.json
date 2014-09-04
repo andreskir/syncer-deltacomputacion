@@ -27,6 +27,7 @@
     "passport-facebook": "latest",
     "passport-local": "~0.1.6",
     "q": "^1.0.1",
+    "restify": "^2.8.2",
     "serve-favicon": "~2.0.1",
     "xlsjs": "^0.7.1"
   },

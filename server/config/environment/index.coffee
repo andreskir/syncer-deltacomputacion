@@ -42,6 +42,8 @@ all =
     clientSecret: process.env.DROPBOX_SECRET or "secret"
     callbackURL: (process.env.DOMAIN or "") + "/auth/dropbox/callback"
 
+  parsimotion:
+    uri: process.env.PARSIMOTION_URI or "http://staging-api.parsimotion.com"
 
 # Export the config object based on the NODE_ENV
 # ==============================================
