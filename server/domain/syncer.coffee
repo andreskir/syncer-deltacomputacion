@@ -6,25 +6,32 @@ module.exports = class Syncer
 
   execute: (ajustes) ->
     promises = []
+    noVinculados = []
 
     ajustes.forEach (it) =>
-      product = @getId it
+      product = @_getId it
       if (product?)
-        promises.push (@updateStock it, product)
+        promises.push (@_updateStock it, product)
+      else
+        noVinculados.push sku: it.sku
 
-    (Q.allSettled promises).then (resultados) ->
-      _(resultados).filter(state: "fulfilled").map((it) -> sku: it.value).value()
+    (Q.allSettled promises).then (resultados) =>
+      completados: @_resultadosToProductos resultados, "fulfilled"
+      fallidos: @_resultadosToProductos resultados, "rejected"
+      noVinculados: noVinculados
 
-  updateStock: (ajuste, product) ->
+  _updateStock: (ajuste, product) ->
     @parsimotionClient.updateStocks(product.id, [
-      variation: (@getVariante product).id
+      variation: (@_getVariante product).id
       stocks: [
-        warehouse: (@getStock product).warehouse,
+        warehouse: (@_getStock product).warehouse,
         quantity: ajuste.stock
       ]
     ]).then -> ajuste.sku
 
-  getVariante: (product) -> product.variations[0]
-  getStock: (product) -> (@getVariante product).stocks[0]
+  _getVariante: (product) -> product.variations[0]
+  _getStock: (product) -> (@_getVariante product).stocks[0]
+  _getId: (ajuste) -> _.find @productos, sku: ajuste.sku
 
-  getId: (ajuste) -> _.find @productos, sku: ajuste.sku
+  _resultadosToProductos: (resultados, promiseState) ->
+    _(resultados).filter(state: promiseState).map((it) -> sku: it.value).value()
