@@ -52,3 +52,6 @@ describe "User Model", ->
 
   it "should not authenticate user if password is invalid", ->
     user.authenticate("blah").should.not.be.true
+
+  it "should devolver MER.TXT para la property settings.fileName", ->
+    new User().settings.fileName.should.equal "MER.TXT"

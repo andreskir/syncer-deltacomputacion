@@ -36,10 +36,24 @@ describe "Syncer", ->
       ]
     ]).should.be.ok
 
-  it "ejecutar devuelve un array con los productos que pudo sincronizar", ->
-    syncer.execute([
-      sku: 123456, stock: 28
-    ,
-      sku: 55555, stock: 70
-    ]).then (actualizados) -> actualizados.should.eql [ sku: 123456 ]
+  describe "ejecutar devuelve un objeto con el resultado de la sincronizacion:", ->
+    resultadoShouldHaveProperty = null
 
+    beforeEach ->
+      resultado = syncer.execute([
+        sku: 123456, stock: 28
+      ,
+        sku: 55555, stock: 70
+      ])
+
+      resultadoShouldHaveProperty = (name, value) ->
+        resultado.then (actualizados) -> actualizados.should.have.property name, value
+
+    it "los no vinculados", ->
+      resultadoShouldHaveProperty "noVinculados", [ sku: 55555 ]
+
+    it "los completados", ->
+      resultadoShouldHaveProperty "completados", [ sku: 123456 ]
+
+    it "los fallidos", ->
+      resultadoShouldHaveProperty "fallidos", []

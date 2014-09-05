@@ -1,9 +1,15 @@
 describe 'checkmark filter', ->
+  filter = null
 
-  beforeEach module 'parsimotionSyncerApp'
+  beforeEach ->
+    inject (checkmarkFilter) ->
+      filter = checkmarkFilter
 
-  it 'should convert true to check', inject (checkmarkFilter) ->
-    expect(checkmarkFilter(true)).toBe '\u2713'
+  it 'should convert ok to check', ->
+    expect(filter "ok").toBe '\u2714'
 
-  it 'should convert false to cross', inject (checkmarkFilter) ->
-    expect(checkmarkFilter(false)).toBe '\u2718'
+  it 'should convert error to cross', ->
+    expect(filter "error").toBe '\u2718'
+
+  it 'should convert null to hyphen', ->
+    expect(filter null).toBe '-'

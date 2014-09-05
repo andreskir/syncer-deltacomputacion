@@ -45,6 +45,8 @@ UserSchema.virtual("token").get ->
   _id: @_id
   role: @role
 
+UserSchema.virtual("settings").get ->
+  fileName: "MER.TXT"
 
 ###*
 Validations
