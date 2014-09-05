@@ -1,2 +1,6 @@
 app.filter "checkmark", ->
-  (input) -> if input then "✔" else "✘"
+  (input) ->
+    switch (input)
+      when "ok" then "✔"
+      when "error" then "✘"
+      else "-"
