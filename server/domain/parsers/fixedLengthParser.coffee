@@ -1,4 +1,5 @@
 _ = require("lodash")
+AjusteStock = require("../ajusteStock")
 
 module.exports = class FixedLengthParser
   constructor: (@data) ->
@@ -7,13 +8,8 @@ module.exports = class FixedLengthParser
     rows = @data.split "\n"
     _.map rows, @_parseRow
 
-  _parseRow: (row) ->
-    ajuste = _([ "sku", "nombre", "precio", "stock" ])
-      .zipObject _.drop (row.match /^(.{30})(.{50})(.{15})(.{10})$/)
-      .mapValues (it) -> it.trim()
-      .value()
+  _parseRow: (row) =>
+    new AjusteStock (_.zipObject [ "sku", "nombre", "precio", "stock" ], @_getFields row)
 
-    ajuste.precio = parseFloat ajuste.precio
-    ajuste.stock = _.max [0, parseInt ajuste.stock]
-
-    ajuste
+  _getFields: (row) ->
+    _.drop row.match /^(.{30})(.{50})(.{15})(.{10})$/

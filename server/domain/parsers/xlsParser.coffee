@@ -7,10 +7,16 @@ module.exports = class XlsParser
 
   getValue: ->
     workbook = XLS.read @data, type: "binary"
-    _.map (@getDataFrom workbook), (dto) -> new AjusteStock dto
+    _.map (@_getDataFrom workbook), (row) => new AjusteStock (@_toDto row)
 
-  getFirstSheet: (workbook) ->
+  _getDataFrom: (workbook) ->
+    XLS.utils.sheet_to_json (@_getFirstSheet workbook)
+
+  _getFirstSheet: (workbook) ->
     workbook.Sheets[workbook.SheetNames[0]]
 
-  getDataFrom: (workbook) ->
-    XLS.utils.sheet_to_json (@getFirstSheet workbook)
+  _toDto: (row) ->
+    sku: row.REF
+    nombre: row.NOMBRE
+    stock: row.STOCK
+    precio: row.PRECIO
