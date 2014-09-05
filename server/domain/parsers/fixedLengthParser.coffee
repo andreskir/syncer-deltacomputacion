@@ -5,8 +5,10 @@ module.exports = class FixedLengthParser
   constructor: (@data) ->
 
   getValue: ->
-    rows = @data.split "\n"
-    _.map rows, @_parseRow
+    _(@data.split /\r\n|\r|\n/)
+      .reject _.isEmpty
+      .map @_parseRow
+      .value()
 
   _parseRow: (row) =>
     new AjusteStock (_.zipObject [ "sku", "nombre", "precio", "stock" ], @_getFields row)

@@ -9,7 +9,7 @@ describe "Fixed length parser", ->
 
     ajuste = parser.getValue()[0]
 
-    ajuste.should.be.eql
+    ajuste.should.eql
       sku: "924065117102"
       nombre: "ALR 111 50W 12V 24G"
       precio: 124.49
@@ -17,3 +17,16 @@ describe "Fixed length parser", ->
 
     ajuste.precio.should.be.a.Number
     ajuste.stock.should.be.a.Number
+
+  it "omite lineas vacias", ->
+    parser = new FixedLengthParser """
+924065117102                  ALR 111 50W 12V 24G                                        124.49     14.00
+
+
+"""
+
+    parser.getValue()[0].sku.should.equal "924065117102"
+
+  it "funciona con el newline de Windows", ->
+    parser = new FixedLengthParser "924065117102                  ALR 111 50W 12V 24G                                        124.49     14.00\r\n"
+    parser.getValue()[0].sku.should.equal "924065117102"
