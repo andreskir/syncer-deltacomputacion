@@ -18,7 +18,7 @@ describe 'MainCtrl', ->
     $httpBackend.expectPOST("/api/stocks").respond 200,
       completados: [ sku: 1 ]
       fallidos: [ sku: 2 ]
-      noVinculados: [ sku: 3]
+      noVinculados: [ sku: 3 ]
 
     $scope.sincronizar()
 
