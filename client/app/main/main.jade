@@ -2,10 +2,28 @@ div(ng-include='"components/navbar/navbar.html"')
 
 .container
   h3
+    | Última sincronización&nbsp
+    small {{ lastSync.date | date:'medium' }}
+
+  .row
+    .col-md-4
+      ul.list-group
+        li.list-group-item
+          span.badge {{ lastSync.fulfilled.length }}
+          | Sincronizados
+
+        li.list-group-item
+          span.badge {{ lastSync.failed.length }}
+          | Fallidos
+
+        li.list-group-item
+          span.badge {{ lastSync.unlinked.length }}
+          | No vinculados
+
+  h3
     | Articulos para sincronizar&nbsp
     small {{ ajustes.fecha | date:'medium' }}
-
-  button(class="btn btn-primary", ng-click="sincronizar()", ng-disabled="isSincronizando") Sincronizar
+    button(class="btn btn-link", ng-click="sincronizar()", ng-disabled="isSincronizando") Sincronizar ahora
 
   table(class="table table-striped")
     thead
