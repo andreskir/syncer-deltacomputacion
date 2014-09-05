@@ -6,19 +6,19 @@ module.exports = class Syncer
 
   execute: (ajustes) ->
     promises = []
-    noVinculados = []
+    unlinked = []
 
     ajustes.forEach (it) =>
       product = @_getId it
       if (product?)
         promises.push (@_updateStock it, product)
       else
-        noVinculados.push sku: it.sku
+        unlinked.push sku: it.sku
 
     (Q.allSettled promises).then (resultados) =>
-      completados: @_resultadosToProductos resultados, "fulfilled"
-      fallidos: @_resultadosToProductos resultados, "rejected"
-      noVinculados: noVinculados
+      fulfilled: @_resultadosToProductos resultados, "fulfilled"
+      failed: @_resultadosToProductos resultados, "rejected"
+      unlinked: unlinked
 
   _updateStock: (ajuste, product) ->
     @parsimotionClient.updateStocks(product.id, [

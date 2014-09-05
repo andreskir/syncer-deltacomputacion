@@ -16,9 +16,9 @@ describe 'MainCtrl', ->
 
   it 'al sincronizar, actualiza el estado de cada ajuste', ->
     $httpBackend.expectPOST("/api/stocks").respond 200,
-      completados: [ sku: 1 ]
-      fallidos: [ sku: 2 ]
-      noVinculados: [ sku: 3 ]
+      fulfilled: [ sku: 1 ]
+      failed: [ sku: 2 ]
+      unlinked: [ sku: 3 ]
 
     $scope.sincronizar()
 

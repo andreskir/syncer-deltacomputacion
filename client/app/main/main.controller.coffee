@@ -11,7 +11,7 @@ app.controller 'MainCtrl', ($scope, $http, Stock) ->
     $scope.isSincronizando = true
 
     $http.post("/api/stocks").success (resultadoSincronizacion) ->
-      actualizarEstado resultadoSincronizacion.completados, "ok"
-      actualizarEstado resultadoSincronizacion.fallidos, "error"
+      actualizarEstado resultadoSincronizacion.fulfilled, "ok"
+      actualizarEstado resultadoSincronizacion.failed, "error"
 
       $scope.isSincronizando = false
