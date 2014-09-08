@@ -6,7 +6,9 @@ app.controller 'MainCtrl', ($scope, $http, Stock, Auth) ->
       _.find($scope.ajustes.stocks, sku: ajuste.sku).estadoSincronizacion = estado
 
   $scope.ajustes = Stock.query()
-  $scope.lastSync = Auth.getCurrentUser().lastSync
+  Auth.getCurrentUser().$promise.then (user) ->
+    console.log user
+    $scope.lastSync = user.lastSync
 
   $scope.sincronizar = ->
     $scope.isSincronizando = true
