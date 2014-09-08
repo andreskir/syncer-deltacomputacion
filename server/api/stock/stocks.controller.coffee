@@ -21,6 +21,7 @@ exports.sync = (req, res) ->
     parsimotion = new ParsimotionClient(req.user.tokens.parsimotion)
     parsimotion.getProductos().then (productos) -> new Syncer(parsimotion, productos).execute(ajustes.stocks)
   .then (lastSync) ->
+    lastSync.date = Date.now()
     req.user.lastSync = lastSync
     req.user.save()
     lastSync

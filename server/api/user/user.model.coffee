@@ -22,9 +22,7 @@ UserSchema = new Schema(
     parsimotion: String
 
   lastSync:
-    date:
-      type: Date
-      default: Date.now
+    date: Date
     fulfilled: [ sku: String ]
     failed: [ sku: String ]
     unlinked: [ sku: String ]
