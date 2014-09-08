@@ -49,11 +49,11 @@ describe "Syncer", ->
       resultadoShouldHaveProperty = (name, value) ->
         resultado.then (actualizados) -> actualizados.should.have.property name, value
 
-    it "los no vinculados", ->
-      resultadoShouldHaveProperty "noVinculados", [ sku: 55555 ]
+    it "los unlinked", ->
+      resultadoShouldHaveProperty "unlinked", [ sku: 55555 ]
 
-    it "los completados", ->
-      resultadoShouldHaveProperty "completados", [ sku: 123456 ]
+    it "los fulfilled", ->
+      resultadoShouldHaveProperty "fulfilled", [ sku: 123456 ]
 
-    it "los fallidos", ->
-      resultadoShouldHaveProperty "fallidos", []
+    it "los failed", ->
+      resultadoShouldHaveProperty "failed", []

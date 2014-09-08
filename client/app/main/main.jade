@@ -1,24 +1,42 @@
 div(ng-include='"components/navbar/navbar.html"')
 
 .container
-  h3
-    | Articulos para sincronizar&nbsp
-    small {{ ajustes.fecha | date:'medium' }}
+  .row(ng-show="lastSync")
+    h3
+      | Última sincronización&nbsp
+      small {{ lastSync.date | date:'medium' }}
 
-  button(class="btn btn-primary", ng-click="sincronizar()", ng-disabled="isSincronizando") Sincronizar
+    .col-md-4
+      ul.list-group
+        li.list-group-item
+          span.badge.alert-success {{ lastSync.fulfilled.length }}
+          | Sincronizados
 
-  table(class="table table-striped")
-    thead
-      tr
-        th SKU
-        th Nombre
-        th Stock
-        th Precio
-        th Sincronización
-    tbody
-      tr(ng-repeat="item in ajustes.stocks | orderBy: 'estadoSincronizacion'", ng-class="{success: item.estadoSincronizacion == 'ok', danger: item.estadoSincronizacion == 'error'}")
-        td {{item.sku}}
-        td {{item.nombre}}
-        td {{item.stock}}
-        td {{item.precio | currency}}
-        td {{item.estadoSincronizacion | checkmark}}
+        li.list-group-item
+          span.badge.alert-danger {{ lastSync.failed.length }}
+          | Fallidos
+
+        li.list-group-item
+          span.badge.alert-warning {{ lastSync.unlinked.length }}
+          | No vinculados
+  .row
+    h3
+      | Articulos para sincronizar&nbsp
+      small {{ ajustes.fecha | date:'medium' }}
+      button(class="btn btn-link", ng-click="sincronizar()", ng-disabled="isSincronizando") Sincronizar ahora
+
+    table(class="table table-striped")
+      thead
+        tr
+          th SKU
+          th Nombre
+          th Stock
+          th Precio
+          th Sincronización
+      tbody
+        tr(ng-repeat="item in ajustes.stocks | orderBy: 'estadoSincronizacion'", ng-class="{success: item.estadoSincronizacion == 'ok', danger: item.estadoSincronizacion == 'error'}")
+          td {{item.sku}}
+          td {{item.nombre}}
+          td {{item.stock}}
+          td {{item.precio | currency}}
+          td {{item.estadoSincronizacion | checkmark}}

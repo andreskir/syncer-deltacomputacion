@@ -20,6 +20,12 @@ UserSchema = new Schema(
   tokens:
     dropbox: String
     parsimotion: String
+
+  lastSync:
+    date: Date
+    fulfilled: [ sku: String ]
+    failed: [ sku: String ]
+    unlinked: [ sku: String ]
 )
 
 ###*

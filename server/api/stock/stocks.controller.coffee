@@ -20,6 +20,11 @@ exports.sync = (req, res) ->
   .then (ajustes) ->
     parsimotion = new ParsimotionClient(req.user.tokens.parsimotion)
     parsimotion.getProductos().then (productos) -> new Syncer(parsimotion, productos).execute(ajustes.stocks)
+  .then (lastSync) ->
+    lastSync.date = Date.now()
+    req.user.lastSync = lastSync
+    req.user.save()
+    lastSync
   .then ((result) -> res.send 200, result), (error) -> res.send 500, error
 
 handleError = (res, err) ->
