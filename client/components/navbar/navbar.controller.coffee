@@ -3,7 +3,7 @@
 angular.module 'parsimotionSyncerApp'
 .controller 'NavbarCtrl', ($scope, $location, Auth) ->
   $scope.menu = [
-    title: 'Home'
+    title: 'Inicio'
     link: '/'
   ]
   $scope.isCollapsed = true
