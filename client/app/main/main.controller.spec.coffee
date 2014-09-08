@@ -1,6 +1,10 @@
 describe 'MainCtrl', ->
   beforeEach ->
-    getController "MainCtrl"
+    inject ($q) ->
+      getController "MainCtrl",
+        Auth:
+          getCurrentUser: ->
+            $promise: $q.when {}
 
     $httpBackend.expectGET("/api/stocks").respond 200,
       fecha: 461523123
