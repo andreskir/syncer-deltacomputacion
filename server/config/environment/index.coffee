@@ -4,6 +4,7 @@ requiredProcessEnv = (name) ->
 "use strict"
 path = require("path")
 _ = require("lodash")
+require("longjohn")
 
 # All configurations will extend these options
 # ============================================
