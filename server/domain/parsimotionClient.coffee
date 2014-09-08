@@ -7,6 +7,7 @@ module.exports = class ParsimotionClient
   constructor: (accessToken) ->
     @client = restify.createJSONClient
       url: config.parsimotion.uri
+      agent: false
       headers:
         Authorization: "Bearer #{accessToken}"
 
