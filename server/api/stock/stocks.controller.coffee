@@ -1,31 +1,15 @@
 Q = require("q")
-Dropbox = require("dropbox").Client
 
 FixedLengthParser = require("../../domain/parsers/fixedLengthParser")
 Syncer = require("../../domain/syncer")
 ParsimotionClient = require("../../domain/parsimotionClient")
+DropboxSyncer = require("../../domain/dropboxSyncer")
 
-getStocks = (user) ->
-  Q.ninvoke(new Dropbox(token: user.tokens.dropbox), "readFile", user.settings.fileName, binary: true).then (data) ->
-    fecha: Date.parse data[1]._json.modified
-    stocks: new FixedLengthParser(data[0]).getValue()
+respond = (res, promise) ->
+  promise.then ((data) -> res.send 200, data), (error) -> res.send 500, error
 
 exports.stocks = (req, res) ->
-  getStocks(req.user).then (
-    (data) -> res.json 200, data
-  ), (error) -> res.send 500, error
+  respond res, new DropboxSyncer(req.user).getStocks(),
 
 exports.sync = (req, res) ->
-  getStocks req.user
-  .then (ajustes) ->
-    parsimotion = new ParsimotionClient(req.user.tokens.parsimotion)
-    parsimotion.getProductos().then (productos) -> new Syncer(parsimotion, productos).execute(ajustes.stocks)
-  .then (lastSync) ->
-    lastSync.date = Date.now()
-    req.user.lastSync = lastSync
-    req.user.save()
-    lastSync
-  .then ((result) -> res.send 200, result), (error) -> res.send 500, error
-
-handleError = (res, err) ->
-  res.send 500, err
+  respond res, new DropboxSyncer(req.user).sync()
