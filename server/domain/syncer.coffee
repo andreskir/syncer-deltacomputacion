@@ -8,7 +8,7 @@ module.exports = class Syncer
     promises = []
     unlinked = []
 
-    ajustes.forEach (it) =>
+    (_.filter ajustes, "sku").forEach (it) =>
       product = @_getId it
       if (product?)
         promises.push (@_updateStock it, product)

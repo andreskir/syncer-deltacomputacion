@@ -20,7 +20,24 @@ describe "Syncer", ->
           warehouse: "Villa Crespo"
         ]
       ]
+    ,
+      id: 2
+      sku: ""
+      variations: [
+        id: 3
+        stocks: [
+          warehouse: "Villa Crespo"
+        ]
+      ]
     ]
+
+  it "se ignoran los productos cuyo sku es vacio", ->
+    syncer.execute [
+      sku: ""
+      stock: 40
+    ]
+
+    client.updateStocks.called.should.be.false
 
   it "al ejecutar dispara una request a Parsimotion, matcheando el id segun sku", ->
     syncer.execute [
