@@ -5,39 +5,43 @@ module.exports = class Syncer
   constructor: (@parsimotionClient, @productos) ->
 
   execute: (ajustes) ->
-    promises = []
-    unlinked = []
+    ajustesYProductos = @_joinAjustesYProductos ajustes
 
-    (_.filter ajustes, "sku").forEach (it) =>
-      product = @_getId it
-      if (product?)
-        promises.push (@_updateStock it, product)
-      else
-        unlinked.push sku: it.sku
-
-    (Q.allSettled promises).then (resultados) =>
+    (Q.allSettled @_updateStocks ajustesYProductos).then (resultados) =>
       fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> res.value
       failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
-      unlinked: unlinked
+      unlinked: _.map ajustesYProductos.unlinked, (it) -> sku: it.ajuste.sku
 
-  _updateStock: (ajuste, product) ->
-    currentStock = @_getStock product
+  _joinAjustesYProductos: (ajustes) ->
+    join = _(ajustes).filter("sku").map (it) =>
+      ajuste: it
+      producto: @_getProductForAjuste it
+    .value()
 
-    @parsimotionClient.updateStocks(product.id, [
-      variation: (@_getVariante product).id
+    linked: _.filter join, "producto"
+    unlinked: _.reject join, "producto"
+
+  _updateStocks: (ajustesYProductos) ->
+    ajustesYProductos.linked.map (it) => @_updateStock it.ajuste, it.producto
+
+  _updateStock: (ajuste, producto) ->
+    currentStock = @_getStock producto
+
+    @parsimotionClient.updateStocks(producto.id, [
+      variation: (@_getVariante producto).id
       stocks: [
         warehouse: currentStock.warehouse,
         quantity: ajuste.stock
       ]
     ]).then ->
-      id: product.id
+      id: producto.id
       sku: ajuste.sku
       previousStock: currentStock.quantity
       newStock: ajuste.stock
 
   _getVariante: (product) -> product.variations[0]
   _getStock: (product) -> (@_getVariante product).stocks[0]
-  _getId: (ajuste) -> _.find @productos, sku: ajuste.sku
+  _getProductForAjuste: (ajuste) -> _.find @productos, sku: ajuste.sku
 
   _resultadosToProductos: (resultados, promiseState, transform) ->
     _(resultados).filter(state: promiseState).map(transform).value()
