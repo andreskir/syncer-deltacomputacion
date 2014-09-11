@@ -16,8 +16,8 @@ module.exports = class Syncer
         unlinked.push sku: it.sku
 
     (Q.allSettled promises).then (resultados) =>
-      fulfilled: @_resultadosToProductos resultados, "fulfilled"
-      failed: @_resultadosToProductos resultados, "rejected"
+      fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> sku: res.value
+      failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
       unlinked: unlinked
 
   _updateStock: (ajuste, product) ->
@@ -33,5 +33,5 @@ module.exports = class Syncer
   _getStock: (product) -> (@_getVariante product).stocks[0]
   _getId: (ajuste) -> _.find @productos, sku: ajuste.sku
 
-  _resultadosToProductos: (resultados, promiseState) ->
-    _(resultados).filter(state: promiseState).map((it) -> sku: it.value).value()
+  _resultadosToProductos: (resultados, promiseState, transform) ->
+    _(resultados).filter(state: promiseState).map(transform).value()

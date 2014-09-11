@@ -1,9 +1,14 @@
 "use strict"
+
 mongoose = require("mongoose")
 Schema = mongoose.Schema
 crypto = require("crypto")
+
 authTypes = ["dropbox"]
-UserSchema = new Schema(
+
+AjusteSchema = new Schema sku: String
+
+UserSchema = new Schema
   name: String
   email:
     type: String
@@ -23,10 +28,9 @@ UserSchema = new Schema(
 
   lastSync:
     date: Date
-    fulfilled: [ sku: String ]
-    failed: [ sku: String ]
-    unlinked: [ sku: String ]
-)
+    fulfilled: [AjusteSchema]
+    failed: [Schema.Types.Mixed]
+    unlinked: [AjusteSchema]
 
 ###*
 Virtuals
