@@ -18,6 +18,7 @@ describe "Syncer", ->
         id: 2
         stocks: [
           warehouse: "Villa Crespo"
+          quantity: 12
         ]
       ]
     ,
@@ -70,7 +71,12 @@ describe "Syncer", ->
       resultadoShouldHaveProperty "unlinked", [ sku: 55555 ]
 
     it "los fulfilled", ->
-      resultadoShouldHaveProperty "fulfilled", [ sku: 123456 ]
+      resultadoShouldHaveProperty "fulfilled", [
+        id: 1
+        sku: 123456
+        previousStock: 12
+        newStock: 28
+      ]
 
     it "los failed", ->
       resultadoShouldHaveProperty "failed", []

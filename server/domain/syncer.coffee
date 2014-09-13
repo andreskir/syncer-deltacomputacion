@@ -16,18 +16,24 @@ module.exports = class Syncer
         unlinked.push sku: it.sku
 
     (Q.allSettled promises).then (resultados) =>
-      fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> sku: res.value
+      fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> res.value
       failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
       unlinked: unlinked
 
   _updateStock: (ajuste, product) ->
+    currentStock = @_getStock product
+
     @parsimotionClient.updateStocks(product.id, [
       variation: (@_getVariante product).id
       stocks: [
-        warehouse: (@_getStock product).warehouse,
+        warehouse: currentStock.warehouse,
         quantity: ajuste.stock
       ]
-    ]).then -> ajuste.sku
+    ]).then ->
+      id: product.id
+      sku: ajuste.sku
+      previousStock: currentStock.quantity
+      newStock: ajuste.stock
 
   _getVariante: (product) -> product.variations[0]
   _getStock: (product) -> (@_getVariante product).stocks[0]
