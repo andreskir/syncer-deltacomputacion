@@ -6,8 +6,6 @@ crypto = require("crypto")
 
 authTypes = ["dropbox"]
 
-AjusteSchema = new Schema sku: String
-
 UserSchema = new Schema
   name: String
   email:
@@ -28,9 +26,14 @@ UserSchema = new Schema
 
   lastSync:
     date: Date
-    fulfilled: [AjusteSchema]
+    fulfilled: [
+      id: Number
+      sku: String
+      previousStock: Number
+      newStock: Number
+    ]
     failed: [Schema.Types.Mixed]
-    unlinked: [AjusteSchema]
+    unlinked: [sku: String]
 
 ###*
 Virtuals

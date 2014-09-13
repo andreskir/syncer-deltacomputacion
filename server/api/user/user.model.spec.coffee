@@ -55,3 +55,24 @@ describe "User Model", ->
 
   it "should devolver MER.TXT para la property settings.fileName", ->
     new User().settings.fileName.should.equal "MER.TXT"
+
+  it "should persistir correctamente los fulfilled de la lastSync", (done) ->
+    new User(
+      provider: 'dropbox'
+      providerId: 12345678
+      lastSync:
+        fulfilled: [
+          id: 3
+          sku: "12345"
+          previousStock: 1
+          newStock: 2
+        ]
+    ).save ->
+      User.find {}, (err, users) ->
+        users[0].lastSync.fulfilled[0].should.have.properties
+          id: 3
+          sku: "12345"
+          previousStock: 1
+          newStock: 2
+
+        done()
