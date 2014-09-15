@@ -10,8 +10,9 @@ describe "Syncer", ->
   beforeEach ->
     client =
       updateStocks: sinon.stub().returns Q()
+      updatePrice: sinon.stub().returns Q()
 
-    syncer = new Syncer client, [
+    syncer = new Syncer client, warehouse: "Villa Crespo", [
       id: 1
       sku: 123456
       variations: [
@@ -40,19 +41,18 @@ describe "Syncer", ->
 
     client.updateStocks.called.should.be.false
 
-  it "al ejecutar dispara una request a Parsimotion, matcheando el id segun sku", ->
+  it "al ejecutar dispara una request a Parsimotion para actualizar stocks, matcheando el id segun sku", ->
     syncer.execute [
       sku: 123456
       stock: 28
     ]
 
-    client.updateStocks.calledWith(1, [
+    client.updateStocks.calledWith
+      id: 1
       variation: 2
-      stocks: [
-        warehouse: "Villa Crespo"
-        quantity: 28
-      ]
-    ]).should.be.ok
+      warehouse: "Villa Crespo"
+      quantity: 28
+    .should.be.ok
 
   describe "ejecutar devuelve un objeto con el resultado de la sincronizacion:", ->
     resultadoShouldHaveProperty = null

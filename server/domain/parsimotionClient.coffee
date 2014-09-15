@@ -3,7 +3,9 @@ restify = require("restify")
 config = require("../config/environment")
 assert = require("assert")
 
-module.exports = class ParsimotionClient
+module.exports =
+
+class ParsimotionClient
   constructor: (accessToken) ->
     @client = restify.createJSONClient
       url: config.parsimotion.uri
@@ -18,10 +20,18 @@ module.exports = class ParsimotionClient
 
     deferred.promise
 
-  updateStocks: (id, ajustes) ->
+  updateStocks: (adjustment) ->
     deferred = Q.defer()
 
-    @client.put "/products/#{id}/stocks", ajustes, (err, req, res, obj) ->
+    body = [
+      variation: adjustment.variation
+      stocks: [
+        warehouse: adjustment.warehouse
+        quantity: adjustment.quantity
+      ]
+    ]
+
+    @client.put "/products/#{adjustment.id}/stocks", body, (err, req, res, obj) ->
       if err then deferred.reject err else deferred.resolve obj
 
     deferred.promise
