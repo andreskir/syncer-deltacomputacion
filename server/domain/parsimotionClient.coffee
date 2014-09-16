@@ -6,12 +6,14 @@ assert = require("assert")
 module.exports =
 
 class ParsimotionClient
-  constructor: (accessToken) ->
-    @client = restify.createJSONClient
+  @initializeClient: (accessToken) ->
+    restify.createJSONClient
       url: config.parsimotion.uri
       agent: false
       headers:
         Authorization: "Bearer #{accessToken}"
+
+  constructor: (accessToken, @client = @constructor.initializeClient accessToken) ->
 
   getProductos: ->
     deferred = Q.defer()
