@@ -19,6 +19,15 @@ module.exports = (app) ->
   app.set "views", config.root + "/server/views"
   app.set "view engine", "jade"
   app.use compression()
+
+  app.use (req, res, next) ->
+    req.rawBody = ""
+
+    req.on "data", (chunk) ->
+      req.rawBody += chunk
+
+    next()
+
   app.use bodyParser.urlencoded(extended: false)
   app.use bodyParser.json()
   app.use methodOverride()
@@ -26,11 +35,13 @@ module.exports = (app) ->
   app.use cookieSession(keys: ["ashdvgfuyquodrhdgusirewj8oaesrtgef7rswje"])
   app.use passport.initialize()
   app.use passport.session()
+
   if "production" is env
     app.use favicon(path.join(config.root, "public", "favicon.ico"))
     app.use express.static(path.join(config.root, "public"))
     app.set "appPath", config.root + "/public"
     app.use morgan("dev")
+
   if "development" is env or "test" is env
     app.use require("connect-livereload")()
     app.use express.static(path.join(config.root, ".tmp"))
@@ -38,4 +49,3 @@ module.exports = (app) ->
     app.set "appPath", "client"
     app.use morgan("dev")
     app.use errorHandler() # Error handler - has to be last
-  return
