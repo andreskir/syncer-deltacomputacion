@@ -1,7 +1,8 @@
 Q = require("q")
 restify = require("restify")
+_ = require("lodash")
+
 config = require("../config/environment")
-assert = require("assert")
 
 module.exports =
 
@@ -34,6 +35,23 @@ class ParsimotionClient
     ]
 
     @client.put "/products/#{adjustment.id}/stocks", body, (err, req, res, obj) ->
+      if err then deferred.reject err else deferred.resolve obj
+
+    deferred.promise
+
+  updatePrice: (product, priceList, amount) ->
+    deferred = Q.defer()
+
+    body =
+      prices:
+        _(product.prices)
+        .reject priceList: priceList
+        .concat
+          priceList: priceList
+          amount: amount
+        .value()
+
+    @client.put "/products/#{product.id}", body, (err, req, res, obj) ->
       if err then deferred.reject err else deferred.resolve obj
 
     deferred.promise

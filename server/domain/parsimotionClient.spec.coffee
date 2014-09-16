@@ -1,5 +1,10 @@
-should = require("should")
 sinon = require("sinon")
+
+global.chai = require("chai")
+global.should = require("chai").should()
+
+chai.use require("chai-properties")
+chai.use require("sinon-chai")
 
 ParsimotionClient = require("./parsimotionClient")
 
@@ -7,7 +12,7 @@ describe "Parsimotion client", ->
   client = null
   parsimotionClient = null
 
-  before ->
+  beforeEach ->
     client =
       put: sinon.stub()
 
@@ -20,11 +25,33 @@ describe "Parsimotion client", ->
       quantity: 8
       warehouse: "Almagro"
 
-    client.put.calledWith "/products/23/stocks", [
+    client.put.should.have.been.calledWith "/products/23/stocks", [
       variation: 24
       stocks: [
         warehouse: "Almagro"
         quantity: 8
       ]
     ]
-    .should.be.ok
+
+  it "puede hacer update del precio especificado", ->
+    parsimotionClient.updatePrice
+      id: 25
+      prices: [
+        priceList: "Default"
+        amount: 180
+      ,
+        priceList: "Meli"
+        amount: 210
+      ],
+
+      "Meli",
+      270
+
+    client.put.should.have.been.calledWith "/products/25",
+      prices: [
+        priceList: "Default"
+        amount: 180
+      ,
+        priceList: "Meli"
+        amount: 270
+      ]
