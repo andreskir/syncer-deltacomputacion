@@ -65,7 +65,7 @@ describe "Syncer", ->
       ])
 
       resultadoShouldHaveProperty = (name, value) ->
-        resultado.then (actualizados) -> actualizados.should.have.property name, value
+        resultado.then (actualizados) -> actualizados[name].should.eql value
 
     it "los unlinked", ->
       resultadoShouldHaveProperty "unlinked", [ sku: 55555 ]
