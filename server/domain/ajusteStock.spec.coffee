@@ -1,11 +1,10 @@
-should = require("should")
 AjusteStock = require("./ajusteStock")
 
 describe "Ajuste stock", ->
   it "hace trim de las properties basicas", ->
-    new AjusteStock(sku: "915004085101       ", nombre: "COLGANTE CLEMENT 3 X E27 MÁX. 23W NEGRO TELA   ").should.have.properties
-      sku: "915004085101"
-      nombre: "COLGANTE CLEMENT 3 X E27 MÁX. 23W NEGRO TELA"
+    ajusteStock = new AjusteStock(sku: "915004085101       ", nombre: "COLGANTE CLEMENT 3 X E27 MÁX. 23W NEGRO TELA   ")
+    ajusteStock.sku.should.equal "915004085101"
+    ajusteStock.nombre.should.equal "COLGANTE CLEMENT 3 X E27 MÁX. 23W NEGRO TELA"
 
   it "parsea el precio a float", ->
     new AjusteStock(precio: "4160.99").precio.should.equal 4160.99

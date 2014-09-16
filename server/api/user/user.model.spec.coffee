@@ -1,4 +1,4 @@
-should = require("should")
+should = require("chai").should()
 app = require("../../app")
 User = require("./user.model")
 user = new User(
