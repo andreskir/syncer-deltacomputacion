@@ -35,7 +35,8 @@ UserSchema = new Schema
     failed: [Schema.Types.Mixed]
     unlinked: [sku: String]
 
-  settings:	
+  settings:
+    warehouse: String
     priceList: String
 
 ###*

@@ -3,7 +3,6 @@ sinon = require("sinon")
 global.chai = require("chai")
 
 chai.Should()
-chai.use require("chai-properties")
 chai.use require("sinon-chai")
 
 ParsimotionClient = require("./parsimotionClient")
