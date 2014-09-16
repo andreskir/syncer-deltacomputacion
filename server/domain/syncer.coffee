@@ -24,11 +24,18 @@ class Syncer
     unlinked: _.reject join, "producto"
 
   _updateStocksAndPrices: (ajustesYProductos) ->
-    ajustesYProductos.linked .map (it) =>
-      @_updateStock it.ajuste, it.producto
-      .then => @_updatePrice it.ajuste, it.producto
+    ajustesYProductos.linked.map (it) =>
+      Q.all [
+        @_updatePrice it.ajuste, it.producto
+        @_updateStock it.ajuste, it.producto
+      ]
+      .then =>
+        id: it.producto.id
+        sku: it.ajuste.sku
+        previousStock: @_getStock it.producto
+        newStock: it.ajuste.stock
 
-  _updateStock: (ajuste, producto) ->
+  _updateStock: (ajuste, producto) =>
     @parsimotionClient.updateStocks
       id: producto.id
       variation: (@_getVariante producto).id
@@ -36,10 +43,7 @@ class Syncer
       warehouse: @settings.warehouse
 
   _updatePrice: (ajuste, producto) =>
-      id: producto.id
-      sku: ajuste.sku
-      previousStock: @_getStock producto
-      newStock: ajuste.stock
+    @parsimotionClient.updatePrice producto, @settings.priceList, ajuste.precio
 
   _getStock: (producto) ->
     stock = _.find (@_getVariante producto).stocks, warehouse: @settings.warehouse

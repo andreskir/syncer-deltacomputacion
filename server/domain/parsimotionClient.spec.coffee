@@ -1,8 +1,8 @@
 sinon = require("sinon")
 
 global.chai = require("chai")
-global.should = require("chai").should()
 
+chai.Should()
 chai.use require("chai-properties")
 chai.use require("sinon-chai")
 
