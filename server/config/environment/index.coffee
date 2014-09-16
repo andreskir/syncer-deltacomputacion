@@ -21,7 +21,7 @@ all =
 
   # Secret for session, you will want to change this and make it an environment variable
   secrets:
-    session: "parsimotion-syncer-secret"
+    session: process.env.SESSION_SECRET or "parsimotion-syncer-secret"
 
 
   # List of user roles
