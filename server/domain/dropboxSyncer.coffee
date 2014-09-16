@@ -17,7 +17,7 @@ module.exports = class DropboxSyncer
 
   sync: ->
     @getStocks()
-    .then (ajustes) => @parsimotionClient.getProductos().then (productos) => new Syncer(@parsimotionClient, productos).execute(ajustes.stocks)
+    .then (ajustes) => @parsimotionClient.getProductos().then (productos) => new Syncer(@parsimotionClient, @user.settings, productos).execute(ajustes.stocks)
     .then (lastSync) =>
       lastSync.date = Date.now()
       @user.lastSync = lastSync

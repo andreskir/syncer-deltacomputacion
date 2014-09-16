@@ -1,4 +1,3 @@
-should = require("should")
 FixedLengthParser = require("./fixedLengthParser")
 
 describe "Fixed length parser", ->

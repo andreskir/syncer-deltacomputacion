@@ -1,15 +1,20 @@
 Q = require("q")
 restify = require("restify")
-config = require("../config/environment")
-assert = require("assert")
+_ = require("lodash")
 
-module.exports = class ParsimotionClient
-  constructor: (accessToken) ->
-    @client = restify.createJSONClient
+config = require("../config/environment")
+
+module.exports =
+
+class ParsimotionClient
+  @initializeClient: (accessToken) ->
+    restify.createJSONClient
       url: config.parsimotion.uri
       agent: false
       headers:
         Authorization: "Bearer #{accessToken}"
+
+  constructor: (accessToken, @client = @constructor.initializeClient accessToken) ->
 
   getProductos: ->
     deferred = Q.defer()
@@ -18,10 +23,35 @@ module.exports = class ParsimotionClient
 
     deferred.promise
 
-  updateStocks: (id, ajustes) ->
+  updateStocks: (adjustment) ->
     deferred = Q.defer()
 
-    @client.put "/products/#{id}/stocks", ajustes, (err, req, res, obj) ->
+    body = [
+      variation: adjustment.variation
+      stocks: [
+        warehouse: adjustment.warehouse
+        quantity: adjustment.quantity
+      ]
+    ]
+
+    @client.put "/products/#{adjustment.id}/stocks", body, (err, req, res, obj) ->
+      if err then deferred.reject err else deferred.resolve obj
+
+    deferred.promise
+
+  updatePrice: (product, priceList, amount) ->
+    deferred = Q.defer()
+
+    body =
+      prices:
+        _(product.prices)
+        .reject priceList: priceList
+        .concat
+          priceList: priceList
+          amount: amount
+        .value()
+
+    @client.put "/products/#{product.id}", body, (err, req, res, obj) ->
       if err then deferred.reject err else deferred.resolve obj
 
     deferred.promise

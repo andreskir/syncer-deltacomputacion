@@ -35,6 +35,10 @@ UserSchema = new Schema
     failed: [Schema.Types.Mixed]
     unlinked: [sku: String]
 
+  settings:
+    warehouse: String
+    priceList: String
+
 ###*
 Virtuals
 ###
@@ -58,8 +62,7 @@ UserSchema.virtual("token").get ->
   _id: @_id
   role: @role
 
-UserSchema.virtual("settings").get ->
-  fileName: "MER.TXT"
+UserSchema.virtual("settings.fileName").get -> "MER.TXT"
 
 ###*
 Validations

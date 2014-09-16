@@ -1,17 +1,19 @@
-should = require("should")
 sinon = require("sinon")
 Q = require("q")
+
 Syncer = require("./syncer")
 
 describe "Syncer", ->
   client = null
   syncer = null
+  product1 = null
 
   beforeEach ->
     client =
       updateStocks: sinon.stub().returns Q()
+      updatePrice: sinon.stub().returns Q()
 
-    syncer = new Syncer client, [
+    product1 =
       id: 1
       sku: 123456
       variations: [
@@ -21,6 +23,9 @@ describe "Syncer", ->
           quantity: 12
         ]
       ]
+
+    syncer = new Syncer client, { warehouse: "Villa Crespo", priceList: "Meli" }, [
+      product1
     ,
       id: 2
       sku: ""
@@ -40,19 +45,25 @@ describe "Syncer", ->
 
     client.updateStocks.called.should.be.false
 
-  it "al ejecutar dispara una request a Parsimotion, matcheando el id segun sku", ->
+  it "al ejecutar dispara una request a Parsimotion para actualizar stocks, matcheando el id segun sku", ->
     syncer.execute [
       sku: 123456
       stock: 28
     ]
 
-    client.updateStocks.calledWith(1, [
+    client.updateStocks.should.have.been.calledWith
+      id: 1
       variation: 2
-      stocks: [
-        warehouse: "Villa Crespo"
-        quantity: 28
-      ]
-    ]).should.be.ok
+      warehouse: "Villa Crespo"
+      quantity: 28
+
+  it "al ejecutar dispara una request a Parsimotion para actualizar el precio, matcheando el id segun sku", ->
+    syncer.execute [
+      sku: 123456
+      precio: 80
+    ]
+
+    client.updatePrice.should.have.been.calledWith product1, "Meli", 80
 
   describe "ejecutar devuelve un objeto con el resultado de la sincronizacion:", ->
     resultadoShouldHaveProperty = null
@@ -65,7 +76,7 @@ describe "Syncer", ->
       ])
 
       resultadoShouldHaveProperty = (name, value) ->
-        resultado.then (actualizados) -> actualizados.should.have.property name, value
+        resultado.then (actualizados) -> actualizados[name].should.eql value
 
     it "los unlinked", ->
       resultadoShouldHaveProperty "unlinked", [ sku: 55555 ]

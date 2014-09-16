@@ -1,4 +1,4 @@
-should = require("should")
+should = require("chai").should()
 app = require("../../app")
 User = require("./user.model")
 user = new User(
@@ -23,9 +23,8 @@ describe "User Model", ->
       providerId: 12345678
     ).save ->
       User.find {}, (err, users) ->
-        users[0].should.have.properties
-          provider: 'dropbox'
-          providerId: 12345678
+        users[0].should.have.property "provider", "dropbox"
+        users[0].should.have.property "providerId", 12345678
 
         done()
 
@@ -69,7 +68,11 @@ describe "User Model", ->
         ]
     ).save ->
       User.find {}, (err, users) ->
-        users[0].lastSync.fulfilled[0].should.have.properties
+        userShouldHaveProperties = (properties) ->
+          for name, value of properties
+            users[0].lastSync.fulfilled[0].should.have.property name, value
+
+        userShouldHaveProperties
           id: 3
           sku: "12345"
           previousStock: 1
