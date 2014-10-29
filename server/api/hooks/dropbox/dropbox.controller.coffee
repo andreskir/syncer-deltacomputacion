@@ -15,7 +15,7 @@ exports.notification = (req, res) ->
 
   (Q.ninvoke User.find().where("providerId").in(req.body.delta.users), "exec")
   .then (users) ->
-    promises = _.map users, (it) -> new DropboxSyncer(it).sync()
+    promises = _.map users, (it) -> it.getSyncer().sync()
     Q.all(promises).then -> res.send 200
 
 isSignatureValid = (req) ->
