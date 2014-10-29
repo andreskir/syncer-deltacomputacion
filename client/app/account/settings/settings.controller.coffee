@@ -9,7 +9,7 @@ angular.module 'parsimotionSyncerApp'
     $scope.submitted = true
 
     if form.$valid
-      Settings.update $scope.settings
+      Settings.update($scope.settings).$promise
       .then ->
         $scope.message = 'Configuración actualizada!'
       .catch ->
