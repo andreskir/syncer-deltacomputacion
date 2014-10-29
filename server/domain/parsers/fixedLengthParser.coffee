@@ -2,10 +2,8 @@ _ = require("lodash")
 AjusteStock = require("../ajusteStock")
 
 module.exports = class FixedLengthParser
-  constructor: (@data) ->
-
-  getValue: ->
-    _(@data.split /\r\n|\r|\n/)
+  getValue: (data) ->
+    _(data.split /\r\n|\r|\n/)
       .reject _.isEmpty
       .map @_parseRow
       .value()

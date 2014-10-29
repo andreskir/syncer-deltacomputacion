@@ -2,11 +2,11 @@ _ = require "lodash"
 XLS = require "xlsjs"
 AjusteStock = require "../ajusteStock"
 
-module.exports = class XlsParser
-  constructor: (@data) ->
+module.exports =
 
-  getValue: ->
-    workbook = XLS.read @data, type: "binary"
+class Excel2003Parser
+  getValue: (data) ->
+    workbook = XLS.read data, type: "binary"
     _.map (@_getDataFrom workbook), (row) => new AjusteStock (@_toDto row)
 
   _getDataFrom: (workbook) ->
