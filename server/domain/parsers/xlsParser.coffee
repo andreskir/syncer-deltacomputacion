@@ -3,10 +3,8 @@ XLS = require "xlsjs"
 AjusteStock = require "../ajusteStock"
 
 module.exports = class XlsParser
-  constructor: (@data) ->
-
-  getValue: ->
-    workbook = XLS.read @data, type: "binary"
+  getValue: (data) ->
+    workbook = XLS.read data, type: "binary"
     _.map (@_getDataFrom workbook), (row) => new AjusteStock (@_toDto row)
 
   _getDataFrom: (workbook) ->

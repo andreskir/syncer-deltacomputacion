@@ -13,9 +13,9 @@ class DropboxSyncer
     @parsimotionClient = new ParsimotionClient user.tokens.parsimotion
 
   getStocks: ->
-    Q.ninvoke(@dropboxClient, "readFile", @settings.fileName, binary: true).then (data) ->
+    Q.ninvoke(@dropboxClient, "readFile", @settings.fileName, binary: true).then (data) =>
       fecha: Date.parse data[1]._json.modified
-      stocks: new FixedLengthParser(data[0]).getValue()
+      stocks: @_getParser().getValue(data[0])
 
   sync: ->
     @getStocks()
@@ -25,3 +25,5 @@ class DropboxSyncer
       @user.lastSync = lastSync
       @user.save()
       lastSync
+
+  _getParser: -> new FixedLengthParser()
