@@ -17,4 +17,6 @@ div(ng-include='"components/navbar/navbar.html"')
           label Token Parsimotion
           input.form-control(type='password', name='parsimotionToken', ng-model='settings.parsimotionToken')
 
+        p.help-block  {{ message }}
+
         button.btn.btn-primary(type='submit') Guardar

@@ -7,3 +7,6 @@ app.factory "Settings", ($resource) ->
       method: "GET"
       url: "/api/settings/parsers"
       isArray: true
+
+    update:
+      method: "PUT"

@@ -5,15 +5,12 @@ angular.module 'parsimotionSyncerApp'
   $scope.parsers = Settings.parsers()
   $scope.settings = Settings.query()
 
-  $scope.changePassword = (form) ->
+  $scope.save = (form) ->
     $scope.submitted = true
 
     if form.$valid
-      Auth.changePassword $scope.user.oldPassword, $scope.user.newPassword
+      Settings.update $scope.settings
       .then ->
-        $scope.message = 'Password successfully changed.'
-
+        $scope.message = 'Configuración actualizada!'
       .catch ->
-        form.password.$setValidity 'mongoose', false
-        $scope.errors.other = 'Incorrect password'
-        $scope.message = ''
+        $scope.message = 'Hubo un error :('

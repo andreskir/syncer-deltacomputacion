@@ -7,5 +7,6 @@ router = express.Router()
 
 router.get "/parsers", controller.availableParsers
 router.get "/", auth.isAuthenticated(), controller.index
+router.put "/", auth.isAuthenticated(), controller.update
 
 module.exports = router

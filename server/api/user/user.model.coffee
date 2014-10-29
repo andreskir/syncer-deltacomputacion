@@ -25,7 +25,9 @@ UserSchema = new Schema
     parsimotion: String
 
   syncer:
-    name: String
+    name:
+      type: String
+      default: "dropbox"
     settings: Schema.Types.Mixed
 
   lastSync:
