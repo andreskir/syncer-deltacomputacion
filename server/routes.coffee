@@ -10,6 +10,7 @@ module.exports = (app) ->
   app.use "/api/users", require("./api/user")
   app.use "/api/stocks", require("./api/stock")
   app.use "/api/hooks/dropbox", require("./api/hooks/dropbox")
+  app.use "/api/settings", require("./api/settings")
   app.use "/auth", require("./auth")
 
   # All undefined asset or api routes should return a 404
