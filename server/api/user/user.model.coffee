@@ -26,6 +26,7 @@ UserSchema = new Schema
 
   syncer:
     name: String
+    settings: Schema.Types.Mixed
 
   lastSync:
     date: Date
@@ -64,10 +65,6 @@ UserSchema.virtual("profile").get ->
 UserSchema.virtual("token").get ->
   _id: @_id
   role: @role
-
-UserSchema.virtual("syncer.settings").get ->
-  fileName: "MER.TXT"
-
 
 ###*
 Validations

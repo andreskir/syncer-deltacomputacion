@@ -2,8 +2,8 @@ Q = require("q")
 DropboxClient = require("dropbox").Client
 
 ParsimotionClient = require("../domain/parsimotionClient")
-FixedLengthParser = require("../domain/parsers/fixedLengthParser")
 Syncer = require("../domain/syncer")
+Parsers = require("./parsers/parsers")
 
 module.exports =
 
@@ -26,4 +26,4 @@ class DropboxSyncer
       @user.save()
       lastSync
 
-  _getParser: -> new FixedLengthParser()
+  _getParser: -> Parsers[@settings.parser]
