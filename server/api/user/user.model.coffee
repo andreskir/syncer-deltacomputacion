@@ -24,6 +24,10 @@ UserSchema = new Schema
     dropbox: String
     parsimotion: String
 
+  syncer:
+    name: String
+    settings: Schema.Types.Mixed
+
   lastSync:
     date: Date
     fulfilled: [
@@ -148,5 +152,9 @@ UserSchema.methods =
     return ""  if not password or not @salt
     salt = new Buffer(@salt, "base64")
     crypto.pbkdf2Sync(password, salt, 10000, 64).toString "base64"
+
+  getSyncer: ->
+    DropboxSyncer = require("../../domain/dropboxSyncer")
+    new DropboxSyncer(@)
 
 module.exports = mongoose.model("User", UserSchema)

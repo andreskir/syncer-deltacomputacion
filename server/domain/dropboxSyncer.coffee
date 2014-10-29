@@ -5,7 +5,9 @@ ParsimotionClient = require("../domain/parsimotionClient")
 FixedLengthParser = require("../domain/parsers/fixedLengthParser")
 Syncer = require("../domain/syncer")
 
-module.exports = class DropboxSyncer
+module.exports =
+
+class DropboxSyncer
   constructor: (@user) ->
     @dropboxClient = new DropboxClient token: user.tokens.dropbox
     @parsimotionClient = new ParsimotionClient user.tokens.parsimotion
