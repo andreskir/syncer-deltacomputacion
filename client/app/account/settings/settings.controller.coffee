@@ -1,8 +1,10 @@
 'use strict'
 
 angular.module 'parsimotionSyncerApp'
-.controller 'SettingsCtrl', ($scope, User, Auth) ->
-  $scope.errors = {}
+.controller 'SettingsCtrl', ($scope, Settings) ->
+  $scope.parsers = Settings.parsers()
+  $scope.settings = Settings.query()
+
   $scope.changePassword = (form) ->
     $scope.submitted = true
 
