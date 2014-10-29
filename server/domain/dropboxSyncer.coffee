@@ -8,12 +8,12 @@ Syncer = require("../domain/syncer")
 module.exports =
 
 class DropboxSyncer
-  constructor: (@user) ->
+  constructor: (@user, @settings) ->
     @dropboxClient = new DropboxClient token: user.tokens.dropbox
     @parsimotionClient = new ParsimotionClient user.tokens.parsimotion
 
   getStocks: ->
-    Q.ninvoke(@dropboxClient, "readFile", @user.settings.fileName, binary: true).then (data) ->
+    Q.ninvoke(@dropboxClient, "readFile", @settings.fileName, binary: true).then (data) ->
       fecha: Date.parse data[1]._json.modified
       stocks: new FixedLengthParser(data[0]).getValue()
 

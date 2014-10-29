@@ -26,7 +26,6 @@ UserSchema = new Schema
 
   syncer:
     name: String
-    settings: Schema.Types.Mixed
 
   lastSync:
     date: Date
@@ -66,7 +65,9 @@ UserSchema.virtual("token").get ->
   _id: @_id
   role: @role
 
-UserSchema.virtual("settings.fileName").get -> "MER.TXT"
+UserSchema.virtual("syncer.settings").get ->
+  fileName: "MER.TXT"
+
 
 ###*
 Validations
@@ -155,6 +156,6 @@ UserSchema.methods =
 
   getSyncer: ->
     DropboxSyncer = require("../../domain/dropboxSyncer")
-    new DropboxSyncer(@)
+    new DropboxSyncer @, @syncer.settings
 
 module.exports = mongoose.model("User", UserSchema)
