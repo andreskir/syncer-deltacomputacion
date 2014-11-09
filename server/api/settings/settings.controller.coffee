@@ -1,23 +1,16 @@
 _ = require("lodash")
-_.mixin(require("lodash-deep"))
+_.mixin require("lodash-deep")
 
 Parsers = require("../../domain/parsers/parsers")
 Exhibitor = require("../../domain/utils/exhibitor")
+
+Transformer = require("./transformer")
 
 exports.availableParsers = (req, res) ->
   res.send 200, new Exhibitor(Parsers).getFields()
 
 exports.index = (req, res) ->
-  getProperty = (propertyPath) ->
-    _.deepGet req.user, propertyPath
-
-  res.send 200,
-    parser:
-      name: getProperty "syncer.settings.parser"
-    fileName:  getProperty "syncer.settings.fileName"
-    parsimotionToken: getProperty "tokens.parsimotion"
-    priceList: getProperty "settings.priceList"
-    warehouse: getProperty "settings.warehouse"
+  res.send 200, Transformer.toDto req.user
 
 exports.update = (req, res) ->
   updateProperty = (property, propertyPath) ->
