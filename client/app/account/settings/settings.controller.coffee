@@ -2,14 +2,28 @@
 
 app.factory "Producteca", ($resource) ->
   (token) ->
-    debugger
+    setAuthorizationHeader = (data, headersGetter) -> headersGetter().Authorization = "Bearer #{token}"
+    toNames = (data) -> _.map (JSON.parse data), "name"
+
     $resource "http://api.parsimotion.com", {},
       user:
         method: "GET"
         url: "http://api.parsimotion.com/user/me"
-        transformRequest: (data, headersGetter) ->
-          debugger
-          headersGetter().Authorization = "Bearer #{token}"
+        transformRequest: setAuthorizationHeader
+
+      priceLists:
+        method: "GET"
+        url: "http://api.parsimotion.com/pricelists"
+        transformRequest: setAuthorizationHeader
+        transformResponse: toNames
+        isArray: true
+
+      warehouses:
+        method: "GET"
+        url: "http://api.parsimotion.com/warehouses"
+        transformRequest: setAuthorizationHeader
+        transformResponse: toNames
+        isArray: true
 
 app.controller 'SettingsCtrl', ($scope, $state, Settings, Producteca) ->
   $scope.parsers = Settings.parsers()
@@ -21,7 +35,10 @@ app.controller 'SettingsCtrl', ($scope, $state, Settings, Producteca) ->
     if (!token?) then return
 
     producteca = new Producteca(token)
+
     $scope.user = producteca.user()
+    $scope.priceLists = producteca.priceLists()
+    $scope.warehouses = producteca.warehouses()
 
   $scope.save = (form) ->
     $scope.submitted = true
