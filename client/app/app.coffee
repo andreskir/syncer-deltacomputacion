@@ -23,7 +23,7 @@ window.app = angular.module 'parsimotionSyncerApp', [
 
   # Intercept 401s and redirect you to login
   responseError: (response) ->
-    if response.status is 401
+    if response.config.url[0] == "/" and response.status is 401
       $location.path '/login'
       # remove any stale tokens
       $cookieStore.remove 'token'
