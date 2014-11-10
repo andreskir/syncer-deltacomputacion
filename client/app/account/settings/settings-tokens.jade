@@ -2,4 +2,8 @@
   label Token Producteca
   input.form-control(type='password', name='parsimotionToken', ng-model='settings.parsimotionToken')
 
+  .panel.panel-default(ng-show="user")
+    .panel-heading
+      h3.panel-title {{ user.company.name }}
+
 button.btn.btn-info(ui-sref='settings.syncer') Continuar
