@@ -22,3 +22,9 @@ app.factory "Producteca", ($resource) ->
         transformRequest: setAuthorizationHeader
         transformResponse: toNames
         isArray: true
+
+      colors:
+        method: "GET"
+        url: "http://api.parsimotion.com/colors"
+        transformRequest: setAuthorizationHeader
+        isArray: true

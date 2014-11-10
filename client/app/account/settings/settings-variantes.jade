@@ -1,0 +1,13 @@
+script(type='text/ng-template', id="customTemplate.html")
+  a
+    ball(color="match.model.rgb")
+    span(bind-html-unsafe='match.label | typeaheadHighlight:query')
+
+.row
+  form.form-horizontal
+    .form-group.col-sm-3(ng-repeat="userColor in userColors")
+      label.control-label {{userColor}}
+      input.form-control(type="text", ng-model='settings.colors[userColor]', typeahead='it.name for it in colors | filter:{name:$viewValue}', typeahead-template-url="customTemplate.html")
+
+button.btn.btn-info(ui-sref='settings.producteca') Continuar
+
