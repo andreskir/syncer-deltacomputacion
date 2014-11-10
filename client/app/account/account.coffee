@@ -18,3 +18,15 @@ angular.module 'parsimotionSyncerApp'
     templateUrl: 'app/account/settings/settings.html'
     controller: 'SettingsCtrl'
     authenticate: true
+
+  .state 'settings.tokens',
+    url: '/tokens'
+    templateUrl: 'app/account/settings/settings-tokens.html'
+
+  .state 'settings.syncer',
+    url: '/syncer'
+    templateUrl: 'app/account/settings/settings-syncer.html'
+
+  .state 'settings.producteca',
+    url: '/producteca'
+    templateUrl: 'app/account/settings/settings-producteca.html'

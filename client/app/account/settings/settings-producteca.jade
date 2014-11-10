@@ -1,0 +1,10 @@
+.form-group
+  label Lista de precios
+  input.form-control(name='priceList', ng-model='settings.priceList', required='')
+
+.form-group
+  label Depósito
+  input.form-control(name='warehouse', ng-model='settings.warehouse', required='')
+
+p.help-block  {{ message }}
+button.btn.btn-primary(type='submit', ng-disabled="submitted") Guardar

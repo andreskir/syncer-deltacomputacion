@@ -5,26 +5,4 @@ div(ng-include='"components/navbar/navbar.html"')
       h1 Configuración
     .col-sm-12
       form.form(name='form', ng-submit='save(form)', novalidate='')
-        .form-group
-          label Tipo de archivo
-          select.form-control(ng-model='settings.parser', ng-options='it.description for it in parsers track by it.name')
-
-        .form-group
-          label Nombre del archivo
-          input.form-control(name='fileName', ng-model='settings.fileName',required='')
-
-        .form-group
-          label Lista de precios
-          input.form-control(name='priceList', ng-model='settings.priceList',required='')
-
-        .form-group
-          label Depósito
-          input.form-control(name='warehouse', ng-model='settings.warehouse',required='')
-
-        .form-group
-          label Token Parsimotion
-          input.form-control(type='password', name='parsimotionToken', ng-model='settings.parsimotionToken')
-
-        p.help-block  {{ message }}
-
-        button.btn.btn-primary(type='submit', ng-disabled="submitted") Guardar
+        section(ui-view="")

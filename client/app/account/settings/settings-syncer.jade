@@ -1,0 +1,9 @@
+.form-group
+  label Tipo de archivo
+  select.form-control(ng-model='settings.parser', ng-options='it.description for it in parsers track by it.name')
+
+.form-group
+  label Nombre del archivo
+  input.form-control(name='fileName', ng-model='settings.fileName',required='')
+
+button.btn.btn-info(ui-sref='settings.producteca') Continuar

@@ -1,9 +1,11 @@
 'use strict'
 
 angular.module 'parsimotionSyncerApp'
-.controller 'SettingsCtrl', ($scope, Settings) ->
+.controller 'SettingsCtrl', ($scope, $state, Settings) ->
   $scope.parsers = Settings.parsers()
   $scope.settings = Settings.query()
+
+  $state.go "settings.tokens"
 
   $scope.save = (form) ->
     $scope.submitted = true
