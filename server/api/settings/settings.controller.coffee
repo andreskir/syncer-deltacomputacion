@@ -1,6 +1,3 @@
-_ = require("lodash")
-_.mixin require("lodash-deep")
-
 Parsers = require("../../domain/parsers/parsers")
 Exhibitor = require("../../domain/utils/exhibitor")
 
