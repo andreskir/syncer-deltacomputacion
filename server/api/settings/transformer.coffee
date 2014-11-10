@@ -12,12 +12,16 @@ class Transformer
 
     dto
 
-  updateModel: (mongooseModel, dto) ->
-    setValue = _.partial @_updateProperty, mongooseModel, dto
-    @mappings.forEach ({from, to}) -> setValue from, to
+  updateModel: (model, dto) ->
+    setValue = _.partial @_updateProperty, model, dto
+    @mappings.forEach ({from, to}) -> setValue from, to, true
 
-  _updateProperty: (destination, source, destinationPropertyPath, sourcePropertyPath) ->
+  _updateProperty: (destination, source, destinationPropertyPath, sourcePropertyPath, ignoreNullAndUndefined = false) ->
     newValue = _.deepGet source, sourcePropertyPath
+
+    if ignoreNullAndUndefined && !newValue?
+      return
+
     if _.isFunction destination.set
       destination.set destinationPropertyPath, newValue
     else

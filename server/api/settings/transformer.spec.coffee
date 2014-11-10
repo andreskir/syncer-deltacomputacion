@@ -3,6 +3,14 @@ _ = require("lodash")
 Transformer = require("./transformer")
 User = require("../user/user.model")
 
+shouldHaveProperties = (object, properties, path = []) ->
+  for name, expected of properties
+    actual = object[name]
+    if _.isObject expected
+      shouldHaveProperties actual, expected, path.concat name
+    else
+      actual.should.eql expected, "Expected property '#{path.join(".") + "." + name}' to be #{expected} but was #{actual}"
+
 describe "Settings transformer", ->
   it "puede convertir el modelo en DTO", ->
     user =
@@ -38,14 +46,6 @@ describe "Settings transformer", ->
     user = new User()
     Transformer.updateModel user, dto
 
-    shouldHaveProperties = (object, properties, path = []) ->
-      for name, expected of properties
-        actual = object[name]
-        if _.isObject expected
-          shouldHaveProperties actual, expected, path.concat name
-        else
-          actual.should.eql expected, "Expected property '#{path.join(".") + "." + name}' to be #{expected} but was #{actual}"
-
     shouldHaveProperties user,
       syncer:
         settings:
@@ -58,3 +58,35 @@ describe "Settings transformer", ->
       settings:
         priceList: "Meli"
         warehouse: "Default"
+
+  describe "al inyectar el modelo, ignora las properties que", ->
+    dto = null
+    user = null
+
+    beforeEach ->
+      dto =
+        parser:
+          name: "excel2003"
+
+      user = new User()
+      user.set "syncer.settings.fileName", "STOCK.xls"
+
+    it "no estan definidas", ->
+      Transformer.updateModel user, dto
+
+      shouldHaveProperties user,
+        syncer:
+          settings:
+            parser: "excel2003"
+            fileName: "STOCK.xls"
+
+    it "son nulas", ->
+      dto.fileName = null
+
+      Transformer.updateModel user, dto
+
+      shouldHaveProperties user,
+        syncer:
+          settings:
+            parser: "excel2003"
+            fileName: "STOCK.xls"
