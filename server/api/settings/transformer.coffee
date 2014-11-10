@@ -3,12 +3,15 @@ _.mixin require("lodash-deep")
 
 class Transformer
   toDto: (model) ->
-    parser:
-      name: _.deepGet model, "syncer.settings.parser"
-    fileName:  _.deepGet model, "syncer.settings.fileName"
-    parsimotionToken: _.deepGet model, "tokens.parsimotion"
-    priceList: _.deepGet model, "settings.priceList"
-    warehouse: _.deepGet model, "settings.warehouse"
+    dto = {}
+
+    setValue = _.partial @_updateProperty, dto, model
+
+    setValue "parser.name", "syncer.settings.parser"
+    setValue "fileName", "syncer.settings.fileName"
+    setValue "parsimotionToken", "tokens.parsimotion"
+    setValue "priceList", "settings.priceList"
+    setValue "warehouse", "settings.warehouse"
 
   updateModel: (mongooseModel, dto) ->
     setValue = _.partial @_updateProperty, mongooseModel, dto
@@ -19,7 +22,11 @@ class Transformer
     setValue "settings.priceList", "priceList"
     setValue "settings.warehouse", "warehouse"
 
-  _updateProperty: (mongooseModel, dto, modelPropertyPath, dtoPropertyPath) ->
-    mongooseModel.set modelPropertyPath, _.deepGet dto, dtoPropertyPath
+  _updateProperty: (model, dto, modelPropertyPath, dtoPropertyPath) ->
+    newValue = _.deepGet dto, dtoPropertyPath
+    if _.isFunction model.set
+      model.set modelPropertyPath, newValue
+    else
+      _.deepSet model, modelPropertyPath, newValue
 
 module.exports = new Transformer()
