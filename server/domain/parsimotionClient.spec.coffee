@@ -1,4 +1,5 @@
 sinon = require("sinon")
+Promise = require("bluebird")
 
 global.chai = require("chai")
 
@@ -12,8 +13,10 @@ describe "Parsimotion client", ->
   parsimotionClient = null
 
   beforeEach ->
+    dummyPromise = -> new Promise (resolve) -> resolve null
+
     client =
-      put: sinon.stub()
+      putAsync: sinon.stub().returns dummyPromise()
 
     parsimotionClient = new ParsimotionClient "", client
 
@@ -24,7 +27,7 @@ describe "Parsimotion client", ->
       quantity: 8
       warehouse: "Almagro"
 
-    client.put.should.have.been.calledWith "/products/23/stocks", [
+    client.putAsync.should.have.been.calledWith "/products/23/stocks", [
       variation: 24
       stocks: [
         warehouse: "Almagro"
@@ -46,7 +49,7 @@ describe "Parsimotion client", ->
       "Meli",
       270
 
-    client.put.should.have.been.calledWith "/products/25",
+    client.putAsync.should.have.been.calledWith "/products/25",
       prices: [
         priceList: "Default"
         amount: 180
