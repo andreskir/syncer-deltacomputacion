@@ -30,7 +30,8 @@
     "q": "^1.0.1",
     "restify": "^2.8.2",
     "serve-favicon": "~2.0.1",
-    "xlsjs": "^0.7.1"
+    "xlsjs": "^0.7.1",
+    "oauth": "~0.9.12"
   },
   "devDependencies": {
     "chai": "^1.9.1",
