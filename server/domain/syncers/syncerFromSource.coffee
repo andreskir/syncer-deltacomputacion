@@ -1,21 +1,16 @@
 Q = require("q")
-DropboxClient = require("dropbox").Client
 
-ParsimotionClient = require("../domain/parsimotionClient")
-Syncer = require("../domain/syncer")
-Parsers = require("./parsers/parsers")
+ParsimotionClient = require("../parsimotionClient")
+Syncer = require("../syncer")
+Parsers = require("../parsers/parsers")
 
 module.exports =
 
-class DropboxSyncer
+class SyncerFromSource
   constructor: (@user, @settings) ->
-    @dropboxClient = new DropboxClient token: user.tokens.dropbox
     @parsimotionClient = new ParsimotionClient user.tokens.parsimotion
 
-  getStocks: ->
-    Q.ninvoke(@dropboxClient, "readFile", @settings.fileName, binary: true).then (data) =>
-      fecha: Date.parse data[1]._json.modified
-      stocks: @_getParser().getAjustes(data[0])
+  getStocks: -> throw "not implemented"
 
   sync: ->
     @getStocks()

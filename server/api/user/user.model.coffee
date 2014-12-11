@@ -154,7 +154,7 @@ UserSchema.methods =
     crypto.pbkdf2Sync(password, salt, 10000, 64).toString "base64"
 
   getSyncer: ->
-    DropboxSyncer = require("../../domain/dropboxSyncer")
+    DropboxSyncer = require("../../domain/syncers/dropboxSyncer")
     new DropboxSyncer @, @syncer.settings
 
 module.exports = mongoose.model("User", UserSchema)

@@ -4,7 +4,7 @@ crypto = require("crypto")
 
 config = require("../../../config/environment/index")
 User = require("../../user/user.model")
-DropboxSyncer = require("../../../domain/dropboxSyncer")
+DropboxSyncer = require("../../../domain/syncers/dropboxSyncer")
 
 exports.challenge = (req, res) ->
   res.send 200, req.query.challenge
