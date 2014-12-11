@@ -15,7 +15,7 @@ class DropboxSyncer
   getStocks: ->
     Q.ninvoke(@dropboxClient, "readFile", @settings.fileName, binary: true).then (data) =>
       fecha: Date.parse data[1]._json.modified
-      stocks: @_getParser().getValue(data[0])
+      stocks: @_getParser().getAjustes(data[0])
 
   sync: ->
     @getStocks()

@@ -11,7 +11,7 @@ describe "Fixed length parser", ->
 924065117102                  ALR 111 50W 12V 24G                                        124.49     14.00
 """
 
-    ajuste = parser.getValue(data)[0]
+    ajuste = parser.getAjustes(data)[0]
 
     ajuste.should.eql
       sku: "924065117102"
@@ -29,8 +29,8 @@ describe "Fixed length parser", ->
 
 """
 
-    parser.getValue(data)[0].sku.should.equal "924065117102"
+    parser.getAjustes(data)[0].sku.should.equal "924065117102"
 
   it "funciona con el newline de Windows", ->
     data = "924065117102                  ALR 111 50W 12V 24G                                        124.49     14.00\r\n"
-    parser.getValue(data)[0].sku.should.equal "924065117102"
+    parser.getAjustes(data)[0].sku.should.equal "924065117102"
