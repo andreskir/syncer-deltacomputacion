@@ -8,7 +8,8 @@ respond = (res, promise) ->
   promise.then ((data) -> res.send 200, data), (error) -> res.send 500, error
 
 exports.stocks = (req, res) ->
-  respond res, req.user.getSyncer().getStocks(),
+  #todo: rename de la ruta /api/stocks a /api/ajustes
+  respond res, req.user.getSyncer().getAjustes(),
 
 exports.sync = (req, res) ->
   respond res, req.user.getSyncer().sync()
