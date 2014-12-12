@@ -16,6 +16,7 @@
     <orderEntry type="library" name="sinon-DefinitelyTyped" level="project" />
     <orderEntry type="library" name="express-DefinitelyTyped" level="project" />
     <orderEntry type="library" name="mongoose-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="bluebird-DefinitelyTyped" level="application" />
   </component>
 </module>
 
