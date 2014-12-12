@@ -15,18 +15,18 @@ class GithubApi
 	def get_pull_request(user, repo, branch_name)
 		data = nil
 
-		WaitUtil.wait_for_condition("pull request", :timeout_sec => 5 * 60, :delay_sec => 10, :verbose => true) do
-			data = @api.pull_requests.all(user, repo).detect { |it| it.head.ref == branch_name }
-  			if data.nil?
-  				[false, "No pull request was found for #{branch_name}, will try again in 30 seconds..."]
-			else
-				true
-  			end
-		end
-
-		if data.nil?
+		begin		
+			WaitUtil.wait_for_condition("pull request", :timeout_sec => 5 * 60, :delay_sec => 10, :verbose => true) do
+				data = @api.pull_requests.all(user, repo).detect { |it| it.head.ref == branch_name }
+	  			if data.nil?
+	  				[false, "No pull request was found for #{branch_name}, will try again in 30 seconds..."]
+				else
+					true
+	  			end
+			end
+		rescue WaitUtil::TimeoutError
 			puts "No pull request was found for branch #{branch_name}, aborting"
-			exit -1
+			exit 0
 		end
 
 		PullRequest.new data
