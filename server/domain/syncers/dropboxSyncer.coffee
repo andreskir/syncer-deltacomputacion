@@ -9,9 +9,9 @@ class DropboxSyncer extends SyncerFromSource
     super @user, @settings
     @dropboxClient = Promise.promisifyAll new DropboxClient token: user.tokens.dropbox
 
-  getStocks: ->
+  getAjustes: ->
     @dropboxClient
     .readFileAsync @settings.fileName, binary: true
     .then (data) =>
       fecha: Date.parse data[1]._json.modified
-      stocks: @_getParser().getAjustes data[0]
+      ajustes: @_getParser().getAjustes data[0]
