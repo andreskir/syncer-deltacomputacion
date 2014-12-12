@@ -153,8 +153,8 @@ UserSchema.methods =
     salt = new Buffer(@salt, "base64")
     crypto.pbkdf2Sync(password, salt, 10000, 64).toString "base64"
 
-  getSyncer: ->
-    DropboxSyncer = require("../../domain/syncers/dropboxSyncer")
-    new DropboxSyncer @, @syncer.settings
+  getSyncer: -> new @getSyncerConstructor() @, @syncer.settings
+  getSyncerConstructor: -> require "../../domain/syncers/#{@syncer.name}Syncer"
+
 
 module.exports = mongoose.model("User", UserSchema)
