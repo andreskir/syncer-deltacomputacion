@@ -2,12 +2,14 @@ Promise = require "bluebird"
 SyncerFromSource = require "./syncerFromSource"
 request = Promise.promisifyAll require "request"
 read = (require "fs").readFileSync
-xml2js =  Promise.promisifyAll require "xml2js"
+xml2js = Promise.promisifyAll require "xml2js"
 
 module.exports =
 
 class DeltaComputacionSyncer extends SyncerFromSource
-  constructor: ->
+  constructor: (user, settings) ->
+    super user, settings
+
     @requests =
       login: method: "AuthenticateUser"
       prices: method: "ItemStorage_funGetXMLData"
