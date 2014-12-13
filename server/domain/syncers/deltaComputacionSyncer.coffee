@@ -1,6 +1,6 @@
 Promise = require "bluebird"
 SyncerFromSource = require "./syncerFromSource"
-request = Promise.promisifyAll require "request"
+soap = Promise.promisifyAll require "soap"
 read = (require "fs").readFileSync
 xml2js = Promise.promisifyAll require "xml2js"
 
@@ -14,8 +14,12 @@ class DeltaComputacionSyncer extends SyncerFromSource
       login: method: "AuthenticateUser"
       prices: method: "ItemStorage_funGetXMLData"
       stocks: method: "PriceListItems_funGetXMLData"
-    fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
-    @requests[name].body = read (fileName name), "ascii" for name of @requests
+
+    fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}"
+    @requests[name].args = read fileName(name) + ".json", "ascii" for name of @requests
+    @requests.header = read fileName("header") + ".xml", "ascii"
+
+    @getAjustes()
 
   getAjustes: ->
     @getToken().then (token) =>
@@ -33,9 +37,12 @@ class DeltaComputacionSyncer extends SyncerFromSource
   getToken: => @_doRequest "login"
 
   _doRequest: (name, token) =>
-    options = @_optionsFor name, token
+    soap.createClientAsync("http://nucleobp1.dyndns.org/nucleo/app_webservices/wsBasicQuery.asmx?WSDL").then (client) =>
+      client = Promise.promisifyAll client
+      client.addSoapHeader @_header token
 
-    request.postAsync(options).spread (_, data) =>
+      request = @requests[name]
+      client["#{request.method}Async"](JSON.parse request.args).spread (_, data) =>
         xml2js.parseStringAsync(data).then (response) =>
           properties = [
             "soap:Envelope", "soap:Body", 0
@@ -44,15 +51,8 @@ class DeltaComputacionSyncer extends SyncerFromSource
           ] ; get = (res, prop) => res[prop]
           properties.reduce get, response
 
-  _optionsFor: (name, token) =>
-    options =
-      url: "http://nucleobp1.dyndns.org/nucleo/app_webservices/wsBasicQuery.asmx"
-      headers:
-        SOAPAction: "http://microsoft.com/webservices/#{@requests[name].method}"
-        "Content-Type": "text/xml; charset=utf-8"
-      body: @requests[name].body
-        .replace("$username", process.env.DELTACOMPUTACION_USER)
-        .replace("$password", process.env.DELTACOMPUTACION_PASSWORD)
-        .replace("$token", token)
-
-    options
+  _header: (token) =>
+    @requests.header
+      .replace("$username", process.env.DELTACOMPUTACION_USER)
+      .replace("$password", process.env.DELTACOMPUTACION_PASSWORD)
+      .replace("$token", token)
