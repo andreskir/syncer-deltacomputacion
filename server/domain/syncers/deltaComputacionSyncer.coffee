@@ -24,14 +24,16 @@ class DeltaComputacionSyncer extends SyncerFromSource
 
   getAjustes: ->
     @getToken().then (token) =>
-      @_doRequest("stocks", token).then (stocksXml) =>
-        @_doRequest("prices", token).then (pricesXml) =>
-          Promise.props({
-            stocks: xml2js.parseStringAsync stocksXml
-            prices: xml2js.parseStringAsync pricesXml
-          }).then (data) =>
-            fecha: new Date()
-            ajustes: @_getParser().getAjustes data
+      Promise.props({
+        stocks: @_doRequest "stocks", token
+        prices: @_doRequest "prices", token
+      }).then (xmls) =>
+        Promise.props({
+          stocks: xml2js.parseStringAsync xmls.stocks
+          prices: xml2js.parseStringAsync xmls.prices
+        }).then (data) =>
+          fecha: new Date()
+          ajustes: @_getParser().getAjustes data
 
   getToken: => @_doRequest "login"
 
