@@ -5,8 +5,7 @@ module.exports = class DeltaComputacionParser
   getAjustes: (data) ->
     cleanData = (it) =>
       it.NewDataSet.Table.map (info) =>
-        info[property] = info[property][0] for property of info
-        info
+        _.mapValues info, (it) => it[0]
 
     stocks = cleanData data.stocks
     prices = cleanData data.prices
