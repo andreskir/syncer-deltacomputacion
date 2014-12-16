@@ -1,7 +1,9 @@
 _ = require("lodash")
 AjusteStock = require("../ajusteStock")
 
-module.exports = class DeltaComputacionParser
+module.exports =
+
+class DeltaComputacionParser
   getAjustes: (data) ->
     cleanData = (it) =>
       it.NewDataSet.Table.map (info) =>

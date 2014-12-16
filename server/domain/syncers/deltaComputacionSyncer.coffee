@@ -10,7 +10,7 @@ class DeltaComputacionSyncer extends SyncerFromSource
   constructor: (user, settings) ->
     super user, settings
 
-    @url = "http://nucleobp1.dyndns.org/nucleo/app_webservices/wsBasicQuery.asmx?WSDL"
+    @url = process.env.DELTACOMPUTACION_URL
     @requests =
       login:
         method: "AuthenticateUser", args: {}
