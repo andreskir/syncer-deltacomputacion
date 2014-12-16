@@ -31,7 +31,11 @@
     "restify": "^2.8.2",
     "serve-favicon": "~2.0.1",
     "xlsjs": "^0.7.1",
-    "oauth": "~0.9.12"
+    "oauth": "~0.9.12",
+    "xml2js": "~0.4.4",
+    "bluebird": "~2.3.11",
+    "timekeeper": "0.0.5",
+    "soap": "~0.6.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

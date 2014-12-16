@@ -5,7 +5,7 @@ AjusteStock = require "../ajusteStock"
 module.exports =
 
 class Excel2003Parser
-  getValue: (data) ->
+  getAjustes: (data) ->
     workbook = XLS.read data, type: "binary"
     _.map (@_getDataFrom workbook), (row) => new AjusteStock (@_toDto row)
 
