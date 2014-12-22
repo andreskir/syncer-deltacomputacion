@@ -1,4 +1,3 @@
 module.exports =
-  excel2003: new (require("./excel2003parser"))()
+  excel2003: new (require("./excel2003Parser"))()
   fixedLength: new (require("./fixedLengthParser"))()
-  deltaComputacion: new (require("./deltaComputacionParser"))()

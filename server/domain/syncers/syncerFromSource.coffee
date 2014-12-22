@@ -24,4 +24,4 @@ class SyncerFromSource
       @user.save()
       lastSync
 
-  _getParser: -> Parsers[@settings.parser]
+  _getParser: -> new (require("../parsers/#{@settings.parser}Parser"))()

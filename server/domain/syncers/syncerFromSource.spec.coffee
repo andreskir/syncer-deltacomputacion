@@ -1,6 +1,6 @@
 SyncerFromSource = require("./syncerFromSource")
 FixedLengthParser = require("../parsers/fixedLengthParser")
-Excel2003Parser = require("../parsers/excel2003parser.coffee")
+Excel2003Parser = require("../parsers/excel2003Parser.coffee")
 
 describe "SyncerFromSource", ->
   dummyUser = null
