@@ -29,4 +29,4 @@ app.factory "Settings", ($resource) ->
         objectToArray settings, "colors"
         objectToArray settings, "sizes"
 
-        settings
+        JSON.stringify settings
