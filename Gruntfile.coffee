@@ -32,16 +32,18 @@ module.exports = (grunt) ->
     express:
       options:
         port: process.env.PORT or 9000
-        opts: ['node_modules/.bin/coffee']
-
-      dev:
-        options:
-          script: "server/app.coffee"
+        #opts: ['node_modules/.bin/coffee']
+        #uncomment if the "script" property needs to be compiled with coffee
+        #                    |
+        #                    |
+      dev: #                 |
+        options: #           v
+          script: "server/server.js"
           debug: true
 
       prod:
         options:
-          script: "dist/server/app.coffee"
+          script: "dist/server/server.js"
 
     open:
       server:
@@ -210,7 +212,7 @@ module.exports = (grunt) ->
   # Use nodemon to run server in debug mode with an initial breakpoint
     nodemon:
       debug:
-        script: "server/app.js"
+        script: "server/server.js"
         options:
           nodeArgs: ["--debug-brk"]
           env:
@@ -390,6 +392,11 @@ module.exports = (grunt) ->
       heroku:
         options:
           remote: "git@heroku.com:parsimotion-syncer.git"
+          branch: "master"
+
+      azure:
+        options:
+          remote: "https://#{process.env.AZURE_GIT_CREDENTIALS}@parsimotion-syncer.scm.azurewebsites.net:443/parsimotion-syncer.git"
           branch: "master"
 
       openshift:
