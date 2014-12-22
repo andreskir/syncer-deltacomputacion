@@ -32,10 +32,12 @@ module.exports = (grunt) ->
     express:
       options:
         port: process.env.PORT or 9000
-        opts: ['node_modules/.bin/coffee']
-
-      dev:
-        options:
+        #opts: ['node_modules/.bin/coffee']
+        #uncomment if the "script" property needs to be compiled with coffee
+        #                    |
+        #                    |
+      dev: #                 |
+        options: #           v
           script: "server/server.js"
           debug: true
 
@@ -210,7 +212,7 @@ module.exports = (grunt) ->
   # Use nodemon to run server in debug mode with an initial breakpoint
     nodemon:
       debug:
-        script: "server/app.js"
+        script: "server/server.js"
         options:
           nodeArgs: ["--debug-brk"]
           env:
