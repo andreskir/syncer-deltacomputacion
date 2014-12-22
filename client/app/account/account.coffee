@@ -27,9 +27,9 @@ angular.module 'parsimotionSyncerApp'
     url: '/syncer'
     templateUrl: 'app/account/settings/settings-syncer.html'
 
-  .state 'settings.variantes',
-    url: '/variantes'
-    templateUrl: 'app/account/settings/settings-variantes.html'
+  .state 'settings.colores',
+    url: '/colores'
+    templateUrl: 'app/account/settings/settings-colores.html'
 
   .state 'settings.producteca',
     url: '/producteca'
