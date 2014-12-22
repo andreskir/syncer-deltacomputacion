@@ -34,7 +34,7 @@ div(ng-include='"components/navbar/navbar.html"')
           th Precio
           th Sincronización
       tbody
-        tr(ng-repeat="item in ajustes.stocks | orderBy: 'estadoSincronizacion'", ng-class="{success: item.estadoSincronizacion == 'ok', danger: item.estadoSincronizacion == 'error'}")
+        tr(ng-repeat="item in ajustes.ajustes | orderBy: 'estadoSincronizacion'", ng-class="{success: item.estadoSincronizacion == 'ok', danger: item.estadoSincronizacion == 'error'}")
           td {{item.sku}}
           td {{item.nombre}}
           td {{item.stock}}
