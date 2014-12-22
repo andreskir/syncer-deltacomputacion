@@ -21,6 +21,8 @@ module.exports = function(config) {
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
+      'client/bower_components/rxjs/dist/rx.all.js',
+      'client/bower_components/angular-rx/dist/rx.angular.js',
       'client/spec/specSetup.coffee',
       'client/spec/matchers/*.coffee',
       'client/app/app.js',
@@ -38,7 +40,7 @@ module.exports = function(config) {
     preprocessors: {
       '**/*.jade': 'ng-jade2js',
       '**/*.html': 'html2js',
-      '**/*.coffee': 'coffee',
+      '**/*.coffee': 'coffee'
     },
 
     ngHtml2JsPreprocessor: {

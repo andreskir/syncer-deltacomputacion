@@ -37,4 +37,8 @@ module.exports = new Transformer [
   from: "settings.priceList", to: "priceList"
 ,
   from: "settings.warehouse", to: "warehouse"
+,
+  from: "settings.colors", to: "colors"
+,
+  from: "settings.sizes", to: "sizes"
 ]
