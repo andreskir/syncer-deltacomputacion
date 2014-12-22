@@ -101,7 +101,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "start": "node_modules/.bin/coffee -w server/app.coffee",
+    "start": "node server/server.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
