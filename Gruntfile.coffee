@@ -392,6 +392,11 @@ module.exports = (grunt) ->
           remote: "git@heroku.com:parsimotion-syncer.git"
           branch: "master"
 
+      azure:
+        options:
+          remote: "https://#{process.env.AZURE_GIT_CREDENTIALS}@parsimotion-syncer.scm.azurewebsites.net:443/parsimotion-syncer.git"
+          branch: "master"
+
       openshift:
         options:
           remote: "openshift"
