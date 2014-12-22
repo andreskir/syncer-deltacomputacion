@@ -36,12 +36,12 @@ module.exports = (grunt) ->
 
       dev:
         options:
-          script: "server/app.coffee"
+          script: "server/server.js"
           debug: true
 
       prod:
         options:
-          script: "dist/server/app.coffee"
+          script: "dist/server/server.js"
 
     open:
       server:
