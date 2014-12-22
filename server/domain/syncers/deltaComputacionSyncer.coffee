@@ -15,9 +15,9 @@ class DeltaComputacionSyncer extends SyncerFromSource
       login:
         method: "AuthenticateUser", args: {}
       prices:
-        method: "PriceListItems_funGetXMLData", args: { pPriceList: 3, pItem: 1 }
+        method: "PriceListItems_funGetXMLData", args: { pPriceList: 13, pItem: -1 }
       stocks:
-        method: "ItemStorage_funGetXMLData", args: { intStor_id: 155, intItem_id: 1 }
+        method: "ItemStorage_funGetXMLData", args: { intStor_id: 17, intItem_id: -1 }
 
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
