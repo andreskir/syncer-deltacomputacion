@@ -1,14 +1,16 @@
-_ = require("lodash")
-Q = require("q")
-
-config = require("../../../config/environment/index")
 User = require("../../user/user.model")
 
 exports.notification = (req, res) ->
   if not isSignatureValid req
     return res.send 403, "Invalid signature"
 
-  res.send 200
+  User.findOneAsync(_id: req.body.userId)
+    .then (user) =>
+      user.getSyncer().sync()
+        .then (result) => res.send 200, result
+        .catch => res.send 400, "There was a problem in the sync"
+
+    .catch => res.send 400, "The user doesn't exists"
 
 isSignatureValid = (req) ->
-  req.headers["Signature"] == "coso!"
+  req.headers["signature"] is process.env.WEBJOB_SIGNATURE

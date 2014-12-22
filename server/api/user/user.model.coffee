@@ -1,6 +1,9 @@
 "use strict"
 
 mongoose = require("mongoose")
+Promise = require "bluebird"
+Promise.promisifyAll mongoose
+
 Schema = mongoose.Schema
 crypto = require("crypto")
 
