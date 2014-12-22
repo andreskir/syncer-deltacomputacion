@@ -48,6 +48,10 @@ UserSchema = new Schema
       original: String
       parsimotion: String
     ]
+    sizes: [
+      original: String
+      parsimotion: String
+    ]
 
 ###*
 Virtuals

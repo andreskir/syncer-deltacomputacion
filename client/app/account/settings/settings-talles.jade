@@ -1,0 +1,8 @@
+.row
+  form.form-horizontal
+    .form-group.col-sm-3(ng-repeat="userSize in userSizes")
+      label.control-label {{userSize}}
+      input.form-control(type="text", ng-model='settings.sizes[userSize]', typeahead='it.name for it in sizes | filter:{name:$viewValue}')
+
+button.btn.btn-info(ui-sref='settings.producteca') Continuar
+

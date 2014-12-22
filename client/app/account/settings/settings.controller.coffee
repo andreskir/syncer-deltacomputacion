@@ -13,6 +13,8 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
                         "Gris",                        "Turquesa medio",                        "Gris 18",                        "Oro 1",                        "Orquídea 4",                        "Gris sgi 84",
                         "Aguamarina 4",                       "Vara de oro amarilla claro",                        "Bronceado 1",                        "Azul cielo claro  1",                        "Gris 31",                        "Azul cadete 3" ]
 
+  $scope.userSizes = [ "EquiEle", "Ele", "Eme", "Chiquito" ]
+
   $state.go "settings.tokens"
 
   observeOnScope $scope, "settings.parsimotionToken"
@@ -23,6 +25,7 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
       $scope.priceLists = producteca.priceLists()
       $scope.warehouses = producteca.warehouses()
       $scope.colors = producteca.colors()
+      $scope.sizes = producteca.sizes()
 
   $scope.save = (form) ->
     $scope.submitted = true
