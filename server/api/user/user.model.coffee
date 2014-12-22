@@ -47,6 +47,14 @@ UserSchema = new Schema
   settings:
     warehouse: String
     priceList: String
+    colors: [
+      original: String
+      parsimotion: String
+    ]
+    sizes: [
+      original: String
+      parsimotion: String
+    ]
 
 ###*
 Virtuals

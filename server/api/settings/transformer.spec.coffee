@@ -25,6 +25,8 @@ describe "Settings transformer", ->
       settings:
         priceList: "Meli"
         warehouse: "Default"
+        colors: []
+        sizes: []
 
     (Transformer.toDto user).should.eql
       parser:
@@ -33,6 +35,8 @@ describe "Settings transformer", ->
       parsimotionToken: "12345678"
       priceList: "Meli"
       warehouse: "Default"
+      colors: []
+      sizes: []
 
   it "puede inyectar los valores del dto en el modelo", ->
     dto =

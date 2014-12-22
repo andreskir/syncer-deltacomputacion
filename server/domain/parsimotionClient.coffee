@@ -1,4 +1,4 @@
-Q = require("q")
+Promise = require("bluebird")
 restify = require("restify")
 _ = require("lodash")
 
@@ -8,7 +8,7 @@ module.exports =
 
 class ParsimotionClient
   @initializeClient: (accessToken) ->
-    restify.createJSONClient
+    Promise.promisifyAll restify.createJSONClient
       url: config.parsimotion.uri
       agent: false
       headers:
@@ -17,15 +17,11 @@ class ParsimotionClient
   constructor: (accessToken, @client = @constructor.initializeClient accessToken) ->
 
   getProductos: ->
-    deferred = Q.defer()
-    @client.get "/products", (err, req, res, obj) ->
-      if err then deferred.reject err else deferred.resolve obj.results
-
-    deferred.promise
+    @client
+    .getAsync "/products"
+    .spread (req, res, obj) -> obj.results
 
   updateStocks: (adjustment) ->
-    deferred = Q.defer()
-
     body = [
       variation: adjustment.variation
       stocks: [
@@ -34,14 +30,11 @@ class ParsimotionClient
       ]
     ]
 
-    @client.put "/products/#{adjustment.id}/stocks", body, (err, req, res, obj) ->
-      if err then deferred.reject err else deferred.resolve obj
-
-    deferred.promise
+    @client
+    .putAsync "/products/#{adjustment.id}/stocks", body
+    .spread (req, res, obj) -> obj
 
   updatePrice: (product, priceList, amount) ->
-    deferred = Q.defer()
-
     body =
       prices:
         _(product.prices)
@@ -51,7 +44,6 @@ class ParsimotionClient
           amount: amount
         .value()
 
-    @client.put "/products/#{product.id}", body, (err, req, res, obj) ->
-      if err then deferred.reject err else deferred.resolve obj
-
-    deferred.promise
+    @client
+    .putAsync "/products/#{product.id}", body
+    .spread (req, res, obj) -> obj

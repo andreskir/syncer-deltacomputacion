@@ -5,7 +5,7 @@ getController = null
 beforeEach ->
   module "parsimotionSyncerApp"
 
-  inject ($controller, $rootScope, _$httpBackend_) ->
+  inject ($controller, $rootScope, _$httpBackend_, observeOnScope) ->
     $httpBackend = _$httpBackend_
     $scope = $rootScope.$new()
 
@@ -17,5 +17,6 @@ beforeEach ->
       defaultDependencies =
         $scope: $scope
         $httpBackend: $httpBackend
+        observeOnScope: observeOnScope
 
       $controller name, (defaults defaultDependencies, dependencies)
