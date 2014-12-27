@@ -1,10 +1,10 @@
 Promise = require "bluebird"
-SyncerFromSource = require "./syncerFromSource"
+DataSource = require "./dataSource"
 DropboxClient = require("dropbox").Client
 
 module.exports =
 
-class DropboxSyncer extends SyncerFromSource
+class DropboxSyncer extends DataSource
   constructor: (user, settings) ->
     super user, settings
     @dropboxClient = Promise.promisifyAll new DropboxClient token: user.tokens.dropbox
