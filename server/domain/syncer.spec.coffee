@@ -45,6 +45,18 @@ describe "Syncer", ->
 
     client.updateStocks.called.should.be.false
 
+  it "joinAjustesYProductos linkea ajustes con productos de Producteca", ->
+    ajustes = syncer.joinAjustesYProductos [
+      sku: 123456
+      stock: 40
+    ]
+
+    ajustes.linked[0].should.eql
+      ajuste:
+        sku: 123456
+        stock: 40
+      producto: product1
+
   it "al ejecutar dispara una request a Parsimotion para actualizar stocks, matcheando el id segun sku", ->
     syncer.execute [
       sku: 123456
