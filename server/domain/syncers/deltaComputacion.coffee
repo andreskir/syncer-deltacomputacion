@@ -6,7 +6,7 @@ xml2js = Promise.promisifyAll require "xml2js"
 
 module.exports =
 
-class DeltaComputacionSyncer extends DataSource
+class DeltaComputacion extends DataSource
   constructor: (user, settings) ->
     super user, settings
 

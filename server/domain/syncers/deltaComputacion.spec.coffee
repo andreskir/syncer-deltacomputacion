@@ -1,7 +1,7 @@
-DeltaComputacionSyncer = require("./deltaComputacionSyncer")
+DeltaComputacion = require("./deltaComputacion")
 Promise = require "bluebird"
 
-describe "DeltaComputacionSyncer", ->
+describe "DeltaComputacion", ->
   dummyUser = null ; dummyParser = null ; now = new Date()
   beforeEach ->
     require("timekeeper").freeze now
@@ -9,7 +9,7 @@ describe "DeltaComputacionSyncer", ->
     dummyParser = getAjustes: (data) => data
 
   it "le manda al parser un objeto con los stocks y precios para que los extraiga", (done) ->
-    syncer = new DeltaComputacionSyncer dummyUser, {}
+    syncer = new DeltaComputacion dummyUser, {}
     syncer._getParser = => dummyParser
     syncer._doRequest = (name) =>
       responses =
