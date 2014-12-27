@@ -7,14 +7,14 @@ class Syncer
   constructor: (@parsimotionClient, @settings, @productos) ->
 
   execute: (ajustes) ->
-    ajustesYProductos = @_joinAjustesYProductos ajustes
+    ajustesYProductos = @joinAjustesYProductos ajustes
 
     (Q.allSettled @_updateStocksAndPrices ajustesYProductos).then (resultados) =>
       fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> res.value
       failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
       unlinked: _.map ajustesYProductos.unlinked, (it) -> sku: it.ajuste.sku
 
-  _joinAjustesYProductos: (ajustes) ->
+  joinAjustesYProductos: (ajustes) ->
     join = _(ajustes).filter("sku").map (it) =>
       ajuste: it
       producto: @_getProductForAjuste it
