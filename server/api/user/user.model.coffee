@@ -162,6 +162,6 @@ UserSchema.methods =
     crypto.pbkdf2Sync(password, salt, 10000, 64).toString "base64"
 
   getSyncer: -> S = @getSyncerConstructor() ; new S @, @syncer.settings
-  getSyncerConstructor: -> require "../../domain/syncers/#{@syncer.name}Syncer"
+  getSyncerConstructor: -> require "../../domain/syncers/#{@syncer.name}"
 
 module.exports = mongoose.model("User", UserSchema)

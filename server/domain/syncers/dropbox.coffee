@@ -4,7 +4,7 @@ DropboxClient = require("dropbox").Client
 
 module.exports =
 
-class DropboxSyncer extends DataSource
+class Dropbox extends DataSource
   constructor: (user, settings) ->
     super user, settings
     @dropboxClient = Promise.promisifyAll new DropboxClient token: user.tokens.dropbox

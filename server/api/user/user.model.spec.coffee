@@ -55,8 +55,8 @@ describe "User Model", ->
     user.authenticate("blah").should.not.be.true
 
   it "should retrieve the syncer class from its syncer property", ->
-    DropboxSyncer = require "../../domain/syncers/dropboxSyncer"
-    user.getSyncerConstructor().should.be.equal DropboxSyncer
+    Dropbox = require("../../domain/syncers/dropbox")
+    user.getSyncerConstructor().should.be.equal Dropbox
 
   it "should persistir correctamente los fulfilled de la lastSync", (done) ->
     new User(
