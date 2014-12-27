@@ -38,7 +38,25 @@ describe "Syncer", ->
         size: "L"
       ]
 
-    syncer = new Syncer client, { warehouse: "Villa Crespo", priceList: "Meli" }, [
+    settings =
+      warehouse: "Villa Crespo"
+      priceList: "Meli"
+      colors: [
+        original: "Rojo pasion"
+        parsimotion: "Rojo"
+      ,
+        original: "Azul especial"
+        parsimotion: "Azul"
+      ]
+      sizes: [
+        original: "Mediano"
+        parsimotion: "M"
+      ,
+        original: "Largo"
+        parsimotion: "L"
+      ]
+
+    syncer = new Syncer client, settings, [
       product1,
       mallaEntera,
 
@@ -60,79 +78,79 @@ describe "Syncer", ->
 
     client.updateStocks.called.should.be.false
 
-  it "joinAjustesYProductos linkea ajustes con productos de Producteca", ->
-    ajustes = syncer.joinAjustesYProductos [
+  describe "cuando los ajustes no tienen variantes", ->
+    ajuste =
       sku: "123456"
       precio: 25
       stock: 40
-    ]
 
-    ajustes.linked[0].should.eql
-      ajuste:
-        sku: "123456"
-        precio: 25
-        stocks: [
+    it "joinAjustesYProductos linkea ajustes con productos de Producteca", ->
+      ajustes = syncer.joinAjustesYProductos [ajuste]
+
+      ajustes.linked[0].should.eql
+        ajuste:
           sku: "123456"
-          stock: 40
           precio: 25
-        ]
-      producto: product1
+          stocks: [
+            sku: "123456"
+            stock: 40
+            precio: 25
+          ]
+        producto: product1
 
-  it "joinAjustesYProductos tiene en cuenta los colores y talles", ->
-    ajustes = syncer.joinAjustesYProductos [
-      sku: "654321"
-      precio: 25
-      stock: 12
-      color: "Rojo pasion"
-      talle: "Mediano"
-    ,
-      sku: "654321"
-      precio: 25
-      stock: 23
-      color: "Rojo pasion"
-      talle: "Largo"
-    ]
+    describe "al ejecutar dispara una request a Parsimotion matcheando el id segun sku,", ->
+      beforeEach ->
+        syncer.execute [ajuste]
 
-    ajustes.linked[0].should.eql
-      ajuste:
+      it "para actualizar stocks", ->
+        client.updateStocks.should.have.been.calledWith
+          id: 1
+          warehouse: "Villa Crespo"
+          stocks: [
+            variation: 2
+            quantity: 40
+          ]
+
+      it "para actualizar el precio", ->
+        client.updatePrice.should.have.been.calledWith product1, "Meli", 25
+
+  describe "cuando los ajustes tienen variantes", ->
+    ajustes = null
+
+    beforeEach ->
+      ajustes = syncer.joinAjustesYProductos [
         sku: "654321"
         precio: 25
-        stocks: [
-          sku: "654321"
-          precio: 25
-          color: "Rojo pasion"
-          talle: "Mediano"
-          stock: 12
-        ,
-          sku: "654321"
-          precio: 25
-          color: "Rojo pasion"
-          talle: "Largo"
-          stock: 23
-        ]
-      producto: mallaEntera
-
-  it "al ejecutar dispara una request a Parsimotion para actualizar stocks, matcheando el id segun sku", ->
-    syncer.execute [
-      sku: "123456"
-      stock: 28
-    ]
-
-    client.updateStocks.should.have.been.calledWith
-      id: 1
-      warehouse: "Villa Crespo"
-      stocks: [
-        variation: 2
-        quantity: 28
+        stock: 12
+        color: "Rojo pasion"
+        talle: "Mediano"
+      ,
+        sku: "654321"
+        precio: 25
+        stock: 23
+        color: "Rojo pasion"
+        talle: "Largo"
       ]
 
-  it "al ejecutar dispara una request a Parsimotion para actualizar el precio, matcheando el id segun sku", ->
-    syncer.execute [
-      sku: "123456"
-      precio: 80
-    ]
-
-    client.updatePrice.should.have.been.calledWith product1, "Meli", 80
+    it "joinAjustesYProductos tiene en cuenta los colores y talles", ->
+      ajustes.linked[0].should.eql
+        ajuste:
+          sku: "654321"
+          precio: 25
+          stocks: [
+            sku: "654321"
+            precio: 25
+            color: "Rojo pasion"
+            talle: "Mediano"
+            stock: 12
+          ,
+            sku: "654321"
+            precio: 25
+            color: "Rojo pasion"
+            talle: "Largo"
+            stock: 23
+          ]
+        producto: mallaEntera
 
   describe "ejecutar devuelve un objeto con el resultado de la sincronizacion:", ->
     resultadoShouldHaveProperty = null
