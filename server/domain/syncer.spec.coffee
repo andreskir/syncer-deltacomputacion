@@ -7,6 +7,7 @@ describe "Syncer", ->
   client = null
   syncer = null
   product1 = null
+  mallaEntera = null
 
   beforeEach ->
     client =
@@ -15,7 +16,7 @@ describe "Syncer", ->
 
     product1 =
       id: 1
-      sku: 123456
+      sku: "123456"
       variations: [
         id: 2
         stocks: [
@@ -24,9 +25,23 @@ describe "Syncer", ->
         ]
       ]
 
+    mallaEntera =
+      id: 3
+      sku: "654321"
+      variations: [
+        id: 31
+        color: "Rojo"
+        size: "M"
+      ,
+        id: 32
+        color: "Rojo"
+        size: "L"
+      ]
+
     syncer = new Syncer client, { warehouse: "Villa Crespo", priceList: "Meli" }, [
-      product1
-    ,
+      product1,
+      mallaEntera,
+
       id: 2
       sku: ""
       variations: [
@@ -47,19 +62,59 @@ describe "Syncer", ->
 
   it "joinAjustesYProductos linkea ajustes con productos de Producteca", ->
     ajustes = syncer.joinAjustesYProductos [
-      sku: 123456
+      sku: "123456"
+      precio: 25
       stock: 40
     ]
 
     ajustes.linked[0].should.eql
       ajuste:
-        sku: 123456
-        stock: 40
+        sku: "123456"
+        precio: 25
+        stocks: [
+          sku: "123456"
+          stock: 40
+          precio: 25
+        ]
       producto: product1
+
+  it "joinAjustesYProductos tiene en cuenta los colores y talles", ->
+    ajustes = syncer.joinAjustesYProductos [
+      sku: "654321"
+      precio: 25
+      stock: 12
+      color: "Rojo pasion"
+      talle: "Mediano"
+    ,
+      sku: "654321"
+      precio: 25
+      stock: 23
+      color: "Rojo pasion"
+      talle: "Largo"
+    ]
+
+    ajustes.linked[0].should.eql
+      ajuste:
+        sku: "654321"
+        precio: 25
+        stocks: [
+          sku: "654321"
+          precio: 25
+          color: "Rojo pasion"
+          talle: "Mediano"
+          stock: 12
+        ,
+          sku: "654321"
+          precio: 25
+          color: "Rojo pasion"
+          talle: "Largo"
+          stock: 23
+        ]
+      producto: mallaEntera
 
   it "al ejecutar dispara una request a Parsimotion para actualizar stocks, matcheando el id segun sku", ->
     syncer.execute [
-      sku: 123456
+      sku: "123456"
       stock: 28
     ]
 
@@ -73,7 +128,7 @@ describe "Syncer", ->
 
   it "al ejecutar dispara una request a Parsimotion para actualizar el precio, matcheando el id segun sku", ->
     syncer.execute [
-      sku: 123456
+      sku: "123456"
       precio: 80
     ]
 
@@ -84,21 +139,21 @@ describe "Syncer", ->
 
     beforeEach ->
       resultado = syncer.execute([
-        sku: 123456, stock: 28
+        sku: "123456", stock: 28
       ,
-        sku: 55555, stock: 70
+        sku: "55555", stock: 70
       ])
 
       resultadoShouldHaveProperty = (name, value) ->
         resultado.then (actualizados) -> actualizados[name].should.eql value
 
     it "los unlinked", ->
-      resultadoShouldHaveProperty "unlinked", [ sku: 55555 ]
+      resultadoShouldHaveProperty "unlinked", [ sku: "55555" ]
 
     it "los fulfilled", ->
       resultadoShouldHaveProperty "fulfilled", [
         id: 1
-        sku: 123456
+        sku: "123456"
         previousStock: 12
         newStock: 28
       ]

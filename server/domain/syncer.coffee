@@ -15,9 +15,15 @@ class Syncer
       unlinked: _.map ajustesYProductos.unlinked, (it) -> sku: it.ajuste.sku
 
   joinAjustesYProductos: (ajustes) ->
-    join = _(ajustes).filter("sku").map (it) =>
-      ajuste: it
-      producto: @_getProductForAjuste it
+    join = _(ajustes)
+    .filter "sku"
+    .groupBy "sku"
+    .map (variantes, sku) =>
+      ajuste:
+        sku: sku
+        precio: (_.head variantes).precio
+        stocks: variantes
+      producto: @_getProductForAjuste (_.head variantes)
     .value()
 
     linked: _.filter join, "producto"
@@ -33,7 +39,7 @@ class Syncer
         id: it.producto.id
         sku: it.ajuste.sku
         previousStock: @_getStock it.producto
-        newStock: it.ajuste.stock
+        newStock: (_.head it.ajuste.stocks).stock
 
   _updateStock: (ajuste, producto) =>
     @parsimotionClient.updateStocks
@@ -41,7 +47,7 @@ class Syncer
       warehouse: @settings.warehouse
       stocks: [
         variation: (@_getVariante producto).id
-        quantity: ajuste.stock
+        quantity: (_.head ajuste.stocks).stock
       ]
 
   _updatePrice: (ajuste, producto) =>
