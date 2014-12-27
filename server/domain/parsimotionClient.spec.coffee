@@ -23,9 +23,11 @@ describe "Parsimotion client", ->
   it "puede hacer update de los stocks", ->
     parsimotionClient.updateStocks
       id: 23
-      variation: 24
-      quantity: 8
       warehouse: "Almagro"
+      stocks: [
+        variation: 24
+        quantity: 8
+      ]
 
     client.putAsync.should.have.been.calledWith "/products/23/stocks", [
       variation: 24

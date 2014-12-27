@@ -38,9 +38,11 @@ class Syncer
   _updateStock: (ajuste, producto) =>
     @parsimotionClient.updateStocks
       id: producto.id
-      variation: (@_getVariante producto).id
-      quantity: ajuste.stock
       warehouse: @settings.warehouse
+      stocks: [
+        variation: (@_getVariante producto).id
+        quantity: ajuste.stock
+      ]
 
   _updatePrice: (ajuste, producto) =>
     @parsimotionClient.updatePrice producto, @settings.priceList, ajuste.precio

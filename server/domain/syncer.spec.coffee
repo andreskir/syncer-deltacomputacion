@@ -65,9 +65,11 @@ describe "Syncer", ->
 
     client.updateStocks.should.have.been.calledWith
       id: 1
-      variation: 2
       warehouse: "Villa Crespo"
-      quantity: 28
+      stocks: [
+        variation: 2
+        quantity: 28
+      ]
 
   it "al ejecutar dispara una request a Parsimotion para actualizar el precio, matcheando el id segun sku", ->
     syncer.execute [
