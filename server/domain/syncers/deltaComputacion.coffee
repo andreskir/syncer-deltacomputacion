@@ -1,12 +1,12 @@
 Promise = require "bluebird"
-SyncerFromSource = require "./syncerFromSource"
+DataSource = require "./dataSource"
 soap = Promise.promisifyAll require "soap"
 read = (require "fs").readFileSync
 xml2js = Promise.promisifyAll require "xml2js"
 
 module.exports =
 
-class DeltaComputacionSyncer extends SyncerFromSource
+class DeltaComputacion extends DataSource
   constructor: (user, settings) ->
     super user, settings
 

@@ -6,7 +6,7 @@ Parsers = require("../parsers/parsers")
 
 module.exports =
 
-class SyncerFromSource
+class DataSource
   constructor: (@user, @settings) ->
     @parsimotionClient = new ParsimotionClient user.tokens.parsimotion
 
@@ -16,8 +16,7 @@ class SyncerFromSource
     @getAjustes()
     .then (resultado) =>
       @parsimotionClient.getProductos().then (productos) =>
-        new Syncer(@parsimotionClient, @user.settings, productos)
-          .execute(resultado.ajustes)
+        new Syncer(@parsimotionClient, @user.settings, productos).execute(resultado.ajustes)
     .then (lastSync) =>
       lastSync.date = Date.now()
       @user.lastSync = lastSync

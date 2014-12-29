@@ -23,6 +23,6 @@ describe "DeltaComputacion Parser", ->
           ]
 
     parser.getAjustes(data).should.eql [
-      { sku: "3", nombre: undefined, precio: 26.14, stock: 56 }
-      { sku: "6", nombre: undefined, precio: 19.28, stock: 0 }
+      { sku: "3", precio: 26.14, stock: 56 }
+      { sku: "6", precio: 19.28, stock: 0 }
     ]

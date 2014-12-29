@@ -54,9 +54,9 @@ describe "User Model", ->
   it "should not authenticate user if password is invalid", ->
     user.authenticate("blah").should.not.be.true
 
-  it "should retrieve the syncer class from its syncer property", ->
-    DropboxSyncer = require "../../domain/syncers/dropboxSyncer"
-    user.getSyncerConstructor().should.be.equal DropboxSyncer
+  it "should retrieve the data source class from its syncer property", ->
+    Dropbox = require("../../domain/syncers/dropbox")
+    user.getDataSourceConstructor().should.be.equal Dropbox
 
   it "should persistir correctamente los fulfilled de la lastSync", (done) ->
     new User(

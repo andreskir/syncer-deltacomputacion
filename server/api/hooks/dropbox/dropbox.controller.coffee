@@ -14,7 +14,7 @@ exports.notification = (req, res) ->
 
   (Q.ninvoke User.find().where("providerId").in(req.body.delta.users), "exec")
   .then (users) ->
-    promises = _.map users, (it) -> it.getSyncer().sync()
+    promises = _.map users, (it) -> it.getDataSource().sync()
     Q.all(promises).then -> res.send 200
 
 isSignatureValid = (req) ->

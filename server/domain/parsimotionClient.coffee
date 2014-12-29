@@ -4,6 +4,8 @@ _ = require("lodash")
 
 config = require("../config/environment")
 
+Producto = require("./producto")
+
 module.exports =
 
 class ParsimotionClient
@@ -20,15 +22,15 @@ class ParsimotionClient
     @client
     .getAsync "/products"
     .spread (req, res, obj) -> obj.results
+    .map (json) -> new Producto json
 
   updateStocks: (adjustment) ->
-    body = [
-      variation: adjustment.variation
+    body = _.map adjustment.stocks, (it) ->
+      variation: it.variation
       stocks: [
         warehouse: adjustment.warehouse
-        quantity: adjustment.quantity
+        quantity: it.quantity
       ]
-    ]
 
     @client
     .putAsync "/products/#{adjustment.id}/stocks", body
