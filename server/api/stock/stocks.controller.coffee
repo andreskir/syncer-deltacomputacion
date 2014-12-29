@@ -9,7 +9,7 @@ respond = (res, promise) ->
 
 exports.stocks = (req, res) ->
   #todo: rename de la ruta /api/stocks a /api/ajustes
-  respond res, req.user.getSyncer().getAjustes(),
+  respond res, req.user.getDataSource().getAjustes(),
 
 exports.sync = (req, res) ->
-  respond res, req.user.getSyncer().sync()
+  respond res, req.user.getDataSource().sync()
