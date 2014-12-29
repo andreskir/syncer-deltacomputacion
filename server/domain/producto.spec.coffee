@@ -1,0 +1,51 @@
+Producto = require("./producto")
+
+describe "Un producto", ->
+  describe "sabe obtener una variante a partir de un ajuste", ->
+    settings = null
+
+    beforeEach ->
+      settings =
+        colors: [
+          original: "Rojo pasion"
+          parsimotion: "Rojo"
+        ,
+          original: "Azul especial"
+          parsimotion: "Azul"
+        ]
+
+        sizes: [
+          original: "Mediano"
+          parsimotion: "M"
+        ,
+          original: "Largo"
+          parsimotion: "L"
+        ]
+
+    it "cuando tiene color y talle", ->
+      conVariantes = new Producto
+        variations: [
+          id: 28
+          color: "Rojo"
+          size: "M"
+        ,
+          id: 29
+          color: "Rojo"
+          size: "L"
+        ]
+
+      ajuste =
+        stock: 32
+        color: "Rojo pasion"
+        talle: "Largo"
+
+      (conVariantes.getVarianteParaAjuste ajuste, settings).id.should.equal 29
+
+    it "cuando no tiene color ni talle", ->
+      sinVariantes = new Producto
+        variations: [ id: 28 ]
+
+      ajuste =
+        stock: 32
+
+      (sinVariantes.getVarianteParaAjuste ajuste, settings).id.should.equal 28
