@@ -20,3 +20,5 @@ class Excel2003Parser
     nombre: row.NOMBRE
     stock: row.STOCK
     precio: row.PRECIO
+    talle: row.TALLE
+    color: row.COLOR

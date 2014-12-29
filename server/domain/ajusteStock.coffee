@@ -1,10 +1,12 @@
-_ = require "lodash"
+_ = require("lodash")
 
-module.exports = class AjusteStock
+module.exports =
+
+class AjusteStock
   constructor: (dto) ->
-    dto = _.mapValues dto, (it) -> it.trim()
+    dto = _.mapValues dto, (it) -> if it? then it.trim() else it
 
-    @sku = dto.sku
-    @nombre = dto.nombre
+    _.extend @, dto
+
     @stock = _.max [0, parseInt dto.stock]
     @precio = parseFloat dto.precio
