@@ -1,7 +1,9 @@
+_ = require("lodash")
 sinon = require("sinon")
 Q = require("q")
 
 Syncer = require("./syncer")
+Producto = require("./producto")
 
 describe "Syncer", ->
   client = null
@@ -14,7 +16,7 @@ describe "Syncer", ->
       updateStocks: sinon.stub().returns Q()
       updatePrice: sinon.stub().returns Q()
 
-    product1 =
+    product1 = new Producto
       id: 1
       sku: "123456"
       variations: [
@@ -25,7 +27,7 @@ describe "Syncer", ->
         ]
       ]
 
-    mallaEntera =
+    mallaEntera = new Producto
       id: 3
       sku: "654321"
       variations: [
@@ -60,14 +62,15 @@ describe "Syncer", ->
       product1,
       mallaEntera,
 
-      id: 2
-      sku: ""
-      variations: [
-        id: 3
-        stocks: [
-          warehouse: "Villa Crespo"
+      new Producto
+        id: 2
+        sku: ""
+        variations: [
+          id: 3
+          stocks: [
+            warehouse: "Villa Crespo"
+          ]
         ]
-      ]
     ]
 
   it "se ignoran los productos cuyo sku es vacio", ->
@@ -88,15 +91,15 @@ describe "Syncer", ->
       ajustes = syncer.joinAjustesYProductos [ajuste]
 
       ajustes.linked[0].should.eql
-        ajuste:
-          sku: "123456"
-          precio: 25
-          stocks: [
+          ajuste:
             sku: "123456"
-            stock: 40
             precio: 25
-          ]
-        producto: product1
+            stocks: [
+              sku: "123456"
+              stock: 40
+              precio: 25
+            ]
+          producto: product1
 
     describe "al ejecutar dispara una request a Parsimotion matcheando el id segun sku,", ->
       beforeEach ->
@@ -118,7 +121,7 @@ describe "Syncer", ->
     ajustes = null
 
     beforeEach ->
-      ajustes = syncer.joinAjustesYProductos [
+      ajustes = [
         sku: "654321"
         precio: 25
         stock: 12
@@ -133,7 +136,7 @@ describe "Syncer", ->
       ]
 
     it "joinAjustesYProductos tiene en cuenta los colores y talles", ->
-      ajustes.linked[0].should.eql
+      (syncer.joinAjustesYProductos ajustes).linked[0].should.eql
         ajuste:
           sku: "654321"
           precio: 25
@@ -151,6 +154,20 @@ describe "Syncer", ->
             stock: 23
           ]
         producto: mallaEntera
+
+    it "al ejecutar dispara una request a Parsimotion para actualizar stocks matcheando las variantes por talle y color", ->
+        syncer.execute ajustes
+
+        client.updateStocks.should.have.been.calledWith
+          id: 3
+          warehouse: "Villa Crespo"
+          stocks: [
+            variation: 31
+            quantity: 12
+          ,
+            variation: 32
+            quantity: 23
+          ]
 
   describe "ejecutar devuelve un objeto con el resultado de la sincronizacion:", ->
     resultadoShouldHaveProperty = null
@@ -172,8 +189,6 @@ describe "Syncer", ->
       resultadoShouldHaveProperty "fulfilled", [
         id: 1
         sku: "123456"
-        previousStock: 12
-        newStock: 28
       ]
 
     it "los failed", ->

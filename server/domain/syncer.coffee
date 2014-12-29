@@ -6,7 +6,7 @@ module.exports =
 class Syncer
   constructor: (@parsimotionClient, @settings, @productos) ->
 
-  execute: (ajustes) ->
+  execute: (ajustes) =>
     ajustesYProductos = @joinAjustesYProductos ajustes
 
     (Q.allSettled @_updateStocksAndPrices ajustesYProductos).then (resultados) =>
@@ -14,7 +14,7 @@ class Syncer
       failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
       unlinked: _.map ajustesYProductos.unlinked, (it) -> sku: it.ajuste.sku
 
-  joinAjustesYProductos: (ajustes) ->
+  joinAjustesYProductos: (ajustes) =>
     join = _(ajustes)
     .filter "sku"
     .groupBy "sku"
@@ -29,7 +29,7 @@ class Syncer
     linked: _.filter join, "producto"
     unlinked: _.reject join, "producto"
 
-  _updateStocksAndPrices: (ajustesYProductos) ->
+  _updateStocksAndPrices: (ajustesYProductos) =>
     ajustesYProductos.linked.map (it) =>
       Q.all [
         @_updatePrice it.ajuste, it.producto
@@ -38,27 +38,26 @@ class Syncer
       .then =>
         id: it.producto.id
         sku: it.ajuste.sku
-        previousStock: @_getStock it.producto
-        newStock: (_.head it.ajuste.stocks).stock
 
   _updateStock: (ajuste, producto) =>
     @parsimotionClient.updateStocks
       id: producto.id
       warehouse: @settings.warehouse
-      stocks: [
-        variation: (@_getVariante producto).id
-        quantity: (_.head ajuste.stocks).stock
-      ]
+      stocks: _.map ajuste.stocks, (it) =>
+        variation: (@_getVariante producto, it).id
+        quantity: it.stock
 
   _updatePrice: (ajuste, producto) =>
     @parsimotionClient.updatePrice producto, @settings.priceList, ajuste.precio
 
-  _getStock: (producto) ->
+  _getStock: (producto) =>
     stock = _.find (@_getVariante producto).stocks, warehouse: @settings.warehouse
     if stock? then stock.quantity else 0
 
-  _getVariante: (product) -> product.variations[0]
-  _getProductForAjuste: (ajuste) -> _.find @productos, sku: ajuste.sku
+  _getVariante: (producto, ajuste) =>
+    producto.getVarianteParaAjuste ajuste, @settings
 
-  _resultadosToProductos: (resultados, promiseState, transform) ->
+  _getProductForAjuste: (ajuste) => _.find @productos, sku: ajuste.sku
+
+  _resultadosToProductos: (resultados, promiseState, transform) =>
     _(resultados).filter(state: promiseState).map(transform).value()
