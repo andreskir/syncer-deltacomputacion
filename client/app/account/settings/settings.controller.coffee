@@ -14,7 +14,7 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
         _($scope.datosExcel).map($scope.settings.columns[field]).uniq().value()
 
       $scope.userColors = getUnique "color"
-      $scope.userSizes = getUnique "talle"
+      $scope.userSizes = _.filter (getUnique "talle"), isNaN
 
   observeAndUpdateSizesAndColors "settings.columns"
   observeAndUpdateSizesAndColors "datosExcel"
