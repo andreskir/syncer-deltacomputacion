@@ -1,14 +1,24 @@
-.form-group
-  label Seleccione su archivo Excel con los stocks
-  input.form-control(type="file", ng-file-select="", on-read-file="parseExcel($fileContent)")
+div(ng-show="columnasExcel == null")
+  .form-group
+    label Seleccione su archivo Excel con los stocks
+    input.form-control(type="file", ng-file-select="", on-read-file="parseExcel($fileContent)")
 
-.row
-  form.form-horizontal
-    .form-group.col-sm-4(ng-repeat="columna in columnasExcelRequeridas")
-      label.control-label {{columna}}
-      select.form-control(ng-model='settings.columns[columna]', ng-options='it for it in columnasExcel')
+div(ng-show="columnasExcel != null")
+  .row
+    form.form-horizontal
+      .form-group.col-sm-4(ng-repeat="columna in columnasExcelRequeridas")
+        label.control-label {{columna}}
+        select.form-control(ng-model='settings.columns[columna]', ng-options='it for it in columnasExcel')
 
-pre {{ primeraFilaExcel | json }}
+  h3 Ejemplo de datos (5 primeras filas)
 
-button.btn.btn-info(ui-sref='settings.colores') Continuar
+  table.table
+    thead
+      tr
+        th(ng-repeat='it in columnasExcel') {{it}}
+    tbody
+      tr(ng-repeat='fila in ejemploFilasExcel')
+        td(ng-repeat='col in columnasExcel') {{fila[col]}}
+
+  button.btn.btn-info(ui-sref='settings.colores') Continuar
 

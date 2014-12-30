@@ -42,7 +42,8 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
     parse = _.compose XLS.utils.sheet_to_json, firstSheet, toWorkbook
 
     $scope.columnasExcelRequeridas = ["sku", "nombre", "precio", "stock", "talle", "color"]
-    $scope.primeraFilaExcel = (_.compose _.head, parse) xls
+    $scope.ejemploFilasExcel = _.take (parse xls), 5
+    $scope.primeraFilaExcel = _.head $scope.ejemploFilasExcel
     $scope.columnasExcel = _.keys $scope.primeraFilaExcel
 
   $scope.save = (form) ->
