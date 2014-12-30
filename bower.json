@@ -15,11 +15,14 @@
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angular-ui-router": "~0.2.10",
-    "angular-rx": "~0.0.12",
+    "angular-rx": "Parsimotion/rx.angular.js#828097b96e85226655e2de245fd8b5e5791d119f",
     "js-xls": "~0.7.2"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
     "angular-scenario": ">=1.2.*"
+  },
+  "resolutions": {
+    "rxjs": "0ffb8d920a752ec9c531f6d3b13798e9a6cc46df"
   }
 }
