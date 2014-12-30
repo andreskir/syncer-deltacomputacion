@@ -7,11 +7,12 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
   $state.go "settings.tokens"
 
   observeAndUpdateSizesAndColors = (watchExpression) ->
-    observeOnScope $scope, watchExpression
+    observeOnScope $scope, watchExpression, _.isEqual
     .filter ({newValue}) -> newValue?
     .subscribe ->
       getUnique = (field) ->
-        _($scope.datosExcel).map($scope.settings.columns[field]).uniq().value()
+        column = $scope.settings.columns[field]
+        _($scope.datosExcel).map(column).uniq().value()
 
       $scope.userColors = getUnique "color"
       $scope.userSizes = _.filter (getUnique "talle"), isNaN
