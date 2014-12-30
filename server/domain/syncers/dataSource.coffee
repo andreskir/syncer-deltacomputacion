@@ -23,4 +23,4 @@ class DataSource
       @user.save()
       lastSync
 
-  _getParser: -> new (require("../parsers/#{@settings.parser}Parser"))()
+  _getParser: => new (require("../parsers/#{@settings.parser}Parser")) @settings

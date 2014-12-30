@@ -5,6 +5,9 @@ AjusteStock = require "../ajusteStock"
 module.exports =
 
 class Excel2003Parser
+  constructor: (settings) ->
+    @columnsMapping = settings?.columns
+
   getAjustes: (data) ->
     workbook = XLS.read data, type: "binary"
     _.map (@_getDataFrom workbook), (row) => new AjusteStock (@_toDto row)
@@ -15,10 +18,8 @@ class Excel2003Parser
   _getFirstSheet: (workbook) ->
     workbook.Sheets[workbook.SheetNames[0]]
 
-  _toDto: (row) ->
-    sku: row.REF
-    nombre: row.NOMBRE
-    stock: row.STOCK
-    precio: row.PRECIO
-    talle: row.TALLE
-    color: row.COLOR
+  _toDto: (row) =>
+    columns = ["sku", "nombre", "precio", "stock", "talle", "color"]
+    values = _.map columns, (col) => row[@columnsMapping[col]]
+
+    _.zipObject columns, values
