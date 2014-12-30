@@ -27,10 +27,19 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
       $scope.colors = producteca.colors()
       $scope.sizes = producteca.sizes()
 
-  $scope.irASiguiente = ->
+  $scope.irAPasoSiguienteSyncer = ->
     nextState =
       if $scope.settings.parser.name is "excel2003"
         "columnasExcel"
+      else
+        "producteca"
+
+    $state.go "settings.#{nextState}"
+
+  $scope.irAPasoSiguienteExcel = ->
+    nextState =
+      if $scope.settings.columns.color? && $scope.settings.columns.talle?
+        "colores"
       else
         "producteca"
 

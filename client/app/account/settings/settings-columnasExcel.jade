@@ -20,5 +20,5 @@ div(ng-show="columnasExcel != null")
       tr(ng-repeat='fila in ejemploFilasExcel')
         td(ng-repeat='col in columnasExcel') {{fila[col]}}
 
-  button.btn.btn-info(ui-sref='settings.colores') Continuar
+  button.btn.btn-info(ng-click="irAPasoSiguienteExcel()") Continuar
 
