@@ -27,6 +27,24 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
       $scope.colors = producteca.colors()
       $scope.sizes = producteca.sizes()
 
+  $scope.irASiguiente = ->
+    nextState =
+      if $scope.settings.parser.name is "excel2003"
+        "columnasExcel"
+      else
+        "producteca"
+
+    $state.go "settings.#{nextState}"
+
+  $scope.parseExcel = (xls) ->
+    firstSheet = (workbook) -> workbook.Sheets[workbook.SheetNames[0]]
+    toWorkbook = (xlsBinary) -> XLS.read xlsBinary, type: "binary"
+    parse = _.compose XLS.utils.sheet_to_json, firstSheet, toWorkbook
+
+    $scope.columnasExcelRequeridas = ["sku", "nombre", "precio", "stock", "talle", "color"]
+    $scope.primeraFilaExcel = (_.compose _.head, parse) xls
+    $scope.columnasExcel = _.keys $scope.primeraFilaExcel
+
   $scope.save = (form) ->
     $scope.submitted = true
 

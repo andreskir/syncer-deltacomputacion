@@ -27,6 +27,10 @@ angular.module 'parsimotionSyncerApp'
     url: '/syncer'
     templateUrl: 'app/account/settings/settings-syncer.html'
 
+  .state 'settings.columnasExcel',
+    url: '/columnasexcel'
+    templateUrl: 'app/account/settings/settings-columnasExcel.html'
+
   .state 'settings.colores',
     url: '/colores'
     templateUrl: 'app/account/settings/settings-colores.html'
