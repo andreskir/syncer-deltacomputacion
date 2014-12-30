@@ -13,7 +13,8 @@ class Producto
     if !ajuste.color?
       return _.head @variations
 
-    @getVariantePorColorYTalle (@_find settings.colors, ajuste.color), (@_find settings.sizes, ajuste.talle)
+    talle = if isNaN ajuste.talle then (@_find settings.sizes, ajuste.talle) else ajuste.talle
+    @getVariantePorColorYTalle (@_find settings.colors, ajuste.color), talle
 
   getVariantePorColorYTalle: (color, talle) =>
     _.find @variations, (it) -> it.color == color && it.size == talle
@@ -22,6 +23,6 @@ class Producto
     mapping = _.find valores, original: buscado
 
     if !mapping?
-      throw new Error "No hay mapping para #{buscado} en #{valores}"
+      throw new Error "No hay mapping para #{buscado} en #{JSON.stringify valores}"
     else
       mapping.parsimotion
