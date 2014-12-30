@@ -32,6 +32,8 @@ module.exports = new Transformer [
 ,
   from: "syncer.settings.fileName", to: "fileName"
 ,
+  from: "syncer.settings.columns", to: "columns"
+,
   from: "tokens.parsimotion", to: "parsimotionToken"
 ,
   from: "settings.priceList", to: "priceList"

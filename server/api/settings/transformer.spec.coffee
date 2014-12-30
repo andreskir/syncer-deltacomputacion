@@ -18,6 +18,8 @@ describe "Settings transformer", ->
         settings:
           parser: "excel2003"
           fileName: "MER.xls"
+          columns:
+            sku: "REF"
 
       tokens:
         parsimotion: "12345678"
@@ -31,6 +33,8 @@ describe "Settings transformer", ->
     (Transformer.toDto user).should.eql
       parser:
         name: "excel2003"
+      columns:
+        sku: "REF"
       fileName: "MER.xls"
       parsimotionToken: "12345678"
       priceList: "Meli"
