@@ -22,24 +22,44 @@ describe "Un producto", ->
           parsimotion: "L"
         ]
 
-    it "cuando tiene color y talle", ->
-      conVariantes = new Producto
-        variations: [
-          id: 28
-          color: "Rojo"
-          size: "M"
-        ,
-          id: 29
-          color: "Rojo"
-          size: "L"
-        ]
+    describe "cuando tiene color y talle", ->
+      it "con letras", ->
+        conVariantes = new Producto
+          variations: [
+            id: 28
+            color: "Rojo"
+            size: "M"
+          ,
+            id: 29
+            color: "Rojo"
+            size: "L"
+          ]
 
-      ajuste =
-        stock: 32
-        color: "Rojo pasion"
-        talle: "Largo"
+        ajuste =
+          stock: 32
+          color: "Rojo pasion"
+          talle: "Largo"
 
-      (conVariantes.getVarianteParaAjuste ajuste, settings).id.should.equal 29
+        (conVariantes.getVarianteParaAjuste ajuste, settings).id.should.equal 29
+
+      it "numerico", ->
+        conVariantes = new Producto
+          variations: [
+            id: 28
+            color: "Rojo"
+            size: "28"
+          ,
+            id: 29
+            color: "Rojo"
+            size: "29"
+          ]
+
+        ajuste =
+          stock: 32
+          color: "Rojo pasion"
+          talle: "29"
+
+        (conVariantes.getVarianteParaAjuste ajuste, settings).id.should.equal 29
 
     it "cuando no tiene color ni talle", ->
       sinVariantes = new Producto
