@@ -592,7 +592,7 @@ module.exports = (grunt) ->
         "env:prod"
         "express:prod"
         "wait"
-        "open"
+        #"open"
         "express-keepalive"
       ])
 
@@ -618,7 +618,7 @@ module.exports = (grunt) ->
       "autoprefixer"
       "express:dev"
       "wait"
-      "open"
+      #"open"
       "watch"
     ]
 
