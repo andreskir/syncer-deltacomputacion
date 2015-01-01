@@ -6,11 +6,9 @@ exports.notification = (req, res) ->
 
   User.findOneAsync(_id: req.body.userId)
     .then (user) =>
-      user.getSyncer().sync()
+      user.getDataSource().sync()
         .then (result) => res.send 200, result
-        .catch => res.send 400, "There was a problem in the sync"
-
-    .catch => res.send 400, "The user doesn't exists"
+    .catch => res.send 400, "There was a problem in the sync"
 
 isSignatureValid = (req) ->
   req.headers["signature"] is process.env.WEBJOB_SIGNATURE
