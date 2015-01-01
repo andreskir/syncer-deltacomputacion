@@ -99,7 +99,7 @@ describe "Syncer", ->
               stock: 40
               precio: 25
             ]
-          producto: product1
+          productos: [product1]
 
     describe "al ejecutar dispara una request a Parsimotion matcheando el id segun sku,", ->
       beforeEach ->
@@ -153,7 +153,7 @@ describe "Syncer", ->
             talle: "Largo"
             stock: 23
           ]
-        producto: mallaEntera
+        productos: [mallaEntera]
 
     it "al ejecutar dispara una request a Parsimotion para actualizar stocks matcheando las variantes por talle y color", ->
         syncer.execute ajustes
@@ -187,7 +187,7 @@ describe "Syncer", ->
 
     it "los fulfilled", ->
       resultadoShouldHaveProperty "fulfilled", [
-        id: 1
+        ids: [1]
         sku: "123456"
       ]
 
