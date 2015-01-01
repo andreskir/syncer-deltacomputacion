@@ -10,8 +10,6 @@ class Syncer
     ajustesYProductos = @joinAjustesYProductos ajustes
 
     (Q.allSettled @_updateStocksAndPrices ajustesYProductos).then (resultados) =>
-      debugger
-
       fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> res.value
       failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
       unlinked: _.map ajustesYProductos.unlinked, (it) -> sku: it.ajuste.sku
