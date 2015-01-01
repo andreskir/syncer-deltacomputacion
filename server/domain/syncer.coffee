@@ -23,20 +23,23 @@ class Syncer
         sku: sku
         precio: (_.head variantes).precio
         stocks: variantes
-      producto: @_getProductForAjuste (_.head variantes)
+      productos: @_getProductosForAjuste (_.head variantes)
     .value()
 
-    linked: _.filter join, "producto"
-    unlinked: _.reject join, "producto"
+    hasProductos = (it) => not _.isEmpty it.productos
+
+    linked: _.filter join, hasProductos
+    unlinked: _.reject join, hasProductos
 
   _updateStocksAndPrices: (ajustesYProductos) =>
     ajustesYProductos.linked.map (it) =>
-      Q.all [
-        @_updatePrice it.ajuste, it.producto
-        @_updateStock it.ajuste, it.producto
+      productos = it.productos
+      Q.all _.flatten [
+        productos.map (p) => @_updatePrice it.ajuste, p
+        productos.map (p) => @_updateStock it.ajuste, p
       ]
       .then =>
-        id: it.producto.id
+        ids: _.map productos, "id"
         sku: it.ajuste.sku
 
   _updateStock: (ajuste, producto) =>
@@ -57,7 +60,8 @@ class Syncer
   _getVariante: (producto, ajuste) =>
     producto.getVarianteParaAjuste ajuste, @settings
 
-  _getProductForAjuste: (ajuste) => _.find @productos, sku: ajuste.sku
+  _getProductosForAjuste: (ajuste) =>
+    _.filter @productos, sku: ajuste.sku
 
   _resultadosToProductos: (resultados, promiseState, transform) =>
     _(resultados).filter(state: promiseState).map(transform).value()
