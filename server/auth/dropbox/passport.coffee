@@ -1,19 +1,15 @@
 passport = require("passport")
-DropboxStrategy = require("passport-dropbox").Strategy
+DropboxOAuth2Strategy = require("passport-dropbox-oauth2").Strategy
 
 exports.setup = (User, config) ->
-  passport.use new DropboxStrategy
-    consumerKey: config.dropbox.clientID
-    consumerSecret: config.dropbox.clientSecret
+  passport.use new DropboxOAuth2Strategy
+    clientID: config.dropbox.clientID
+    clientSecret: config.dropbox.clientSecret
     callbackURL: config.dropbox.callbackURL
-  , (accessToken, tokenSecret, profile, done) ->
+  , (accessToken, refreshToken, profile, done) ->
     User.findOne { provider: "dropbox", providerId: profile.id }, (err, user) ->
       return done err if err
-
-      if user?
-        user.tokens?.dropbox = accessToken
-        user.save()
-        return done err, user
+      return done err, user if user?
 
       user = new User
         name: profile.displayName
