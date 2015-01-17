@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
-    "bluebird": "^2.3.11",
+    "bluebird": "~2.3.11",
     "body-parser": "~1.5.0",
     "coffee-script": "^1.8.0",
     "composable-middleware": "^0.3.0",
@@ -24,19 +24,18 @@
     "method-override": "~1.0.0",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
+    "oauth": "~0.9.12",
     "passport": "~0.2.0",
-    "passport-dropbox-oauth2": "^0.1.6",
+    "passport-dropbox": "^0.1.2",
     "passport-facebook": "latest",
     "passport-local": "~0.1.6",
     "q": "^1.0.1",
     "restify": "^2.8.2",
     "serve-favicon": "~2.0.1",
-    "xlsjs": "^0.7.1",
-    "oauth": "~0.9.12",
-    "xml2js": "~0.4.4",
-    "bluebird": "~2.3.11",
+    "soap": "~0.6.0",
     "timekeeper": "0.0.5",
-    "soap": "~0.6.0"
+    "xlsjs": "^0.7.1",
+    "xml2js": "~0.4.4"
   },
   "devDependencies": {
     "chai": "^1.9.1",
