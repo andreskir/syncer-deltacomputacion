@@ -25,5 +25,5 @@ class DeltaComputacionParser
 
     new AjusteStock
       sku: it.item_id
-      stock: it.FS
-      precio: it.prli_price
+      stock: it.PS
+      precio: it.prli_price + (it.prli_price / 100) * (it.tax_percentage + it.tax_percentage_II)

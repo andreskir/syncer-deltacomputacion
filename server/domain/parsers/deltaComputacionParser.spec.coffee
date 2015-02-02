@@ -11,9 +11,9 @@ describe "DeltaComputacion Parser", ->
       stocks:
         NewDataSet:
           Table: [
-            { item_id: ["3"], FS: ["56.0000"] },
-            { item_id: ["6"], FS: ["0.0000"] }
-            { item_id: ["99"], FS: ["4.0000"] }
+            { item_id: ["3"], PS: ["56.0000"] },
+            { item_id: ["6"], PS: ["0.0000"] }
+            { item_id: ["99"], PS: ["4.0000"] }
           ]
       prices:
         NewDataSet:
