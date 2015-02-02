@@ -8,7 +8,7 @@ module.exports =
 
 class DataSource
   constructor: (@user, @settings) ->
-    @parsimotionClient = new ParsimotionClient user.tokens.parsimotion
+    @parsimotionClient = new ParsimotionClient @user.tokens.parsimotion
 
   getAjustes: -> throw "not implemented"
 
