@@ -22,8 +22,9 @@ class DeltaComputacionParser
 
   _combine: (pair) =>
     it = _.assign _.first(pair), _.last(pair)
+    price = parseFloat it.prli_price
 
     new AjusteStock
-      sku: it.item_id
+      sku: it.item_code
       stock: it.PS
-      precio: it.prli_price + (it.prli_price / 100) * (it.tax_percentage + it.tax_percentage_II)
+      precio: "#{price + (price / 100) * (parseFloat(it.tax_percentage) + parseFloat(it.tax_percentage_II))}"
