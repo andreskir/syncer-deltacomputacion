@@ -676,7 +676,7 @@ module.exports = (grunt) ->
     "concat"
     "ngAnnotate"
     "copy:dist"
-    "cdnify"
+    #"cdnify"
     "cssmin"
     "uglify"
     "rev"
