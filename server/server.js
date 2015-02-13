@@ -3,5 +3,5 @@ require("coffee-script/register");
 var app = require("./app.coffee");
 
 app.server.listen(app.port, app.ip, function() {
-  console.log(JSON.stringify(app));
+  console.log("Express server listening on %d, in %s mode", app.port, app.env);
 });
