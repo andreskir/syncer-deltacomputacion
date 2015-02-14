@@ -10,9 +10,8 @@ class Syncer
     ajustesYProductos = @joinAjustesYProductos ajustes
 
     (Q.allSettled @_updateStocksAndPrices ajustesYProductos).then (resultados) =>
-      fulfilled: @_resultadosToProductos resultados, "fulfilled", (res) -> res.value
-      failed: @_resultadosToProductos resultados, "rejected", (res) -> error: res.reason
-      unlinked: _.map ajustesYProductos.unlinked, (it) -> sku: it.ajuste.sku
+      _.mapValues ajustesYProductos, (ajustesYProductos) =>
+        ajustesYProductos.map (it) => it.ajuste.sku
 
   joinAjustesYProductos: (ajustes) =>
     join = _(ajustes)
@@ -62,6 +61,3 @@ class Syncer
 
   _getProductosForAjuste: (ajuste) =>
     _.filter @productos, sku: ajuste.sku
-
-  _resultadosToProductos: (resultados, promiseState, transform) =>
-    _(resultados).filter(state: promiseState).map(transform).value()
