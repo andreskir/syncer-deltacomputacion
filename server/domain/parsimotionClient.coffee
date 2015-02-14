@@ -1,6 +1,7 @@
 Promise = require("bluebird")
 restify = require("restify")
 _ = require("lodash")
+azure = require("azure-storage")
 
 config = require("../config/environment")
 
@@ -17,14 +18,16 @@ class ParsimotionClient
         Authorization: "Bearer #{accessToken}"
 
   constructor: (accessToken, @client = @constructor.initializeClient accessToken) ->
+    @user = @client.getAsync "/user/me"
+    @queue = azure.createQueueService process.env.PRODUCTECA_QUEUE_NAME, process.env.PRODUCTECA_QUEUE_KEY
 
-  getProductos: ->
+  getProductos: =>
     @client
     .getAsync "/products"
     .spread (req, res, obj) -> obj.results
     .map (json) -> new Producto json
 
-  updateStocks: (adjustment) ->
+  updateStocks: (adjustment) =>
     body = _.map adjustment.stocks, (it) ->
       variation: it.variation
       stocks: [
@@ -32,11 +35,9 @@ class ParsimotionClient
         quantity: it.quantity
       ]
 
-    @client
-    .putAsync "/products/#{adjustment.id}/stocks", body
-    .spread (req, res, obj) -> obj
+    @_sendUpdateToQueue "products/#{adjustment.id}/stocks", body
 
-  updatePrice: (product, priceList, amount) ->
+  updatePrice: (product, priceList, amount) =>
     body =
       prices:
         _(product.prices)
@@ -46,6 +47,12 @@ class ParsimotionClient
           amount: amount
         .value()
 
-    @client
-    .putAsync "/products/#{product.id}", body
-    .spread (req, res, obj) -> obj
+    @_sendUpdateToQueue "/products/#{product.id}", body
+
+  _sendUpdateToQueue: (resource, body) =>
+    @user.spread (_, __, user) =>
+      @queue.createMessage "requests", JSON.stringify
+        method: "PUT"
+        companyId: user.company.id
+        resource: resource
+        body: body
