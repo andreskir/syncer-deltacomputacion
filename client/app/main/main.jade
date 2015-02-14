@@ -9,12 +9,8 @@ div(ng-include='"components/navbar/navbar.html"')
     .col-md-4
       ul.list-group
         li.list-group-item
-          span.badge.alert-success {{ lastSync.fulfilled.length }}
-          | Sincronizados
-
-        li.list-group-item
-          span.badge.alert-danger {{ lastSync.failed.length }}
-          | Fallidos
+          span.badge.alert-success {{ lastSync.linked.length }}
+          | Vinculados
 
         li.list-group-item
           span.badge.alert-warning {{ lastSync.unlinked.length }}
@@ -34,7 +30,7 @@ div(ng-include='"components/navbar/navbar.html"')
           th Talle
           th Stock
           th Precio
-          th Sincronización
+          th Vinculado
       tbody
         tr(ng-repeat="item in ajustes.ajustes | orderBy: 'estadoSincronizacion'", ng-class="{success: item.estadoSincronizacion == 'ok', danger: item.estadoSincronizacion == 'error'}")
           td {{item.sku}}

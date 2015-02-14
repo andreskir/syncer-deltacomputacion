@@ -12,9 +12,9 @@ app.controller 'MainCtrl', ($scope, $http, Stock, Auth) ->
   $scope.sincronizar = ->
     $scope.isSincronizando = true
 
-    $http.post("/api/stocks", timeout: 600000).success (resultadoSincronizacion) ->
+    $http.post("/api/stocks").success (resultadoSincronizacion) ->
       $scope.lastSync = resultadoSincronizacion
-      actualizarEstado resultadoSincronizacion.fulfilled, "ok"
-      actualizarEstado resultadoSincronizacion.failed, "error"
-
       $scope.isSincronizando = false
+
+      actualizarEstado resultadoSincronizacion.linked, "ok"
+      actualizarEstado resultadoSincronizacion.unlinked, "error"
