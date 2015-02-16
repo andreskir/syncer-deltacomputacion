@@ -1,5 +1,22 @@
 _ = require("lodash")
 
+smartParseFloat = (str) ->
+  if !str?
+    return NaN
+
+  if typeof str == 'number'
+    return str
+
+  values = str.split /\.|,/
+
+  if values.length == 1
+    return Number str
+
+  integerPart = (_.initial values).join ""
+  decimalPart = _.last values
+
+  Number (integerPart + "." + decimalPart)
+
 module.exports =
 
 class AjusteStock
@@ -9,4 +26,4 @@ class AjusteStock
     _.extend @, dto
 
     @stock = _.max [0, parseInt dto.stock]
-    @precio = parseFloat dto.precio
+    @precio = smartParseFloat dto.precio

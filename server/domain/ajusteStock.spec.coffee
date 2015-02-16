@@ -6,8 +6,18 @@ describe "Ajuste stock", ->
     ajusteStock.sku.should.equal "915004085101"
     ajusteStock.nombre.should.equal "COLGANTE CLEMENT 3 X E27 MÁX. 23W NEGRO TELA"
 
-  it "parsea el precio a float", ->
-    new AjusteStock(precio: "4160.99").precio.should.equal 4160.99
+  describe "parsea el precio a float", ->
+    it "cuando se usa coma como separador de miles y punto decimal", ->
+      new AjusteStock(precio: "4,160.99").precio.should.equal 4160.99
+
+    it "cuando se usa punto como separador de miles y coma decimal", ->
+      new AjusteStock(precio: "4.160,99").precio.should.equal 4160.99
+
+    it "cuando no tiene separador de miles", ->
+      new AjusteStock(precio: "4160.99").precio.should.equal 4160.99
+
+    it "cuando no tiene puntos ni comas", ->
+      new AjusteStock(precio: "4160").precio.should.equal 4160
 
   it "parsea el stock a int", ->
     new AjusteStock(stock: "2.00").stock.should.equal 2
