@@ -101,7 +101,7 @@ describe "Syncer", ->
             ]
           productos: [product1]
 
-    describe "al ejecutar dispara una request a Parsimotion matcheando el id segun sku,", ->
+    describe "al ejecutar dispara una request a Parsimotion matcheando el id segun sku", ->
       beforeEach ->
         syncer.execute [ajuste]
 
@@ -185,11 +185,5 @@ describe "Syncer", ->
     it "los unlinked", ->
       resultadoShouldHaveProperty "unlinked", [ sku: "55555" ]
 
-    it "los fulfilled", ->
-      resultadoShouldHaveProperty "fulfilled", [
-        ids: [1]
-        sku: "123456"
-      ]
-
-    it "los failed", ->
-      resultadoShouldHaveProperty "failed", []
+    it "los linked", ->
+      resultadoShouldHaveProperty "linked", [ sku: "123456" ]
