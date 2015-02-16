@@ -35,13 +35,7 @@ UserSchema = new Schema
 
   lastSync:
     date: Date
-    fulfilled: [
-      id: Number
-      sku: String
-      previousStock: Number
-      newStock: Number
-    ]
-    failed: [Schema.Types.Mixed]
+    linked: [Schema.Types.Mixed]
     unlinked: [sku: String]
 
   settings:

@@ -11,7 +11,7 @@ class Syncer
 
     (Q.allSettled @_updateStocksAndPrices ajustesYProductos).then (resultados) =>
       _.mapValues ajustesYProductos, (ajustesYProductos) =>
-        ajustesYProductos.map (it) => it.ajuste.sku
+        ajustesYProductos.map (it) => sku: it.ajuste.sku
 
   joinAjustesYProductos: (ajustes) =>
     join = _(ajustes)

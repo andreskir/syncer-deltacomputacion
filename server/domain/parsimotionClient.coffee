@@ -51,8 +51,10 @@ class ParsimotionClient
 
   _sendUpdateToQueue: (resource, body) =>
     @user.spread (_, __, user) =>
-      @queue.createMessage "requests", JSON.stringify
+      message = JSON.stringify
         method: "PUT"
         companyId: user.company.id
         resource: resource
         body: body
+
+      @queue.createMessage "requests", message, =>
