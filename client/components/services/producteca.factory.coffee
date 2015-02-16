@@ -2,35 +2,36 @@ app.factory "Producteca", ($resource) ->
   (token) ->
     setAuthorizationHeader = (data, headersGetter) -> headersGetter().Authorization = "Bearer #{token}"
     toNames = (data) -> _.map (JSON.parse data), "name"
+    endpoint = "http://api.parsimotion.com"
 
-    $resource "http://api.parsimotion.com", {},
+    $resource endpoint, {},
       user:
         method: "GET"
-        url: "http://api.parsimotion.com/user/me"
+        url: "#{endpoint}/user/me"
         transformRequest: setAuthorizationHeader
 
       priceLists:
         method: "GET"
-        url: "http://api.parsimotion.com/pricelists"
+        url: "#{endpoint}/pricelists"
         transformRequest: setAuthorizationHeader
         transformResponse: toNames
         isArray: true
 
       warehouses:
         method: "GET"
-        url: "http://api.parsimotion.com/warehouses"
+        url: "#{endpoint}/warehouses"
         transformRequest: setAuthorizationHeader
         transformResponse: toNames
         isArray: true
 
       colors:
         method: "GET"
-        url: "http://api.parsimotion.com/colors"
+        url: "#{endpoint}/colors"
         transformRequest: setAuthorizationHeader
         isArray: true
 
       sizes:
         method: "GET"
-        url: "http://api.parsimotion.com/products/clothingsizes"
+        url: "#{endpoint}/products/clothingsizes"
         transformRequest: setAuthorizationHeader
         isArray: true
