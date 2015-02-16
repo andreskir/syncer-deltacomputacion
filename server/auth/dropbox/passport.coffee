@@ -9,7 +9,11 @@ exports.setup = (User, config) ->
   , (accessToken, refreshToken, profile, done) ->
     User.findOne { provider: "dropbox", providerId: profile.id }, (err, user) ->
       return done err if err
-      return done err, user if user?
+
+      setTokenAndSave = =>
+        user.tokens.dropbox = accessToken
+        user.save() ; user
+      return done null, setTokenAndSave() if user?
 
       user = new User
         name: profile.displayName
@@ -22,5 +26,5 @@ exports.setup = (User, config) ->
           dropbox: accessToken
 
       user.save (err) ->
-        done err  if err
-        done err, user
+        done err if err
+        done null, user
