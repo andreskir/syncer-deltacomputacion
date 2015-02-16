@@ -8,7 +8,7 @@ describe 'MainCtrl', ->
 
     $httpBackend.expectGET("/api/stocks").respond 200,
       fecha: 461523123
-      stocks: [
+      ajustes: [
         sku: 1
       ,
         sku: 2
@@ -25,7 +25,7 @@ describe 'MainCtrl', ->
 
     $httpBackend.flush()
 
-    expect($scope.ajustes.stocks).toDeepEqual [
+    expect($scope.ajustes.ajustes).toDeepEqual [
       sku: 1, estadoSincronizacion: "ok"
     ,
       sku: 2, estadoSincronizacion: "error"
