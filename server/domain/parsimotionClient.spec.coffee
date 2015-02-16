@@ -7,6 +7,7 @@ chai.Should()
 chai.use require("sinon-chai")
 
 ParsimotionClient = require("./parsimotionClient")
+ParsimotionClient::initializeClient = => {}
 
 describe "Parsimotion client", ->
   client = null
@@ -16,7 +17,8 @@ describe "Parsimotion client", ->
     fastPromise = (value) -> new Promise (resolve) -> resolve [null, null, value]
 
     client =
-      getAsync: sinon.stub().returns fastPromise(company: id: 2)
+      getAsync: sinon.stub().returns fastPromise()
+      user: fastPromise(company: id: 2)
       enqueue: sinon.stub()
 
     parsimotionClient = new ParsimotionClient "", client

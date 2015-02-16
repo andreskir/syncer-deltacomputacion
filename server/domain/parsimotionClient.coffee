@@ -10,7 +10,7 @@ Producto = require("./producto")
 module.exports =
 
 class ParsimotionClient
-  @initializeClient: (accessToken) ->
+  initializeClient: (accessToken) ->
     client = Promise.promisifyAll restify.createJSONClient
       url: config.parsimotion.uri
       agent: false
@@ -19,10 +19,10 @@ class ParsimotionClient
 
     queue = azure.createQueueService process.env.PRODUCTECA_QUEUE_NAME, process.env.PRODUCTECA_QUEUE_KEY
     client.enqueue = (message) => queue.createMessage "requests", message, =>
+    client.user = client.getAsync "/user/me"
     client
 
-  constructor: (accessToken, @client = @constructor.initializeClient accessToken) ->
-    @user = @client.getAsync "/user/me"
+  constructor: (accessToken, @client = @initializeClient accessToken) ->
 
   getProductos: =>
     @client
@@ -53,7 +53,7 @@ class ParsimotionClient
     @_sendUpdateToQueue "products/#{product.id}", body
 
   _sendUpdateToQueue: (resource, body) =>
-    @user.spread (_, __, user) =>
+    @client.user.spread (_, __, user) =>
       message = JSON.stringify
         method: "PUT"
         companyId: user.company.id
