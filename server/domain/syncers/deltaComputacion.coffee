@@ -17,7 +17,7 @@ class DeltaComputacion extends DataSource
       prices:
         method: "MercadoLibre_PriceListItems_funGetXMLData", args: { pPriceList: 13, pItem: -1 }
       stocks:
-        method: "MercadoLibre_ItemStorage_funGetXMLData", args: { intStor_id: 155, intItem_id: -1 }
+        method: "MercadoLibre_ItemStorage_funGetXMLData", args: { intStor_id: 336, intItem_id: -1 }
 
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
