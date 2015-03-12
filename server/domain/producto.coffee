@@ -17,7 +17,7 @@ class Producto
     @getVariantePorColorYTalle (@_find settings.colors, ajuste.color), talle
 
   getVariantePorColorYTalle: (color, talle) =>
-    _.find @variations, (it) -> it.color == color && it.size == talle
+    _.find @variations, (it) -> it.primaryColor == color && it.size == talle
 
   _find: (valores, buscado) =>
     mapping = _.find valores, original: buscado
