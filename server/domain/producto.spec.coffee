@@ -27,11 +27,11 @@ describe "Un producto", ->
         conVariantes = new Producto
           variations: [
             id: 28
-            color: "Rojo"
+            primaryColor: "Rojo"
             size: "M"
           ,
             id: 29
-            color: "Rojo"
+            primaryColor: "Rojo"
             size: "L"
           ]
 
@@ -46,11 +46,11 @@ describe "Un producto", ->
         conVariantes = new Producto
           variations: [
             id: 28
-            color: "Rojo"
+            primaryColor: "Rojo"
             size: "28"
           ,
             id: 29
-            color: "Rojo"
+            primaryColor: "Rojo"
             size: "29"
           ]
 

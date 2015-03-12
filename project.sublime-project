@@ -3,7 +3,7 @@
 		{
 			"follow_symlinks": true,
 			"path": ".",
-			"folder_exclude_patterns": [".*", "ci", "node_modules", "client/bower_components"],
+			"folder_exclude_patterns": [".*", "ci", "node_modules", "dist", "client/bower_components"],
 			"file_exclude_patterns": [".*", "*.sublime-workspace"]
 		}
 	],

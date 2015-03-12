@@ -32,11 +32,11 @@ describe "Syncer", ->
       sku: "654321"
       variations: [
         id: 31
-        color: "Rojo"
+        primaryColor: "Rojo"
         size: "M"
       ,
         id: 32
-        color: "Rojo"
+        primaryColor: "Rojo"
         size: "L"
       ]
 
