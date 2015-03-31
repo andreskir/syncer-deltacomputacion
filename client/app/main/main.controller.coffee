@@ -7,7 +7,7 @@ app.controller 'MainCtrl', ($scope, $http, Stock, Auth) ->
 
   $scope.ajustes = Stock.query()
   Auth.getCurrentUser().$promise.then (user) ->
-    $scope.lastSync = user.lastSync
+    $scope.lastSync = _(user.history).sortBy("date").last()
 
   $scope.sincronizar = ->
     $scope.isSincronizando = true
