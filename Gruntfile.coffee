@@ -484,7 +484,7 @@ module.exports = (grunt) ->
   # Compiles CoffeeScript to JavaScript
     coffee:
       options:
-        sourceMap: true
+        sourceMap: false
         sourceRoot: ""
 
       server:
