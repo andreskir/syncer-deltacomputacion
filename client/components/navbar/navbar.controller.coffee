@@ -5,6 +5,9 @@ angular.module 'parsimotionSyncerApp'
   $scope.menu = [
     title: 'Inicio'
     link: '/'
+  ,
+    title: 'Historial'
+    link: '/history'
   ]
   $scope.isCollapsed = true
   $scope.isLoggedIn = Auth.isLoggedIn

@@ -19,7 +19,7 @@ class DataSource
         new Syncer(@parsimotionClient, @user.settings, productos).execute(resultado.ajustes)
     .then (lastSync) =>
       lastSync.date = Date.now()
-      @user.lastSync = lastSync
+      @user.history.push lastSync
       @user.save()
       lastSync
 

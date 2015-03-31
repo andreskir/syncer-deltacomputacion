@@ -58,17 +58,19 @@ describe "User Model", ->
     Dropbox = require("../../domain/syncers/dropbox")
     user.getDataSourceConstructor().should.be.equal Dropbox
 
-  it "should persistir correctamente los linked de la lastSync", (done) ->
+  it "should persistir correctamente los linked en el historial", (done) ->
     new User(
       provider: 'dropbox'
       providerId: 12345678
-      lastSync:
+      history: [
         linked: [ sku: "12345" ]
+      ]
     ).save ->
       User.find {}, (err, users) ->
         userShouldHaveProperties = (properties) ->
           for name, value of properties
-            users[0].lastSync.linked[0].should.have.property name, value
+            lastSync = users[0].history[0]
+            lastSync.linked[0].should.have.property name, value
 
         userShouldHaveProperties
           sku: "12345"
