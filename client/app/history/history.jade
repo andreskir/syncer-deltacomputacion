@@ -1,0 +1,20 @@
+div(ng-include='"components/navbar/navbar.html"')
+.container
+  .row
+    .col-sm-12
+      h3 Historial de sincronizaciones
+    .col-sm-12
+    .container(ng-repeat="sync in history")
+      .row
+        .col-md-4
+          ul.list-group
+            h4.list-group-item
+                span {{ sync.date | date: 'medium' }}
+
+            li.list-group-item
+              span.badge.alert-success {{ sync.linked.length }}
+              | Vinculados
+
+            li.list-group-item
+              span.badge.alert-warning {{ sync.unlinked.length }}
+              | No vinculados
