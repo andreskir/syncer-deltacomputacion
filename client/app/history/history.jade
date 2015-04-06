@@ -12,9 +12,9 @@ div(ng-include='"components/navbar/navbar.html"')
                 span {{ sync.date | date: 'medium' }}
 
             li.list-group-item
-              span.badge.alert-success {{ sync.linked.length }}
+              span.badge.alert-success {{ sync.linked }}
               | Vinculados
 
             li.list-group-item
-              span.badge.alert-warning {{ sync.unlinked.length }}
+              span.badge.alert-warning {{ sync.unlinked }}
               | No vinculados

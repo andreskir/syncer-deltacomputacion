@@ -1,4 +1,4 @@
-Q = require("q")
+_ = require("lodash")
 
 ParsimotionClient = require("../parsimotionClient")
 Syncer = require("../syncer")
@@ -19,7 +19,10 @@ class DataSource
         new Syncer(@parsimotionClient, @user.settings, productos).execute(resultado.ajustes)
     .then (lastSync) =>
       lastSync.date = Date.now()
-      @user.history.push lastSync
+      @user.lastSync = lastSync
+      @user.history.push _.mapValues lastSync, (items) =>
+        if _.isArray items then items.length
+        else items
       @user.save()
       lastSync
 

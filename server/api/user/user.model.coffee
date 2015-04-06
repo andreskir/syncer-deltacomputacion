@@ -33,10 +33,15 @@ UserSchema = new Schema
       default: "dropbox"
     settings: Schema.Types.Mixed
 
-  history: [
+  lastSync:
     date: Date
     linked: [Schema.Types.Mixed]
     unlinked: [sku: String]
+
+  history: [
+    date: Date
+    linked: Number
+    unlinked: Number
   ]
 
   settings:

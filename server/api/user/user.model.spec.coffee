@@ -62,15 +62,13 @@ describe "User Model", ->
     new User(
       provider: 'dropbox'
       providerId: 12345678
-      history: [
+      lastSync:
         linked: [ sku: "12345" ]
-      ]
     ).save ->
       User.find {}, (err, users) ->
         userShouldHaveProperties = (properties) ->
           for name, value of properties
-            lastSync = users[0].history[0]
-            lastSync.linked[0].should.have.property name, value
+            users[0].lastSync.linked[0].should.have.property name, value
 
         userShouldHaveProperties
           sku: "12345"
