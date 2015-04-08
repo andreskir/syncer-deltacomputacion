@@ -6,12 +6,12 @@ global.chai = require("chai")
 chai.Should()
 chai.use require("sinon-chai")
 
-ParsimotionClient = require("./parsimotionClient")
-ParsimotionClient::initializeClient = => {}
+ProductecaApi = require("./productecaApi")
+ProductecaApi::initializeClient = => {}
 
-describe "Parsimotion client", ->
+describe "Producteca API", ->
   client = null
-  parsimotionClient = null
+  productecaApi = null
 
   beforeEach ->
     fastPromise = (value) -> new Promise (resolve) -> resolve [null, null, value]
@@ -21,10 +21,10 @@ describe "Parsimotion client", ->
       user: fastPromise(company: id: 2)
       enqueue: sinon.stub()
 
-    parsimotionClient = new ParsimotionClient "", client
+    productecaApi = new ProductecaApi "", client
 
   it "puede hacer update de los stocks", (done) ->
-    parsimotionClient.updateStocks
+    productecaApi.updateStocks
       id: 23
       warehouse: "Almagro"
       stocks: [
@@ -47,7 +47,7 @@ describe "Parsimotion client", ->
       done()
 
   it "puede hacer update del precio especificado", (done) ->
-    parsimotionClient.updatePrice
+    productecaApi.updatePrice
       id: 25
       prices: [
         priceList: "Default"

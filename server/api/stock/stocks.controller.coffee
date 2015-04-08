@@ -1,9 +1,5 @@
 Q = require("q")
 
-FixedLengthParser = require("../../domain/parsers/fixedLengthParser")
-Syncer = require("../../domain/syncer")
-ParsimotionClient = require("../../domain/parsimotionClient")
-
 respond = (res, promise) ->
   promise.then ((data) -> res.send 200, data), (error) -> console.error error ; res.send 500, error
 

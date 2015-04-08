@@ -1,6 +1,6 @@
 _ = require("lodash")
 
-ParsimotionClient = require("../parsimotionClient")
+ProductecaApi = require("../productecaApi")
 Syncer = require("../syncer")
 Parsers = require("../parsers/parsers")
 
@@ -8,15 +8,15 @@ module.exports =
 
 class DataSource
   constructor: (@user, @settings) ->
-    @parsimotionClient = new ParsimotionClient @user.tokens.parsimotion
+    @productecaApi = new ParsimotionClient @user.tokens.parsimotion
 
   getAjustes: -> throw "not implemented"
 
   sync: ->
     @getAjustes()
     .then (resultado) =>
-      @parsimotionClient.getProductos().then (productos) =>
-        new Syncer(@parsimotionClient, @user.settings, productos).execute(resultado.ajustes)
+      @productecaApi.getProductos().then (productos) =>
+        new Syncer(@productecaApi, @user.settings, productos).execute(resultado.ajustes)
     .then (lastSync) =>
       lastSync.date = Date.now()
       @user.lastSync = lastSync
