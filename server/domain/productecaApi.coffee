@@ -9,7 +9,7 @@ Producto = require("./producto")
 
 module.exports =
 
-class ParsimotionClient
+class ProductecaApi
   initializeClient: (accessToken) ->
     client = Promise.promisifyAll restify.createJSONClient
       url: config.parsimotion.uri
