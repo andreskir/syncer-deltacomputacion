@@ -683,8 +683,4 @@ module.exports = (grunt) ->
     "usemin"
   ]
 
-  grunt.registerTask "default", [
-    "newer:jshint"
-    "test"
-    "build"
-  ]
+  grunt.registerTask "default", "serve"
