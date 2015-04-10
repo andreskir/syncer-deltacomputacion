@@ -5,6 +5,10 @@ Q = require("q")
 Syncer = require("./syncer")
 Producto = require("./producto")
 
+chai = require("chai")
+chai.Should()
+chai.use require("sinon-chai")
+
 describe "Syncer", ->
   client = null
   syncer = null
