@@ -4,7 +4,7 @@ _ = require("lodash")
 module.exports =
 
 class Syncer
-  constructor: (@parsimotionClient, @settings, @productos) ->
+  constructor: (@productecaApi, @settings, @productos) ->
 
   execute: (ajustes) =>
     ajustesYProductos = @joinAjustesYProductos ajustes
@@ -42,7 +42,7 @@ class Syncer
         sku: it.ajuste.sku
 
   _updateStock: (ajuste, producto) =>
-    @parsimotionClient.updateStocks
+    @productecaApi.updateStocks
       id: producto.id
       warehouse: @settings.warehouse
       stocks: _.map ajuste.stocks, (it) =>
@@ -50,7 +50,7 @@ class Syncer
         quantity: it.stock
 
   _updatePrice: (ajuste, producto) =>
-    @parsimotionClient.updatePrice producto, @settings.priceList, ajuste.precio
+    @productecaApi.updatePrice producto, @settings.priceList, ajuste.precio
 
   _getStock: (producto) =>
     stock = _.find (@_getVariante producto).stocks, warehouse: @settings.warehouse
