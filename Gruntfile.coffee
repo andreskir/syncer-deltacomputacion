@@ -399,9 +399,9 @@ module.exports = (grunt) ->
           remote: "https://#{process.env.AZURE_GIT_CREDENTIALS}@parsimotion-syncer.scm.azurewebsites.net:443/parsimotion-syncer.git"
           branch: "master"
 
-      azurestaging:
+      azuredevelopment:
         options:
-          remote: "https://#{process.env.AZURE_GIT_CREDENTIALS_STAGING}@parsimotion-syncer-staging.scm.azurewebsites.net:443/parsimotion-syncer.git"
+          remote: "https://#{process.env.AZURE_GIT_CREDENTIALS_DEVELOPMENT}@parsimotion-syncer-development.scm.azurewebsites.net:443/parsimotion-syncer-development.git"
           branch: "master"
 
       openshift:
