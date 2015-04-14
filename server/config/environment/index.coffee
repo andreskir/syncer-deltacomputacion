@@ -43,7 +43,7 @@ all =
     callbackURL: (process.env.DOMAIN or "") + "/auth/dropbox/callback"
 
   parsimotion:
-    uri: process.env.PARSIMOTION_URI or "http://api.parsimotion.com"
+    uri: process.env.PARSIMOTION_URI or "http://api.producteca.com"
 
 # Export the config object based on the NODE_ENV
 # ==============================================

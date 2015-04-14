@@ -20,15 +20,16 @@ app.controller 'SettingsCtrl', ($scope, $state, observeOnScope, Settings, Produc
   observeAndUpdateSizesAndColors "settings.columns"
   observeAndUpdateSizesAndColors "datosExcel"
 
-  observeOnScope $scope, "settings.parsimotionToken"
-  .filter ({newValue}) -> newValue?
-  .map ({newValue}) -> new Producteca newValue
-  .subscribe (producteca) ->
-    $scope.user = producteca.user()
-    $scope.priceLists = producteca.priceLists()
-    $scope.warehouses = producteca.warehouses()
-    $scope.colors = producteca.colors()
-    $scope.sizes = producteca.sizes()
+  Producteca.then (Producteca) =>
+    observeOnScope $scope, "settings.parsimotionToken"
+    .filter ({newValue}) -> newValue?
+    .map ({newValue}) -> new Producteca newValue
+    .subscribe (producteca) ->
+      $scope.user = producteca.user()
+      $scope.priceLists = producteca.priceLists()
+      $scope.warehouses = producteca.warehouses()
+      $scope.colors = producteca.colors()
+      $scope.sizes = producteca.sizes()
 
   $scope.irAPasoSiguienteSyncer = ->
     nextState =

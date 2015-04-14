@@ -1,37 +1,40 @@
 app.factory "Producteca", ($resource) ->
-  (token) ->
-    setAuthorizationHeader = (data, headersGetter) -> headersGetter().Authorization = "Bearer #{token}"
-    toNames = (data) -> _.map (JSON.parse data), "name"
-    endpoint = "http://api.parsimotion.com"
+  envResource = $resource "/api/settings/env", { }
 
-    $resource endpoint, {},
-      user:
-        method: "GET"
-        url: "#{endpoint}/user/me"
-        transformRequest: setAuthorizationHeader
+  envResource.get().$promise.then (env) =>
+    (token) ->
+      setAuthorizationHeader = (data, headersGetter) -> headersGetter().Authorization = "Bearer #{token}"
+      toNames = (data) -> _.map (JSON.parse data), "name"
+      endpoint = env.apiUrl
 
-      priceLists:
-        method: "GET"
-        url: "#{endpoint}/pricelists"
-        transformRequest: setAuthorizationHeader
-        transformResponse: toNames
-        isArray: true
+      $resource endpoint, {},
+        user:
+          method: "GET"
+          url: "#{endpoint}/user/me"
+          transformRequest: setAuthorizationHeader
 
-      warehouses:
-        method: "GET"
-        url: "#{endpoint}/warehouses"
-        transformRequest: setAuthorizationHeader
-        transformResponse: toNames
-        isArray: true
+        priceLists:
+          method: "GET"
+          url: "#{endpoint}/pricelists"
+          transformRequest: setAuthorizationHeader
+          transformResponse: toNames
+          isArray: true
 
-      colors:
-        method: "GET"
-        url: "#{endpoint}/colors"
-        transformRequest: setAuthorizationHeader
-        isArray: true
+        warehouses:
+          method: "GET"
+          url: "#{endpoint}/warehouses"
+          transformRequest: setAuthorizationHeader
+          transformResponse: toNames
+          isArray: true
 
-      sizes:
-        method: "GET"
-        url: "#{endpoint}/products/clothingsizes"
-        transformRequest: setAuthorizationHeader
-        isArray: true
+        colors:
+          method: "GET"
+          url: "#{endpoint}/colors"
+          transformRequest: setAuthorizationHeader
+          isArray: true
+
+        sizes:
+          method: "GET"
+          url: "#{endpoint}/products/clothingsizes"
+          transformRequest: setAuthorizationHeader
+          isArray: true
