@@ -12,8 +12,6 @@ class DataSource
   constructor: (@user, @settings) ->
     @productecaApi = new ProductecaApi
       accessToken: @user.tokens.parsimotion
-      queueName: process.env.PRODUCTECA_QUEUE_NAME
-      queueKey: process.env.PRODUCTECA_QUEUE_KEY
       url: config.parsimotion.uri
 
   getAjustes: -> throw "not implemented"
