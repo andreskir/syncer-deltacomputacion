@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
-    "producteca-sdk": "git://github.com/Parsimotion/producteca-sdk.git#0.0.3",
+    "producteca-sdk": "git://github.com/Parsimotion/producteca-sdk.git#0.0.4",
     "bluebird": "^2.3.11",
     "body-parser": "~1.5.0",
     "coffee-script": "^1.8.0",
