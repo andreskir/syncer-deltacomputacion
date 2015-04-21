@@ -15,6 +15,7 @@ exports.notification = (req, res) ->
   User.find().where("providerId").in(req.body.delta.users).exec (err, users) =>
     if err then res.send 400, err
 
+    console.log "Synchronizing from Dropbox..."
     promises = _.map users, (it) -> it.getDataSource().sync()
     Q.all(promises).then -> res.send 200
 

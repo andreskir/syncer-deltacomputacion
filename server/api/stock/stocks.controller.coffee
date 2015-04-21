@@ -8,4 +8,5 @@ exports.stocks = (req, res) ->
   respond res, req.user.getDataSource().getAjustes()
 
 exports.sync = (req, res) ->
+  console.log "Synchronizing by user request..."
   respond res, req.user.getDataSource().sync()
