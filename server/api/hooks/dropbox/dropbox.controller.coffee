@@ -12,8 +12,9 @@ exports.notification = (req, res) ->
   if not isSignatureValid req
     return res.send 403, "Invalid signature"
 
-  (Q.ninvoke User.find().where("providerId").in(req.body.delta.users), "exec")
-  .then (users) ->
+  User.find().where("providerId").in(req.body.delta.users).exec (err, users) =>
+    if err then res.send 400, err
+
     promises = _.map users, (it) -> it.getDataSource().sync()
     Q.all(promises).then -> res.send 200
 
