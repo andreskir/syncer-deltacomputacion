@@ -21,16 +21,17 @@ class DataSource
       .then (resultado) =>
         @productecaApi
           .getProducts()
-          .map (json) -> new Producto json
-          .then (productos) => 
+          .then (jsons) ->
+            jsons.map (json) => new Producto json
+          .then (productos) =>
             new Syncer(@productecaApi, @user.settings, productos).execute(resultado.ajustes)
-    .then (lastSync) =>
-      lastSync.date = Date.now()
-      @user.lastSync = lastSync
-      @user.history.push _.mapValues lastSync, (items) =>
-        if _.isArray items then items.length
-        else items
-      @user.save()
-      lastSync
+      .then (lastSync) =>
+        lastSync.date = Date.now()
+        @user.lastSync = lastSync
+        @user.history.push _.mapValues lastSync, (items) =>
+          if _.isArray items then items.length
+          else items
+        @user.save()
+        lastSync
 
   _getParser: => new (require("../parsers/#{@settings.parser}Parser")) @settings
