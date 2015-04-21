@@ -13,7 +13,7 @@ exports.notification = (req, res) ->
     return res.send 403, "Invalid signature"
 
   User.find().where("providerId").in(req.body.delta.users).exec (err, users) =>
-    if err then res.send 400, err
+    if err then return res.send 400, err
 
     console.log "Synchronizing from Dropbox..."
     promises = _.map users, (it) -> it.getDataSource().sync()
