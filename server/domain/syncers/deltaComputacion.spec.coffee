@@ -1,5 +1,5 @@
 DeltaComputacion = require("./deltaComputacion")
-Promise = require "bluebird"
+Promise = require("bluebird")
 
 describe "DeltaComputacion", ->
   dummyUser = null ; dummyParser = null ; now = new Date()

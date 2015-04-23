@@ -14,7 +14,7 @@ class DataSource
       accessToken: @user.tokens.parsimotion
       url: config.parsimotion.uri
 
-  getAjustes: -> throw "not implemented"
+  getAjustes: -> throw new Error "not implemented"
 
   sync: ->
     @getAjustes()
@@ -32,5 +32,7 @@ class DataSource
         else items
       @user.save()
       lastSync
+
+  _parse: (ajustes) => @_getParser().getAjustes ajustes
 
   _getParser: => new (require("../parsers/#{@settings.parser}Parser")) @settings

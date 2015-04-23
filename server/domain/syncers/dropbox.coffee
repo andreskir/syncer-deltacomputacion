@@ -1,5 +1,5 @@
-Promise = require "bluebird"
-DataSource = require "./dataSource"
+Promise = require("bluebird")
+DataSource = require("./dataSource")
 DropboxClient = require("dropbox").Client
 
 module.exports =
@@ -14,4 +14,4 @@ class Dropbox extends DataSource
     .readFileAsync @settings.fileName, binary: true
     .then (data) =>
       fecha: Date.parse data[1]._json.modified
-      ajustes: @_getParser().getAjustes data[0]
+      ajustes: @_parse data[0]
