@@ -1,6 +1,8 @@
 Promise = require("bluebird")
 soap = Promise.promisifyAll require("soap")
 
+module.exports = 
+
 # A SOAP request
 class SoapRequest
   # wsdlUrl = "http://server.com/stocks?wsdl"
@@ -16,7 +18,8 @@ class SoapRequest
   query: (request, headers...) =>
     soap.createClientAsync(@wsdlUrl).then (client) =>
       client = Promise.promisifyAll client
-      headers.forEach client.addSoapHeader
+      headers.forEach (h) => client.addSoapHeader h
 
+      adapter = request.getResult || (r) => r
       client["#{request.method}Async"](request.args)
-        .spread request.getResult
+        .spread adapter

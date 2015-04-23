@@ -39,8 +39,9 @@ class DeltaComputacion extends DataSource
 
   _doRequest: (name, token) =>
     request = @requests[name]
-    request.getResult = (data) => data["#{@requests[name].method}Result"]
-    new SoapRequest(@url).query request, @_header token
+    new SoapRequest(@url)
+      .query request, @_header token
+      .then (data) => data["#{request.method}Result"]
 
   _header: (token) =>
     @requests.header
