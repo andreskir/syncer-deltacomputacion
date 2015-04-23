@@ -1,8 +1,8 @@
-Promise = require "bluebird"
-DataSource = require "./dataSource"
-soap = Promise.promisifyAll require "soap"
+DataSource = require("./dataSource")
+SoapRequest = require("./webservices/soapRequest")
+Promise = require("bluebird")
 read = (require "fs").readFileSync
-xml2js = Promise.promisifyAll require "xml2js"
+xml2js = Promise.promisifyAll require("xml2js")
 
 module.exports =
 
@@ -22,7 +22,7 @@ class DeltaComputacion extends DataSource
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
 
-  getAjustes: ->
+  getAjustes: =>
     @getToken().then (token) =>
       Promise.props({
         stocks: @_doRequest "stocks", token
@@ -33,18 +33,15 @@ class DeltaComputacion extends DataSource
           prices: xml2js.parseStringAsync xmls.prices
         }).then (data) =>
           fecha: new Date()
-          ajustes: @_getParser().getAjustes data
+          ajustes: @_parse data
 
   getToken: => @_doRequest "login"
 
   _doRequest: (name, token) =>
-    soap.createClientAsync(@url).then (client) =>
-      client = Promise.promisifyAll client
-      client.addSoapHeader @_header token
-
-      request = @requests[name]
-      client["#{request.method}Async"](request.args).spread (data) =>
-        data["#{@requests[name].method}Result"]
+    request = @requests[name]
+    new SoapRequest(@url)
+      .query request, @_header token
+      .then (data) => data["#{request.method}Result"]
 
   _header: (token) =>
     @requests.header
