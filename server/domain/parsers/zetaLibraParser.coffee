@@ -15,7 +15,6 @@ class ZetaLibraParser
 
   _combine: (pair) =>
     it = _.assign _.first(pair), _.last(pair)
-    price = parseFloat it.prli_price
 
     new AjusteStock
       sku: it.CodigoArticulo

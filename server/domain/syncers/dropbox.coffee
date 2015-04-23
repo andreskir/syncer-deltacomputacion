@@ -9,7 +9,7 @@ class Dropbox extends DataSource
     super user, settings
     @dropboxClient = Promise.promisifyAll new DropboxClient token: user.tokens.dropbox
 
-  getAjustes: ->
+  getAjustes: =>
     @dropboxClient
     .readFileAsync @settings.fileName, binary: true
     .then (data) =>

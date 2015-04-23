@@ -1,5 +1,5 @@
 DataSource = require "./dataSource"
-SoapRequest = "./webservices/soapRequest"
+SoapRequest = require "./webservices/soapRequest"
 Promise = require "bluebird"
 _ = require("lodash")
 
@@ -29,13 +29,13 @@ class ZetaLibra extends DataSource
           Cantidad: 0
         getResult: (r) => r.Listaprecios["PreciosSDT.PrecioItem"]
 
-  getAjustes: ->
+  getAjustes: =>
     Promise
       .props _.mapValues @requests, @_doRequest
       .then (data) =>
         fecha: new Date()
         ajustes: @_parse data
 
-  _doRequest: (request) ->
-      new SoapRequest("#{@settings.url}/#{request.endpoint}?wsdl")
-        .query request
+  _doRequest: (request) =>
+    new SoapRequest("#{@settings.url}/#{request.endpoint}?wsdl")
+      .query request

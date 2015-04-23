@@ -22,7 +22,7 @@ class DeltaComputacion extends DataSource
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
 
-  getAjustes: ->
+  getAjustes: =>
     @getToken().then (token) =>
       Promise.props({
         stocks: @_doRequest "stocks", token

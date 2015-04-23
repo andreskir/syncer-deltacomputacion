@@ -14,9 +14,9 @@ class DataSource
       accessToken: @user.tokens.parsimotion
       url: config.parsimotion.uri
 
-  getAjustes: -> throw new Error "not implemented"
+  getAjustes: => throw new Error "not implemented"
 
-  sync: ->
+  sync: =>
     @getAjustes()
       .then (resultado) =>
         @productecaApi
