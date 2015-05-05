@@ -1,7 +1,0 @@
-<wsBasicQueryHeader xmlns="http://microsoft.com/webservices/">
-  <pUsername>$username</pUsername>
-  <pPassword>$password</pPassword>
-  <pCompany>1</pCompany>
-  <pWebWervice>1000</pWebWervice>
-  <pAuthenticatedToken>$token</pAuthenticatedToken>
-</wsBasicQueryHeader>
