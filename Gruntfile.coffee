@@ -404,6 +404,11 @@ module.exports = (grunt) ->
           remote: "https://#{process.env.AZURE_GIT_CREDENTIALS_DEVELOPMENT}@parsimotion-syncer-development.scm.azurewebsites.net:443/parsimotion-syncer-development.git"
           branch: "master"
 
+      deltaproduction:
+        options:
+          remote: "https://#{process.env.AZURE_GIT_CREDENTIALS}@syncer-deltacomputacion.scm.azurewebsites.net:443/syncer-deltacomputacion.git"
+          branch: "master"
+
       openshift:
         options:
           remote: "openshift"
