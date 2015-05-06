@@ -19,11 +19,13 @@ class DeltaComputacion extends DataSource
         method: "MercadoLibre_PriceListItems_funGetXMLData", args: { pPriceList: 13, pItem: -1 }
       stocks:
         method: "MercadoLibre_ItemStorage_funGetXMLData", args: { intStor_id: 336, intItem_id: -1 }
-      createClient:
+      createContact:
         method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
           strEmailFrom4InsertNotification: "info@deltacomputacion.com.ar"
           intCustIdMaster: 1
+      contacts:
+        method: "Customers_funGetXMLData", args: pbra_id: 1, pcust_id: 1, ppage_number: 0
 
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
@@ -31,7 +33,7 @@ class DeltaComputacion extends DataSource
   exportOrders: (orders) =>
     #convertir orders de producteca a dominio de ellos
 
-    # client =
+    # contact =
     #   strNname: "Carlos Lombardi"
     #   strCountry: "54" #argentina
     #   strState: "54001" #córdoba
@@ -45,9 +47,9 @@ class DeltaComputacion extends DataSource
     #   strPhone: "46445455"
     #   strNickName: "CARLOSVENDEDOR"
 
-    console.log client
+    console.log contact
     #@getToken().then (token) =>
-      #@_doRequest("createClient", token, client).then (clientId) =>
+      #@_doRequest("createContact", token, contact).then (clientId) =>
         #console.log clientId
         #clientId
 
@@ -66,13 +68,14 @@ class DeltaComputacion extends DataSource
 
   getToken: => @_doRequest "login"
 
+  getContacts: (token) => @_doRequest "contacts", token
+
   _doRequest: (name, token) =>
     request = _.clone @requests[name]
     request.args = _.assign args, request.args
+    request.getResult = (data) => data["#{request.method}Result"]
 
-    new SoapRequest(@url)
-      .query request, @_header token
-      .then (data) => data["#{request.method}Result"]
+    new SoapRequest(@url).query request, @_header token
 
   _header: (token) =>
     @requests.header
