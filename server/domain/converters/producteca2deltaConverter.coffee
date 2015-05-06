@@ -5,6 +5,8 @@ module.exports =
 class Producteca2Delta
   getCustomer: (contact, lastVirtualTaxNumber) ->
     taxId = contact.taxId
+    if not taxId? and not lastVirtualNumber?
+      throw new Error "A virtual tax number is needed"
 
     taxNumberType = @_dni()
     if taxId? and taxId.length > 8

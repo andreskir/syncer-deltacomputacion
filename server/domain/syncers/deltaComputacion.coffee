@@ -14,18 +14,18 @@ class DeltaComputacion extends DataSource
     @url = process.env.DELTACOMPUTACION_URL
     @requests =
       login:
-        method: "AuthenticateUser", args: {}
+        endpoint: "wsBasicQuery", method: "AuthenticateUser", args: {}
       prices:
-        method: "MercadoLibre_PriceListItems_funGetXMLData", args: { pPriceList: 13, pItem: -1 }
+        endpoint: "wsBasicQuery", method: "MercadoLibre_PriceListItems_funGetXMLData", args: { pPriceList: 13, pItem: -1 }
       stocks:
-        method: "MercadoLibre_ItemStorage_funGetXMLData", args: { intStor_id: 336, intItem_id: -1 }
+        endpoint: "wsBasicQuery", method: "MercadoLibre_ItemStorage_funGetXMLData", args: { intStor_id: 336, intItem_id: -1 }
       createContact:
-        method: "MercadoLibre_SetNewCustomer", args:
+       endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
           strEmailFrom4InsertNotification: "info@deltacomputacion.com.ar"
           intCustIdMaster: 1
       contacts:
-        method: "Customers_funGetXMLData", args: pbra_id: 1, pcust_id: 1, ppage_number: 0
+        endpoint: "wsBasicQuery", method: "Customers_funGetXMLData", args: pbra_id: 1, pcust_id: 1, ppage_number: 0
 
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
@@ -53,8 +53,12 @@ class DeltaComputacion extends DataSource
         #console.log clientId
         #clientId
 
-  getAjustes: =>
-    @getToken().then (token) =>
+  getAjustes: (token) =>
+    getToken =
+      if not token? then @getToken()
+      else new Promise (resolve) => resolve token
+
+    getToken.then (token) =>
       Promise.props({
         stocks: @_doRequest "stocks", token
         prices: @_doRequest "prices", token
@@ -66,16 +70,17 @@ class DeltaComputacion extends DataSource
           fecha: new Date()
           ajustes: @_parse data
 
-  getToken: => @_doRequest "login"
-
   getContacts: (token) => @_doRequest "contacts", token
+
+  getToken: => @_doRequest "login"
 
   _doRequest: (name, token) =>
     request = _.clone @requests[name]
     request.args = _.assign args, request.args
     request.getResult = (data) => data["#{request.method}Result"]
 
-    new SoapRequest(@url).query request, @_header token
+    new SoapRequest("#{@url}/#{request.endpoint}.asmx?wsdl")
+      .query request, @_header token
 
   _header: (token) =>
     @requests.header

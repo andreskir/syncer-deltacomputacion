@@ -25,6 +25,7 @@ class DeltaComputacionParser
     price = parseFloat it.prli_price
 
     new AjusteStock
+      id: it.item_id
       sku: it.item_code
       stock: it.PS
       precio: "#{price + (price / 100) * (parseFloat(it.tax_percentage) + parseFloat(it.tax_percentage_II))}"
