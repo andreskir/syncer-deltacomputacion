@@ -31,24 +31,25 @@ class DeltaComputacion extends DataSource
   exportOrders: (orders) =>
     #convertir orders de producteca a dominio de ellos
 
-    client =
-      strNname: "Carlos Lombardi"
-      strCountry: "54" #argentina
-      strState: "54001" #córdoba
-      strAddress: "Ramón Falcón 7120"
-      strCity: "Villa Carlos Paz"
-      strZip: "1408"
-      strFiscalClass: "2" #consumidor final
-      strTaxNumberType: "5" #dni
-      strTaxNumber: "36722297"
-      strEmail: "carlos.lombardi@gmail.com"
-      strPhone: "46445455"
-      strNickName: "CARLOSVENDEDOR"
+    # client =
+    #   strNname: "Carlos Lombardi"
+    #   strCountry: "54" #argentina
+    #   strState: "54001" #córdoba
+    #   strAddress: "Ramón Falcón 7120"
+    #   strCity: "Villa Carlos Paz"
+    #   strZip: "1408"
+    #   strFiscalClass: "2" #consumidor final
+    #   strTaxNumberType: "5" #dni
+    #   strTaxNumber: "36722297"
+    #   strEmail: "carlos.lombardi@gmail.com"
+    #   strPhone: "46445455"
+    #   strNickName: "CARLOSVENDEDOR"
 
-    @getToken().then (token) =>
-      @_doRequest("createClient", token, client).then (clientId) =>
-        console.log clientId
-        clientId
+    console.log client
+    #@getToken().then (token) =>
+      #@_doRequest("createClient", token, client).then (clientId) =>
+        #console.log clientId
+        #clientId
 
   getAjustes: =>
     @getToken().then (token) =>
