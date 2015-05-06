@@ -36,7 +36,7 @@ describe "Producteca2DeltaConverter", ->
           strPhone: "011-45724763"
           strNickName: "GASTONGA2006"
 
-    it "cuando no tienen ni dirección ni dni, manda string vacío, dni, consumidor final", ->
+    it "cuando no tienen ni dirección ni dni, manda algunos defaults", ->
       contact =
         name: "GASTONGA2006"
         contactPerson: "gaston aparicio"
@@ -46,17 +46,17 @@ describe "Producteca2DeltaConverter", ->
         location: null
 
       converter
-        .getCustomer contact
+        .getCustomer contact, 99000236
         .should.be.eql
           strNname: "gaston aparicio"
           strCountry: "54"
-          strState: ""
-          strAddress: ""
-          strCity: ""
-          strZip: ""
+          strState: "54019"
+          strAddress: "Retira en Local"
+          strCity: "Retira en Local"
+          strZip: "Retira en Local"
           strFiscalClass: "2"
           strTaxNumberType: "5"
-          strTaxNumber: ""
+          strTaxNumber: "99000237"
           strEmail: "xquerertetanto@gmail.com"
           strPhone: "011-45724763"
           strNickName: "GASTONGA2006"

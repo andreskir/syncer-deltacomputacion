@@ -3,7 +3,7 @@ _ = require("lodash")
 module.exports =
 
 class Producteca2Delta
-  getCustomer: (contact) ->
+  getCustomer: (contact, lastVirtualTaxNumber) ->
     taxId = contact.taxId
 
     taxNumberType = @_dni()
@@ -17,13 +17,13 @@ class Producteca2Delta
 
     strNname: contact.contactPerson
     strCountry: "54"
-    strState: @_states()[contact.location?.state] || ""
-    strAddress: contact.location?.address || ""
-    strCity: contact.location?.city || ""
-    strZip: contact.location?.zipCode || ""
+    strState: @_states()[contact.location?.state] || "54019"
+    strAddress: contact.location?.address || "Retira en Local"
+    strCity: contact.location?.city || "Retira en Local"
+    strZip: contact.location?.zipCode || "Retira en Local"
     strFiscalClass: fiscalClass
     strTaxNumberType: taxNumberType
-    strTaxNumber: taxId || ""
+    strTaxNumber: taxId || "#{lastVirtualTaxNumber + 1}"
     strEmail: contact.mail
     strPhone: contact.phoneNumber
     strNickName: contact.name
