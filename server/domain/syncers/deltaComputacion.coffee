@@ -16,42 +16,87 @@ class DeltaComputacion extends DataSource
       login:
         endpoint: "wsBasicQuery", method: "AuthenticateUser", args: {}
       prices:
-        endpoint: "wsBasicQuery", method: "MercadoLibre_PriceListItems_funGetXMLData", args: { pPriceList: 13, pItem: -1 }
+        endpoint: "wsBasicQuery", method: "MercadoLibre_PriceListItems_funGetXMLData"
+        parse: true, args: { pPriceList: 13, pItem: -1 }
       stocks:
-        endpoint: "wsBasicQuery", method: "MercadoLibre_ItemStorage_funGetXMLData", args: { intStor_id: 336, intItem_id: -1 }
+        endpoint: "wsBasicQuery", method: "MercadoLibre_ItemStorage_funGetXMLData"
+        parse: true, args: { intStor_id: 336, intItem_id: -1 }
       createContact:
-       endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
+        endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
           strEmailFrom4InsertNotification: "info@deltacomputacion.com.ar"
           intCustIdMaster: 1
-      contacts:
-        endpoint: "wsBasicQuery", method: "Customers_funGetXMLData", args: pbra_id: 1, pcust_id: 1, ppage_number: 0
+      createEmptyOrder:
+        endpoint: "wsSaleOrder", method: "Identifier_funGetData"
+        parse: true, args: {}
+      addLineToOrder:
+        endpoint: "wsSaleOrder", method: "Item_funInsertData"
+        parse: true, args: { pStor: 336, pPrli: 13 }
+      saveOrder:
+        endpoint: "wsSaleOrder", method: "SaleOrder_funInsertData"
+        parse: true, args: { pDocument: 1 }
 
     fileName = (name) => "#{__dirname}/resources/deltaComputacion-#{name}.xml"
     @requests.header = read fileName("header"), "ascii"
 
-  exportOrders: (orders) =>
-    #convertir orders de producteca a dominio de ellos
+  exportOrder: (salesOrder) =>
+    randomTaxId = => Math.random().toString().substring(2, 10)
 
-    # contact =
-    #   strNname: "Carlos Lombardi"
-    #   strCountry: "54" #argentina
-    #   strState: "54001" #córdoba
-    #   strAddress: "Ramón Falcón 7120"
-    #   strCity: "Villa Carlos Paz"
-    #   strZip: "1408"
-    #   strFiscalClass: "2" #consumidor final
-    #   strTaxNumberType: "5" #dni
-    #   strTaxNumber: "36722297"
-    #   strEmail: "carlos.lombardi@gmail.com"
-    #   strPhone: "46445455"
-    #   strNickName: "CARLOSVENDEDOR"
+    carlos =
+      strNname: "Carlos Lombardi"
+      strCountry: "54" #argentina
+      strState: "54001" #córdoba
+      strAddress: "Ramón Falcón 7120"
+      strCity: "Villa Carlos Paz"
+      strZip: "1408"
+      strFiscalClass: "2" #consumidor final
+      strTaxNumberType: "5" #dni
+      strTaxNumber: randomTaxId()
+      strEmail: "carlos.lombardi@gmail.com"
+      strPhone: "46445456"
+      strNickName: randomTaxId()
 
-    console.log contact
-    #@getToken().then (token) =>
-      #@_doRequest("createContact", token, contact).then (clientId) =>
-        #console.log clientId
-        #clientId
+    @getToken().then (token) =>
+      console.log "Token obtained: #{token}"
+      @createContact(token, carlos).then (contactId) =>
+        console.log "Contact created: #{contactId}"
+        @createEmptyOrder(token).then (orderId) =>
+          console.log "Order created: #{orderId}"
+          @addLineToOrder(orderId, 13321, 3, token).then (result) =>
+            console.log "Added line to order OK"
+            @saveOrder(orderId, contactId, token).then (result) =>
+              console.log "Order saved OK"
+
+  createContact: (token, contact) =>
+    @_doRequest("createContact", token, contact).then (id) =>
+      if id < 0
+        throw new Error "Cannot create contact: #{id}"
+      id
+
+  createEmptyOrder: (token) =>
+    @_doRequest("createEmptyOrder", token).then (data) =>
+      data.NewDataSet.Table[0].guid[0]
+
+  addLineToOrder: (orderId, itemId, quantity, token) =>
+    line =
+      pGuid: orderId,
+      pItem: itemId
+      pQty: quantity
+
+    @_doRequest("addLineToOrder", token, line).then (result) =>
+      @_ifError result, (message) =>
+        throw new Error "Cannot add line: #{message}"
+      result
+
+  saveOrder: (orderId, contactId, token) =>
+    order =
+      pGuid: orderId
+      pCust: contactId
+
+    @_doRequest("saveOrder", token, order).then (result) =>
+      @_ifError result, (message) =>
+        throw new Error "Cannot save order: #{message}"
+      result
 
   getAjustes: (token) =>
     getToken =
@@ -62,28 +107,32 @@ class DeltaComputacion extends DataSource
       Promise.props({
         stocks: @_doRequest "stocks", token
         prices: @_doRequest "prices", token
-      }).then (xmls) =>
-        Promise.props({
-          stocks: xml2js.parseStringAsync xmls.stocks
-          prices: xml2js.parseStringAsync xmls.prices
-        }).then (data) =>
-          fecha: new Date()
-          ajustes: @_parse data
-
-  getContacts: (token) => @_doRequest "contacts", token
+      }).then (data) =>
+        fecha: new Date()
+        ajustes: @_parse data
 
   getToken: => @_doRequest "login"
 
-  _doRequest: (name, token) =>
+  _doRequest: (name, token, args = {}) =>
     request = _.clone @requests[name]
     request.args = _.assign args, request.args
-    request.getResult = (data) => data["#{request.method}Result"]
+    request.getResult = (data) =>
+      data = data["#{request.method}Result"]
+      if not request.parse then data
+      else xml2js.parseStringAsync data
 
     new SoapRequest("#{@url}/#{request.endpoint}.asmx?wsdl")
-      .query request, @_header token
+      .query request, @_header(token, request.endpoint)
 
-  _header: (token) =>
+  _header: (token, endpoint) =>
     @requests.header
       .replace("$username", process.env.DELTACOMPUTACION_USER)
       .replace("$password", process.env.DELTACOMPUTACION_PASSWORD)
       .replace("$token", token)
+      .replace(/\$endpoint/g, endpoint)
+
+  _ifError: (result, handler) =>
+    message = result.NewDataSet.Table[0].error_description[0]
+    ok = _.contains message, "OK"
+    if not ok #Annie are you OK? Are you OK Annie? (?)
+      handler message

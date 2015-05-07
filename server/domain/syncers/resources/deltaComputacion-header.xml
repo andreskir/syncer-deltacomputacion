@@ -1,7 +1,9 @@
-<wsBasicQueryHeader xmlns="http://microsoft.com/webservices/">
+<$endpointHeader xmlns="http://microsoft.com/webservices/">
   <pUsername>$username</pUsername>
   <pPassword>$password</pPassword>
   <pCompany>1</pCompany>
+  <pBranch>45</pBranch>
   <pWebWervice>1000</pWebWervice>
+  <pLanguage>2</pLanguage>
   <pAuthenticatedToken>$token</pAuthenticatedToken>
-</wsBasicQueryHeader>
+</$endpointHeader>

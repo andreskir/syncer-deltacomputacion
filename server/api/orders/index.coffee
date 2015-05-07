@@ -5,6 +5,6 @@ auth = require("../../auth/auth.service")
 
 router = express.Router()
 
-router.post "/", controller.sync
+router.post "/:id", controller.sync
 
 module.exports = router
