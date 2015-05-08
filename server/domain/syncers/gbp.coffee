@@ -7,7 +7,6 @@ _ = require("lodash")
 module.exports =
 
 class Gbp extends DataSource
-  #todo: parametrizar la url
   constructor: (user, settings) ->
     super user, settings
 
@@ -22,8 +21,12 @@ class Gbp extends DataSource
   exportOrder: (salesOrder) =>
     randomTaxId = => Math.random().toString().substring(2, 10)
 
-    contact = new require("./gbpGlobal/adapters/gbpContactAdapter")().getCustomer(salesOrder.contact)
+    Adapter = require("./gbpGlobal/adapters/gbpContactAdapter")
+    contact = new Adapter().getCustomer(salesOrder.contact)
     contact.strTaxNumber = randomTaxId()
     contact.strNickName = randomTaxId()
-    @ordersApi.create contact, 13321, 3
+    @ordersApi.create
+      contact: contact
+      itemId: 13321
+      quantity: 3
 

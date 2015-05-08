@@ -25,16 +25,14 @@ class GbpOrdersApi extends GbpApi
           intCustIdMaster: 1
 
   # Creates an order with one line. order = {
-  #   contact: <<parsimotion contact>>
+  #   contact: <<gbp contact>>
   #   itemId: <<id of the product>>
   #   quantity: <<quantity of the line>>
   #}
   create: (order) =>
-    contact = convertirADelta() #todo
-
     @getToken().then (token) =>
       console.log "Token obtained: #{token}"
-      @createContact(token, contact).then (contactId) =>
+      @createContact(token, order.contact).then (contactId) =>
         console.log "Contact created: #{contactId}"
         @createEmpty(token).then (orderId) =>
           console.log "Order created: #{orderId}"
