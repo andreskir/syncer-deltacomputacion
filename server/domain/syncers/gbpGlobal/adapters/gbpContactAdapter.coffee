@@ -2,7 +2,7 @@ _ = require("lodash")
 
 module.exports =
 
-class Producteca2Delta
+class GbpContactAdapter
   getCustomer: (contact, lastVirtualTaxNumber) ->
     taxId = contact.taxId
     if not taxId? and not lastVirtualNumber?

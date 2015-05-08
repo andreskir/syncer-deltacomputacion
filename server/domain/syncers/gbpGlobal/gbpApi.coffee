@@ -6,7 +6,7 @@ _ = require("lodash")
 
 module.exports =
 
-class GbpGlobalApi
+class GbpApi
   constructor: (@url) ->
     @requests =
       login:

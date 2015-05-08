@@ -1,9 +1,9 @@
-GbpGlobalApi = require("./gbpGlobalApi")
+GbpApi = require("./gbpApi")
 _ = require("lodash")
 
 module.exports =
 
-class GbpGlobalProductsApi extends GbpGlobalApi
+class GbpProductsApi extends GbpApi
   constructor: (url) ->
     super url
 

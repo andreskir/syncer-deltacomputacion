@@ -3,7 +3,7 @@ AjusteStock = require("../ajusteStock")
 
 module.exports =
 
-class DeltaComputacionParser
+class GbpParser
   getAjustes: (data) ->
     clean = (it) =>
       it.NewDataSet.Table.map (info) =>

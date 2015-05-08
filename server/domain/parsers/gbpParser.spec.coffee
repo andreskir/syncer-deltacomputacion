@@ -1,10 +1,10 @@
-DeltaComputacionParser = require("./deltaComputacionParser")
+GbpParser = require("./gbpParser")
 
-describe "DeltaComputacion Parser", ->
+describe "GbpParser", ->
   parser = null
 
   beforeEach ->
-    parser = new DeltaComputacionParser()
+    parser = new GbpParser()
 
   it "obtiene los ajustes mergeando los datos de stocks con los de precios", ->
     data =

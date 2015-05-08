@@ -1,10 +1,10 @@
-Producteca2DeltaConverter = require("./producteca2DeltaConverter")
+GbpContactAdapter = require("./gbpContactAdapter")
 
-describe "Producteca2DeltaConverter", ->
-  converter = null
+describe "GbpContactAdapter", ->
+  adapter = null
 
   beforeEach ->
-    converter = new Producteca2DeltaConverter()
+    adapter = new GbpContactAdapter()
 
   describe "contactos", ->
     it "cuando tienen dirección y dni los convierte joya, mapeando las provincias", ->
@@ -20,7 +20,7 @@ describe "Producteca2DeltaConverter", ->
           city: "CABA"
           zipCode: "1417"
 
-      converter
+      adapter
         .getCustomer contact
         .should.be.eql
           strNname: "gaston aparicio"
@@ -45,7 +45,7 @@ describe "Producteca2DeltaConverter", ->
         taxId: null
         location: null
 
-      converter
+      adapter
         .getCustomer contact, 99000236
         .should.be.eql
           strNname: "gaston aparicio"

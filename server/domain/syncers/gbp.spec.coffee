@@ -1,7 +1,7 @@
-DeltaComputacion = require("./deltaComputacion")
+DeltaComputacion = require("./gbp")
 Promise = require("bluebird")
 
-describe "DeltaComputacion", ->
+describe "Gbp", ->
   dummyUser = null ; dummyParser = null ; now = new Date()
   beforeEach ->
     require("timekeeper").freeze now

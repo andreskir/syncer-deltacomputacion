@@ -1,20 +1,19 @@
 DataSource = require("./dataSource")
-GbpGlobalProductsApi = require("./gbpGlobal/gbpGlobalProductsApi")
-GbpGlobalOrdersApi = require("./gbpGlobal/gbpGlobalOrdersApi")
+GbpProductsApi = require("./gbpGlobal/gbpProductsApi")
+GbpOrdersApi = require("./gbpGlobal/gbpOrdersApi")
 Promise = require("bluebird")
 _ = require("lodash")
 
 module.exports =
 
-class DeltaComputacion extends DataSource
-  #todo: Se va a llamar GbpGlobal ahora
+class Gbp extends DataSource
   #todo: parametrizar la url
   constructor: (user, settings) ->
     super user, settings
 
     url = process.env.DELTACOMPUTACION_URL
-    @productsApi = new GbpGlobalProductsApi url
-    @ordersApi = new GbpGlobalOrdersApi url
+    @productsApi = new GbpProductsApi url
+    @ordersApi = new GbpOrdersApi url
 
   getAjustes: =>
     @productsApi.getToken().then (token) =>
@@ -28,7 +27,8 @@ class DeltaComputacion extends DataSource
   exportOrder: (salesOrder) =>
     randomTaxId = => Math.random().toString().substring(2, 10)
 
-    contact = new require("../converters/producteca2deltaConverter")().getCustomer(salesOrder.contact)
+    contact = new require("./gbpGlobal/adapters/gbpContactAdapter")().getCustomer(salesOrder.contact)
     contact.strTaxNumber = randomTaxId()
     contact.strNickName = randomTaxId()
     @ordersApi.create contact, 13321, 3
+

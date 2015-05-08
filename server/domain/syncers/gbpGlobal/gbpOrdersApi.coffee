@@ -1,10 +1,10 @@
-GbpGlobalApi = require("./gbpGlobalApi")
+GbpApi = require("./gbpApi")
 Promise = require("bluebird")
 _ = require("lodash")
 
 module.exports =
 
-class GbpGlobalOrdersApi extends GbpGlobalApi
+class GbpOrdersApi extends GbpApi
   constructor: (url) ->
     super url
 
