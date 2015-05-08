@@ -16,13 +16,9 @@ class Gbp extends DataSource
     @ordersApi = new GbpOrdersApi url
 
   getAjustes: =>
-    @productsApi.getToken().then (token) =>
-      Promise.props({
-        stocks: @productsApi.getStocks token
-        prices: @productsApi.getPrices token
-      }).then (data) =>
-        fecha: new Date()
-        ajustes: @_parse data #todo: cambiar el parser y crear una abstracción intermedia
+    @productsApi.getProducts().then (data) =>
+      fecha: new Date()
+      ajustes: @_parse data
 
   exportOrder: (salesOrder) =>
     randomTaxId = => Math.random().toString().substring(2, 10)

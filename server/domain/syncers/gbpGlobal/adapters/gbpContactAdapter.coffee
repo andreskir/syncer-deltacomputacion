@@ -5,7 +5,7 @@ module.exports =
 class GbpContactAdapter
   getCustomer: (contact, lastVirtualTaxNumber) ->
     taxId = contact.taxId
-    if not taxId? and not lastVirtualNumber?
+    if not taxId? and not lastVirtualTaxNumber?
       throw new Error "A virtual tax number is needed"
 
     taxNumberType = @_dni()

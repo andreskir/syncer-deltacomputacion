@@ -21,7 +21,7 @@ class GbpOrdersApi extends GbpApi
       createContact:
         endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
-          strEmailFrom4InsertNotification: "info@deltacomputacion.com.ar"
+          strEmailFrom4InsertNotification: "info@gbpglobal.com"
           intCustIdMaster: 1
 
   # Creates an order with one line. Returns a promise. order = {
