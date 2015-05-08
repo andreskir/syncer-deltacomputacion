@@ -12,7 +12,7 @@ loginAndThen = (req, res, action) =>
       action(user).then (result) => res.send 200, result
     .catch (error) => res.send 400,
       error: error?.message || "Unknown error"
-      throw error
+      console.error error
 
 exports.sync = (req, res) ->
   loginAndThen req, res, (user) =>

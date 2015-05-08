@@ -25,10 +25,15 @@ class Gbp extends DataSource
     contact = new Adapter().getCustomer(salesOrder.contact)
     contact.strTaxNumber = randomTaxId() #todo: delete this, create contact only if it doesn't exist
     contact.strNickName = randomTaxId()
-
     line = _.first salesOrder.lines
-    @ordersApi.create
-      contact: contact
-      itemId: line.product.id
-      quantity: line.quantity
 
+    @productsApi.getProducts()
+      .then (products) =>
+        item = _.find products, (it) => it.sku is line.product.sku
+        if not item?
+          throw new Error "The product wasn't found"
+
+        @ordersApi.create
+          contact: contact
+          itemId: item.id
+          quantity: line.quantity
