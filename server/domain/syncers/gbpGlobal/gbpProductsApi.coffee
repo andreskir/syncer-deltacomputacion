@@ -1,5 +1,6 @@
 GbpApi = require("./gbpApi")
 GbpProductsCombiner = require("./adapters/gbpProductsCombiner")
+Promise = require("bluebird")
 _ = require("lodash")
 
 module.exports =
@@ -17,16 +18,13 @@ class GbpProductsApi extends GbpApi
         parse: true, args: { intStor_id: 336, intItem_id: -1 }
 
   getProducts: (token) =>
-    getOrReturnToken =
-      if token? then => new Promise (r) => r token
-      else @getToken
-
-    getOrReturnToken().then (token) =>
+    @_auth(token).then (token) =>
       Promise
         .props
           stocks: @getStocks token
           prices: @getPrices token
-        .then new GbpProductsCombiner().getProducts
+        .then (stocksAndPrices) =>
+          new GbpProductsCombiner().getProducts stocksAndPrices
 
   getPrices: (token) =>
     @_auth(token).then (token) =>
