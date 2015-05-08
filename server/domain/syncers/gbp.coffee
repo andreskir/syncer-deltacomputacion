@@ -23,10 +23,12 @@ class Gbp extends DataSource
 
     Adapter = require("./gbpGlobal/adapters/gbpContactAdapter")
     contact = new Adapter().getCustomer(salesOrder.contact)
-    contact.strTaxNumber = randomTaxId()
+    contact.strTaxNumber = randomTaxId() #todo: delete this, create contact only if it doesn't exist
     contact.strNickName = randomTaxId()
+
+    line = _.first salesOrder.lines
     @ordersApi.create
       contact: contact
-      itemId: 13321
-      quantity: 3
+      itemId: line.product.id
+      quantity: line.quantity
 
