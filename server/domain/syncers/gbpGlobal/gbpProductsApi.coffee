@@ -6,17 +6,19 @@ _ = require("lodash")
 module.exports =
 
 class GbpProductsApi extends GbpApi
-  constructor: (url) ->
-    super url
+  constructor: (settings) ->
+    super settings
 
     @requests = _.assign @requests,
       prices:
         endpoint: "wsBasicQuery", method: "MercadoLibre_PriceListItems_funGetXMLData"
-        parse: true, args: { pPriceList: 13, pItem: -1 }
+        parse: true, args: { pPriceList: settings.priceList, pItem: -1 }
       stocks:
         endpoint: "wsBasicQuery", method: "MercadoLibre_ItemStorage_funGetXMLData"
-        parse: true, args: { intStor_id: 336, intItem_id: -1 }
+        parse: true, args: { intStor_id: settings.warehouse, intItem_id: -1 }
 
+  # Returns the info of all products with stocks and prices.
+  # If no token is provided, a new one is requested.
   getProducts: (token) =>
     @_auth(token).then (token) =>
       Promise

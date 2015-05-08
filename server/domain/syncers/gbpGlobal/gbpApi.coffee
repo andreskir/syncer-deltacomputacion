@@ -7,7 +7,8 @@ _ = require("lodash")
 module.exports =
 
 class GbpApi
-  constructor: (@url) ->
+  # settings = { url, company, secret, warehouse, priceList }
+  constructor: (@settings) ->
     @requests =
       login:
         endpoint: "wsBasicQuery", method: "AuthenticateUser", args: {}
@@ -24,7 +25,7 @@ class GbpApi
       if not request.parse then data
       else xml2js.parseStringAsync data
 
-    new SoapRequest("#{@url}/#{request.endpoint}.asmx?wsdl")
+    new SoapRequest("#{@settings.url}/#{request.endpoint}.asmx?wsdl")
       .query request, @_header(token, request.endpoint)
 
   _auth: (token) =>

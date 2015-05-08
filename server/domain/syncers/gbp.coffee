@@ -11,9 +11,8 @@ class Gbp extends DataSource
   constructor: (user, settings) ->
     super user, settings
 
-    url = process.env.DELTACOMPUTACION_URL
-    @productsApi = new GbpProductsApi url
-    @ordersApi = new GbpOrdersApi url
+    @productsApi = new GbpProductsApi settings
+    @ordersApi = new GbpOrdersApi settings
 
   getAjustes: =>
     @productsApi.getProducts().then (data) =>

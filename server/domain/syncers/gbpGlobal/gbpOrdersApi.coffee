@@ -5,8 +5,8 @@ _ = require("lodash")
 module.exports =
 
 class GbpOrdersApi extends GbpApi
-  constructor: (url) ->
-    super url
+  constructor: (settings) ->
+    super settings
 
     @requests = _.assign @requests,
       createEmptyOrder:
@@ -14,7 +14,7 @@ class GbpOrdersApi extends GbpApi
         parse: true, args: {}
       addLineToOrder:
         endpoint: "wsSaleOrder", method: "Item_funInsertData"
-        parse: true, args: { pStor: 336, pPrli: 13 }
+        parse: true, args: { pStor: settings.warehouse, pPrli: settings.priceList }
       saveOrder:
         endpoint: "wsSaleOrder", method: "SaleOrder_funInsertData"
         parse: true, args: { pDocument: 1 }
@@ -24,7 +24,7 @@ class GbpOrdersApi extends GbpApi
           strEmailFrom4InsertNotification: "info@gbpglobal.com"
           intCustIdMaster: 1
 
-  # Creates an order with one line. Returns a promise. order = {
+  # Creates an order with one line. order = {
   #   contact: <<parsimotion contact>>
   #   itemId: <<id of the product>>
   #   quantity: <<quantity of the line>>
