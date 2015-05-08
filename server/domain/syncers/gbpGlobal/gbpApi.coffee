@@ -34,8 +34,8 @@ class GbpApi
 
   _header: (token, endpoint) =>
     @requests.header
-      .replace("$username", process.env.DELTACOMPUTACION_USER)
-      .replace("$password", process.env.DELTACOMPUTACION_PASSWORD)
+      .replace("$username", @settings.company)
+      .replace("$password", @settings.secret)
       .replace("$token", token)
       .replace(/\$endpoint/g, endpoint)
 
