@@ -25,27 +25,35 @@ class GbpOrdersApi extends GbpApi
           intCustIdMaster: 1
 
   # Creates an order with one line. order = {
-  #   contact: <<gbp contact>>
+  #   contactId: <<id of the gbp contact>>
   #   itemId: <<id of the product>>
   #   quantity: <<quantity of the line>>
   #}
-  create: (order) =>
-    @getToken().then (token) =>
-      console.log "Token obtained: #{token}"
-      @createContact(token, order.contact).then (contactId) =>
-        console.log "Contact created: #{contactId}"
-        @createEmpty(token).then (orderId) =>
-          console.log "Order created: #{orderId}"
-          @addLine(orderId, order.itemId, order.quantity, token).then =>
-            console.log "Added line to order OK"
-            @save(orderId, contactId, token).then =>
-              console.log "Order saved OK"
+  create: (order, token) =>
+    @_auth(token).then (token) =>
+      console.log "Using token: #{token}"
+      console.log "Using contact: #{order.contactId}"
 
-  createEmpty: (token) =>
+      @_createEmpty(token).then (orderId) =>
+        console.log "Order created: #{orderId}"
+        @_addLine(orderId, order.itemId, order.quantity, token).then =>
+          console.log "Added line to order OK"
+          @_save(orderId, order.contactId, token).then =>
+            console.log "Order saved OK"
+
+  # Creates a *contact* in GBP Domain.
+  createContact: (contact, token) =>
+    @_auth(token).then (token) =>
+      @_doRequest("createContact", token, contact).then (id) =>
+        if id < 0
+          throw new Error "Cannot create contact: #{id}"
+        id
+
+  _createEmpty: (token) =>
     @_doRequest("createEmptyOrder", token).then (data) =>
       data.NewDataSet.Table[0].guid[0]
 
-  addLine: (orderId, itemId, quantity, token) =>
+  _addLine: (orderId, itemId, quantity, token) =>
     line =
       pGuid: orderId,
       pItem: itemId
@@ -56,7 +64,7 @@ class GbpOrdersApi extends GbpApi
         throw new Error "Cannot add line: #{message}"
       result
 
-  save: (orderId, contactId, token) =>
+  _save: (orderId, contactId, token) =>
     order =
       pGuid: orderId
       pCust: contactId
@@ -65,10 +73,3 @@ class GbpOrdersApi extends GbpApi
       @_ifError result, (message) =>
         throw new Error "Cannot save order: #{message}"
       result
-
-  # others...
-  createContact: (token, contact) =>
-    @_doRequest("createContact", token, contact).then (id) =>
-      if id < 0
-        throw new Error "Cannot create contact: #{id}"
-      id

@@ -56,7 +56,7 @@ describe "GbpContactAdapter", ->
           strZip: "Retira en Local"
           strFiscalClass: "2"
           strTaxNumberType: "5"
-          strTaxNumber: "99000237"
+          strTaxNumber: "99000236"
           strEmail: "xquerertetanto@gmail.com"
           strPhone: "011-45724763"
           strNickName: "GASTONGA2006"

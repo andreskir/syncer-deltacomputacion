@@ -1,6 +1,7 @@
 DataSource = require("./dataSource")
 GbpProductsApi = require("./gbpGlobal/gbpProductsApi")
 GbpOrdersApi = require("./gbpGlobal/gbpOrdersApi")
+GbpContactAdapter = require("./gbpGlobal/adapters/gbpContactAdapter")
 Promise = require("bluebird")
 _ = require("lodash")
 
@@ -12,6 +13,8 @@ class Gbp extends DataSource
 
     @productsApi = new GbpProductsApi settings
     @ordersApi = new GbpOrdersApi settings
+    @adapter = new GbpContactAdapter()
+
 
   getAjustes: =>
     @productsApi.getProducts().then (data) =>
@@ -19,21 +22,41 @@ class Gbp extends DataSource
       ajustes: @_parse data
 
   exportOrder: (salesOrder) =>
-    randomTaxId = => Math.random().toString().substring(2, 10)
-
-    Adapter = require("./gbpGlobal/adapters/gbpContactAdapter")
-    contact = new Adapter().getCustomer(salesOrder.contact)
-    contact.strTaxNumber = randomTaxId() #todo: delete this, create contact only if it doesn't exist
-    contact.strNickName = randomTaxId()
+    contact = @adapter
+      .getCustomer salesOrder.contact, @_findOrCreateVirtualTaxNumber()
     line = _.first salesOrder.lines
 
-    @productsApi.getProducts()
-      .then (products) =>
-        item = _.find products, (it) => it.sku is line.product.sku
-        if not item?
-          throw new Error "The product wasn't found"
+    @productsApi.getProducts().then (products) =>
+      item = _.find products, (it) => it.sku is line.product.sku
+      if not item?
+        throw new Error "The product wasn't found"
 
-        @ordersApi.create
-          contact: contact
-          itemId: item.id
-          quantity: line.quantity
+      @ordersApi.getToken().then (token) =>
+        @_findOrCreateGbpId (contactId) =>
+          @ordersApi.create
+            contact: contactId
+            itemId: item.id
+            quantity: line.quantity
+
+  _findOrCreateGbpId: (contact, token) =>
+    if not @settings.contacts? then @settings.contacts = []
+
+    mapping = _.find @settings.contacts, (mapping) =>
+      mapping.name is contact.strNickName
+    gbpId = mapping?.gbpId
+
+    if gbpId?
+      new Promise (resolve) => resolve contactId
+    else
+      newId = @ordersApi.createContact contact, token
+      mappings.push name: contact.name, gbpId: newId
+      @user.save()
+      newId
+
+  _findOrCreateVirtualTaxNumber: (token) =>
+    if not @settings.virtualTaxNumber?
+      @settings.virtualTaxNumber = 99000000
+
+    newTaxNumber = ++@settings.virtualTaxNumber
+    @user.save()
+    newTaxNumber

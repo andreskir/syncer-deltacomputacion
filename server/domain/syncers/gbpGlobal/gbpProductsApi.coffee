@@ -23,15 +23,15 @@ class GbpProductsApi extends GbpApi
     @_auth(token).then (token) =>
       Promise
         .props
-          stocks: @getStocks token
-          prices: @getPrices token
+          stocks: @_getStocks token
+          prices: @_getPrices token
         .then (stocksAndPrices) =>
           new GbpProductsCombiner().getProducts stocksAndPrices
 
-  getPrices: (token) =>
+  _getPrices: (token) =>
     @_auth(token).then (token) =>
       @_doRequest "stocks", token
 
-  getStocks: (token) =>
+  _getStocks: (token) =>
     @_auth(token).then (token) =>
       @_doRequest "prices", token
