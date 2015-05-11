@@ -15,7 +15,6 @@ class Gbp extends DataSource
     @ordersApi = new GbpOrdersApi settings
     @adapter = new GbpContactAdapter()
 
-
   getAjustes: =>
     @productsApi.getProducts().then (data) =>
       fecha: new Date()
@@ -32,31 +31,38 @@ class Gbp extends DataSource
         throw new Error "The product wasn't found"
 
       @ordersApi.getToken().then (token) =>
-        @_findOrCreateGbpId (contactId) =>
+        @_findOrCreateGbpId(contact, token).then (contactId) =>
+          console.log "Me llegó #{contactId}"
           @ordersApi.create
-            contact: contactId
+            contactId: contactId
             itemId: item.id
             quantity: line.quantity
 
   _findOrCreateGbpId: (contact, token) =>
-    if not @settings.contacts? then @settings.contacts = []
+    console.log JSON.stringify contact
+    params = @user.deltaParams
 
-    mapping = _.find @settings.contacts, (mapping) =>
+    mapping = _.find params.contacts, (mapping) =>
       mapping.name is contact.strNickName
     gbpId = mapping?.gbpId
 
     if gbpId?
+      console.log "Existing contact: #{contactId}"
       new Promise (resolve) => resolve contactId
     else
       newId = @ordersApi.createContact contact, token
-      mappings.push name: contact.name, gbpId: newId
-      @user.save()
+      newId.then (id) =>
+        console.log "Contact #{id} was created"
+        params.contacts.push name: contact.strNickName, gbpId: id
+        @user.save()
       newId
 
   _findOrCreateVirtualTaxNumber: (token) =>
-    if not @settings.virtualTaxNumber?
-      @settings.virtualTaxNumber = 99000000
+    params = @user.deltaParams
 
-    newTaxNumber = ++@settings.virtualTaxNumber
+    if not params.virtualTaxNumber?
+      params.virtualTaxNumber = 99000000
+
+    newTaxNumber = ++params.virtualTaxNumber
     @user.save()
     newTaxNumber

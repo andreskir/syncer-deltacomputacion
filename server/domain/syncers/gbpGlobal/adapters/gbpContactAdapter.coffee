@@ -3,9 +3,9 @@ _ = require("lodash")
 module.exports =
 
 class GbpContactAdapter
-  getCustomer: (contact, virtualNumber) ->
+  getCustomer: (contact, virtualTaxNumber) ->
     taxId = contact.taxId
-    if not taxId? and not newTaxNumber?
+    if not taxId? and not virtualTaxNumber?
       throw new Error "A virtual tax number is needed"
 
     taxNumberType = @_dni()
@@ -25,7 +25,7 @@ class GbpContactAdapter
     strZip: contact.location?.zipCode || "Retira en Local"
     strFiscalClass: fiscalClass
     strTaxNumberType: taxNumberType
-    strTaxNumber: taxId || "#{virtualNumber}"
+    strTaxNumber: taxId || "#{virtualTaxNumber}"
     strEmail: contact.mail
     strPhone: contact.phoneNumber
     strNickName: contact.name

@@ -10,6 +10,10 @@ crypto = require("crypto")
 authTypes = ["dropbox"]
 
 UserSchema = new Schema
+  deltaParams:
+    contacts: [ name: String, gbpId: String ]
+    virtualTaxNumber: Number
+
   name: String
   email:
     type: String
