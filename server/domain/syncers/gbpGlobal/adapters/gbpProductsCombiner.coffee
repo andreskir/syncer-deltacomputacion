@@ -1,10 +1,9 @@
 _ = require("lodash")
-AjusteStock = require("../ajusteStock")
 
 module.exports =
 
-class DeltaComputacionParser
-  getAjustes: (data) ->
+class GbpProductsCombiner
+  getProducts: (data) ->
     clean = (it) =>
       it.NewDataSet.Table.map (info) =>
         _.mapValues info, (it) => it[0]
@@ -24,7 +23,7 @@ class DeltaComputacionParser
     it = _.assign _.first(pair), _.last(pair)
     price = parseFloat it.prli_price
 
-    new AjusteStock
-      sku: it.item_code
-      stock: it.PS
-      precio: "#{price + (price / 100) * (parseFloat(it.tax_percentage) + parseFloat(it.tax_percentage_II))}"
+    id: it.item_id
+    sku: it.item_code
+    stock: it.PS
+    price: "#{price + (price / 100) * (parseFloat(it.tax_percentage) + parseFloat(it.tax_percentage_II))}"

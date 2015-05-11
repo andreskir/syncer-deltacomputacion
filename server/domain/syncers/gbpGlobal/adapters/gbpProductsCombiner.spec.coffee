@@ -1,12 +1,12 @@
-DeltaComputacionParser = require("./deltaComputacionParser")
+GbpProductsCombiner = require("./gbpProductsCombiner")
 
-describe "DeltaComputacion Parser", ->
-  parser = null
+describe "GbpProductsCombiner", ->
+  combiner = null
 
   beforeEach ->
-    parser = new DeltaComputacionParser()
+    combiner = new GbpProductsCombiner()
 
-  it "obtiene los ajustes mergeando los datos de stocks con los de precios", ->
+  it "obtiene los productos mergeando los datos de stocks con los de precios", ->
     data =
       stocks:
         NewDataSet:
@@ -22,9 +22,9 @@ describe "DeltaComputacion Parser", ->
             { item_id: ["6"], item_code: ["sku6"], prli_price: ["19.28"], tax_percentage: ["0.0000"], tax_percentage_II: ["0.0000"]}
           ]
 
-    parser.getAjustes(data).should.eql [
-      { sku: "sku3", precio: 26.14, stock: 56 }
-      { sku: "sku6", precio: 19.28, stock: 0 }
+    combiner.getProducts(data).should.eql [
+      { id: "3", sku: "sku3", price: "26.14", stock: "56.0000" }
+      { id: "6", sku: "sku6", price: "19.28", stock: "0.0000" }
     ]
 
   it "aplica los porcentajes a los precios correctamente", ->
@@ -40,6 +40,6 @@ describe "DeltaComputacion Parser", ->
             { item_id: ["2"], item_code: ["unSku"], prli_price: ["577.68600"], tax_percentage: ["21.0000"], tax_percentage_II: ["0.0000"] }
           ]
 
-    parser.getAjustes(data).should.eql [
-      { sku: "unSku", precio: 699.0000600000001, stock: 56 }
+    combiner.getProducts(data).should.eql [
+      { id: "2", sku: "unSku", price: "699.0000600000001", stock: "56.0000" }
     ]
