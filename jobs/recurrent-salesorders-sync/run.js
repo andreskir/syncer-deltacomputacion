@@ -59,8 +59,9 @@ exportSalesOrder = function(salesOrder) {
   }
 };
 
-var filter = "/?$filter=PaymentStatus%20eq%20%27Done%27";
-request.get(globalOptions.producteca, function(err, data) {
+var options = _.clone(globalOptions.producteca);
+options.url += "/?$filter=PaymentStatus%20eq%20%27Done%27";
+request.get(options, function(err, data) {
   check(data, "Get paid sales orders");
 
   var salesOrders = data.body.results;
