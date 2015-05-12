@@ -30,32 +30,10 @@ class Gbp extends DataSource
       if not item?
         throw new Error "The product wasn't found"
 
-      @ordersApi.getToken().then (token) =>
-        @_findOrCreateGbpId(contact, token).then (contactId) =>
-          console.log "Me llegó #{contactId}"
-          @ordersApi.create
-            contactId: contactId
-            itemId: item.id
-            quantity: line.quantity
-
-  _findOrCreateGbpId: (contact, token) =>
-    console.log JSON.stringify contact
-    params = @user.deltaParams
-
-    mapping = _.find params.contacts, (mapping) =>
-      mapping.name is contact.strNickName
-    gbpId = mapping?.gbpId
-
-    if gbpId?
-      console.log "Existing contact: #{contactId}"
-      new Promise (resolve) => resolve contactId
-    else
-      newId = @ordersApi.createContact contact, token
-      newId.then (id) =>
-        console.log "Contact #{id} was created"
-        params.contacts.push name: contact.strNickName, gbpId: id
-        @user.save()
-      newId
+      @ordersApi.create
+        contact: contact
+        itemId: item.id
+        quantity: line.quantity
 
   _findOrCreateVirtualTaxNumber: (token) =>
     params = @user.deltaParams

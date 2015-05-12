@@ -29,9 +29,7 @@ class GbpProductsApi extends GbpApi
           new GbpProductsCombiner().getProducts stocksAndPrices
 
   _getPrices: (token) =>
-    @_auth(token).then (token) =>
-      @_doRequest "stocks", token
+    @_doRequest "stocks", token
 
   _getStocks: (token) =>
-    @_auth(token).then (token) =>
-      @_doRequest "prices", token
+    @_doRequest "prices", token

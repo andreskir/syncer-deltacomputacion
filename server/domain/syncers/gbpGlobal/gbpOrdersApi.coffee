@@ -25,21 +25,22 @@ class GbpOrdersApi extends GbpApi
           intCustIdMaster: 1
 
   # Creates an order with one line. order = {
-  #   contactId: <<id of the gbp contact>>
+  #   contact: <<contact to create>>
   #   itemId: <<id of the product>>
   #   quantity: <<quantity of the line>>
   #}
   create: (order, token) =>
+    #(callback hell)
     @_auth(token).then (token) =>
       console.log "Using token: #{token}"
-      console.log "Using contact: #{order.contactId}"
-
       @_createEmpty(token).then (orderId) =>
         console.log "Order created: #{orderId}"
-        @_addLine(orderId, order.itemId, order.quantity, token).then =>
-          console.log "Added line to order OK"
-          @_save(orderId, order.contactId, token).then =>
-            console.log "Order saved OK"
+        @createContact(order.contact, token).then (contactId) =>
+          console.log "Using contact: #{contactId}"
+          @_addLine(orderId, order.itemId, order.quantity, token).then =>
+            console.log "Added line to order OK"
+            @_save(orderId, contactId, token).then =>
+              console.log "Order saved OK"
 
   # Creates a *contact* in GBP Domain.
   createContact: (contact, token) =>
