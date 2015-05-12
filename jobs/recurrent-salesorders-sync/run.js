@@ -67,3 +67,18 @@ request.get(options, function(err, data) {
   var salesOrders = data.body.results;
   salesOrders.forEach(exportSalesOrder);
 });
+
+/*
+INITIAL POPULATION
+request.get(options, function(err, data) {
+  check(data, "Population get");
+  data.body.results.forEach(function(salesOrder) {
+    var options = _.clone(globalOptions.producteca);
+    options.url += "/" + salesOrder.id;
+    options.body = { customId: exported };
+    request.put(options, function(err, data) {
+      check(data, "Population update");
+    });
+  });
+});
+*/
