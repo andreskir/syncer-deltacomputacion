@@ -1,5 +1,5 @@
 var request = require("request");
-var lodash = require("lodash");
+var _ = require("lodash");
 
 //---
 
@@ -17,7 +17,7 @@ var endpoints = {
 
 //---
 
-var options = {
+var globalOptions = {
   syncer: {
     url: endpoints.syncer.url,
     headers: { signature: endpoints.syncer.signature },
@@ -30,6 +30,7 @@ var options = {
     json: true
   }
 };
+exported = "exported"
 
 check = function(data, action) {
   if (data.statusCode != 200)
@@ -39,17 +40,18 @@ check = function(data, action) {
 };
 
 exportSalesOrder = function(salesOrder) {
-  console.log(JSON.stringify(salesOrder));
+  console.log(salesOrder);
 
-  if (!salesOrder.customId) {
-    var options = _.clone(options.syncer);
+  if (salesOrder.customId != exported) {
+    var options = _.clone(globalOptions.syncer);
     options.url += "/" + salesOrder.id;
 
     request.post(options, function(err, data) {
       check(data, "Export sales order " + salesOrder.id);
 
-      var options = _.clone(options.producteca);
-      options.body = { customId: "exported" };
+      var options = _.clone(globalOptions.producteca);
+      options.url += "/" + salesOrder.id;
+      options.body = { customId: exported };
       request.put(options, function(err, data) {
         check(data, "Mark " + salesOrder.id + " as exported");
       });
@@ -58,7 +60,7 @@ exportSalesOrder = function(salesOrder) {
 };
 
 var filter = "/?$filter=PaymentStatus%20eq%20%27Done%27";
-request.get(options.producteca, function(err, data) {
+request.get(globalOptions.producteca, function(err, data) {
   check(data, "Get paid sales orders");
 
   var salesOrders = data.body.results;
