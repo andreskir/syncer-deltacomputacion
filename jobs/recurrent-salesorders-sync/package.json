@@ -1,0 +1,16 @@
+{
+  "name": "job",
+  "version": "0.0.0",
+  "description": "",
+  "main": "run.js",
+  "dependencies": {
+    "lodash": "^3.8.0",
+    "request": "^2.55.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
