@@ -34,6 +34,7 @@ class Gbp extends DataSource
         contact: contact
         itemId: item.id
         quantity: line.quantity
+        labelUrl: "http://mercadolibre.azurewebsites.net/shipments/label?access_token=#{@user.tokens.parsimotion}&ids=#{salesOrder.id}"
 
   _findOrCreateVirtualTaxNumber: (token) =>
     params = @user.deltaParams
