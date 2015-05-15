@@ -33,21 +33,21 @@ var globalOptions = {
 exported = "exported"
 
 check = function(data, action) {
-  if (data.statusCode != 200)
-    throw new Error (action + " => FAILED: " + data.statusCode);
-  else
-    console.log(action + " => SUCCESS");
+  if (data.statusCode != 200) {
+    error = action + " => FAILED: " + data.statusCode;
+    console.error(error);
+    return -1;
+  } else console.log(action + " => SUCCESS");
 };
 
 exportSalesOrder = function(salesOrder) {
-  console.log(salesOrder);
-
   if (salesOrder.customId != exported) {
     var options = _.clone(globalOptions.syncer);
     options.url += "/" + salesOrder.id;
 
     request.post(options, function(err, data) {
-      check(data, "Export sales order " + salesOrder.id);
+      var res = check(data, "Export sales order " + salesOrder.id);
+      if (res == -1) return; //don't mark as exported if error
 
       var options = _.clone(globalOptions.producteca);
       options.url += "/" + salesOrder.id;
@@ -68,9 +68,8 @@ request.get(options, function(err, data) {
   salesOrders.forEach(exportSalesOrder);
 });
 
-/*
-INITIAL POPULATION
-request.get(options, function(err, data) {
+//INITIAL POPULATION
+/*request.get(options, function(err, data) {
   check(data, "Population get");
   data.body.results.forEach(function(salesOrder) {
     var options = _.clone(globalOptions.producteca);
@@ -80,5 +79,4 @@ request.get(options, function(err, data) {
       check(data, "Population update");
     });
   });
-});
-*/
+});*/
