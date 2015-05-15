@@ -30,11 +30,17 @@ class Gbp extends DataSource
       if not item?
         throw new Error "The product wasn't found"
 
+      shipmentId = _.first(salesOrder.shipments)?.integration?.integrationId
+      labelUrl =
+        if shipmentId?
+          "http://mercadolibre.azurewebsites.net/shipments/label?access_token=#{@user.tokens.parsimotion}&ids=#{shipmentId}"
+        else ""
+
       @ordersApi.create
         contact: contact
         itemId: item.id
         quantity: line.quantity
-        labelUrl: "http://mercadolibre.azurewebsites.net/shipments/label?access_token=#{@user.tokens.parsimotion}&ids=#{salesOrder.id}"
+        labelUrl: labelUrl
 
   _findOrCreateVirtualTaxNumber: (token) =>
     params = @user.deltaParams
