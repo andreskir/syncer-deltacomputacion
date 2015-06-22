@@ -22,7 +22,7 @@ class GbpOrdersApi extends GbpApi
         endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
           strEmailFrom4InsertNotification: "info@gbpglobal.com"
-          intCustIdMaster: 1
+          intCustIdMaster: 220
 
   # Creates an order with one line. order = {
   #   contact: <<contact to create>>
