@@ -16,18 +16,19 @@ class GbpOrdersApi extends GbpApi
         endpoint: "wsSaleOrder", method: "Item_funInsertData"
         parse: true, args: { pStor: settings.warehouse, pPrli: settings.priceList }
       saveOrder:
-        endpoint: "wsSaleOrder", method: "SaleOrder_funInsertData"
+        endpoint: "wsSaleOrder", method: "SaleOrder_funInsertData4MercadoLibre"
         parse: true, args: { pDocument: 1 }
       createContact:
         endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
           strEmailFrom4InsertNotification: "info@gbpglobal.com"
-          intCustIdMaster: 1
+          intCustIdMaster: 220
 
   # Creates an order with one line. order = {
   #   contact: <<contact to create>>
   #   itemId: <<id of the product>>
   #   quantity: <<quantity of the line>>
+  #   labelUrl: <<url of the label>>
   #}
   create: (order, token) =>
     #(callback hell)
@@ -39,7 +40,7 @@ class GbpOrdersApi extends GbpApi
           console.log "Using contact: #{contactId}"
           @_addLine(orderId, order.itemId, order.quantity, token).then =>
             console.log "Added line to order OK"
-            @_save(orderId, contactId, token).then =>
+            @_save(orderId, contactId, order.labelUrl, token).then =>
               console.log "Order saved OK"
 
   # Creates a *contact* in GBP Domain.
@@ -65,10 +66,11 @@ class GbpOrdersApi extends GbpApi
         throw new Error "Cannot add line: #{message}"
       result
 
-  _save: (orderId, contactId, token) =>
+  _save: (orderId, contactId, labelUrl, token) =>
     order =
       pGuid: orderId
       pCust: contactId
+      pDeliveryLabelURL: labelUrl
 
     @_doRequest("saveOrder", token, order).then (result) =>
       @_ifError result, (message) =>
