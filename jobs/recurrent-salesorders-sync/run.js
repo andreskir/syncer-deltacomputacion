@@ -33,6 +33,7 @@ var globalOptions = {
 exported = "exported"
 
 check = function(data, action) {
+  if (data.statusCode == undefined) return;
   if (data.statusCode != 200) {
     error = action + " => FAILED: " + data.statusCode;
     console.error(error);
@@ -60,7 +61,7 @@ exportSalesOrder = function(salesOrder) {
 };
 
 var options = _.clone(globalOptions.producteca);
-options.url += "/?$filter=PaymentStatus%20eq%20%27Done%27";
+options.url += "/?$filter=(IsOpen%20eq%20true)%20and%20(IsCanceled%20eq%20false)%20and%20(PaymentStatus%20eq%20%27Done%27)";
 request.get(options, function(err, data) {
   check(data, "Get paid sales orders");
 
