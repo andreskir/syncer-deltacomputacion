@@ -28,10 +28,10 @@ exports.exportOrder = (req, res) ->
 
     order = api
       .getSalesOrder id
-      .catch => throw new Error "Order not found!"
+      .catch => throw new Error "Order #{id} not found!"
 
     order.then (salesOrder) =>
-        console.log "Creating order..."
+        console.log "Creating order #{salesOrder.id}..."
         user.getDataSource().exportOrder salesOrder
 
 isSignatureValid = (req) ->

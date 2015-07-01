@@ -28,7 +28,7 @@ class Gbp extends DataSource
     @productsApi.getProducts().then (products) =>
       item = _.find products, (it) => it.sku is line.product.sku
       if not item?
-        throw new Error "The product wasn't found"
+        throw new Error "The product #{line?.product?.sku} wasn't found"
 
       @ordersApi.create
         contact: contact
