@@ -15,7 +15,9 @@ describe "GbpContactAdapter", ->
         phoneNumber: "011-45724763"
         taxId: "30710907753"
         location:
-          address: "Avenida Nazca 3022 - Piso 2 Depto A"
+          streetName: "Avenida Nazca"
+          streetNumber: "3022"
+          addressNotes: "Piso 2 Depto A"
           state: "Capital Federal"
           city: "CABA"
           zipCode: "1417"

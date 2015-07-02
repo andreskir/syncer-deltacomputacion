@@ -17,10 +17,12 @@ class GbpContactAdapter
         @_responsableInscripto()
       else @_consumidorFinal()
 
+    strAddress = if contact.location?.streetName then @_buldAddress(contact.location) else "Retira en Local"
+
     strNname: contact.contactPerson
     strCountry: "54"
     strState: @_states()[contact.location?.state] || "54019"
-    strAddress: contact.location?.address || "Retira en Local"
+    strAddress: strAddress
     strCity: contact.location?.city || "Retira en Local"
     strZip: contact.location?.zipCode || "Retira en Local"
     strFiscalClass: fiscalClass
@@ -60,3 +62,9 @@ class GbpContactAdapter
   _dni: => "5"
   _responsableInscripto: => "1"
   _consumidorFinal: => "2"
+
+  _buldAddress: (location) =>
+    address = "#{location.streetName} #{location.streetNumber}"
+    if location.addressNotes
+      address += " - #{location.addressNotes}"
+    address
