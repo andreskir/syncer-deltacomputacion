@@ -17,7 +17,7 @@ class GbpContactAdapter
         @_responsableInscripto()
       else @_consumidorFinal()
 
-    strAddress = if contact.location?.streetName then @_buldAddress(contact.location) else "Retira en Local"
+    strAddress = if contact.location?.streetName then @_buildAddress(contact.location) else "Retira en Local"
 
     strNname: contact.contactPerson
     strCountry: "54"
@@ -63,7 +63,7 @@ class GbpContactAdapter
   _responsableInscripto: => "1"
   _consumidorFinal: => "2"
 
-  _buldAddress: (location) =>
+  _buildAddress: (location) =>
     address = "#{location.streetName} #{location.streetNumber}"
     if location.addressNotes
       address += " - #{location.addressNotes}"
