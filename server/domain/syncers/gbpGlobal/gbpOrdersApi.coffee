@@ -17,12 +17,12 @@ class GbpOrdersApi extends GbpApi
         parse: true, args: { pStor: settings.warehouse, pPrli: settings.priceList }
       saveOrder:
         endpoint: "wsSaleOrder", method: "SaleOrder_funInsertData4MercadoLibre"
-        parse: true, args: { pDocument: 1 }
+        parse: true, args: { pDocument: 1, pXMLQuestionsAndAnswers: "" }
       createContact:
         endpoint: "wsBasicQuery", method: "MercadoLibre_SetNewCustomer", args:
           strPassword4Web: ""
           strEmailFrom4InsertNotification: "info@gbpglobal.com"
-          intCustIdMaster: 220
+          intCustIdMaster: settings.custIdMaster
 
   # Creates an order with one line. order = {
   #   contact: <<contact to create>>

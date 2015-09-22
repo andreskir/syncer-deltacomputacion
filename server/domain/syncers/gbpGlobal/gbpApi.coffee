@@ -36,6 +36,9 @@ class GbpApi
     @requests.header
       .replace("$username", @settings.company)
       .replace("$password", @settings.secret)
+      .replace("$companyId", @settings.companyId)
+      .replace("$branch", @settings.branch)
+      .replace("$webService", @settings.webService)
       .replace("$token", token)
       .replace(/\$endpoint/g, endpoint)
 

@@ -1,9 +1,9 @@
 <$endpointHeader xmlns="http://microsoft.com/webservices/">
   <pUsername>$username</pUsername>
   <pPassword>$password</pPassword>
-  <pCompany>1</pCompany>
-  <pBranch>45</pBranch>
-  <pWebWervice>1000</pWebWervice>
+  <pCompany>$companyId</pCompany>
+  <pBranch>$branch</pBranch>
+  <pWebWervice>$webService</pWebWervice>
   <pLanguage>2</pLanguage>
   <pAuthenticatedToken>$token</pAuthenticatedToken>
 </$endpointHeader>
